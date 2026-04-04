@@ -1,0 +1,24 @@
+{
+    "admin": {
+        "title": "لوحة تحكم المدير",
+        "description": "إدارة جميع جوانب النظام",
+        "totalUsers": "إجمالي المستخدمين",
+        "companies": "الشركات",
+        "systemHealth": "صحة النظام",
+        "settings": "الإعدادات",
+        "uptime": "وقت التشغيل هذا الشهر",
+        "operational": "جميع الأنظمة تعمل بشكل طبيعي"
+    },
+    "employee": {
+        "title": "لوحة تحكم الموظف",
+        "description": "مرحباً بك في مساحة العمل الشخصية",
+        "profile": "الملف الشخصي",
+        "hoursToday": "ساعات اليوم",
+        "tasks": "المهام",
+        "nextMeeting": "الاجتماع التالي",
+        "profileComplete": "الملف الشخصي محدث",
+        "hoursRemaining": "ساعات متبقية",
+        "tasksRemaining": "مهام متبقية",
+        "teamStandup": "اجتماع الفريق"
+    }
+}

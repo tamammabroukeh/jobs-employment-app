@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+
+:root {
+  /* General Colors */
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --destructive: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+
+  /* Ant Design Token Variables */
+  --antd-bg-container: #ffffff;
+  --antd-text: #0f172a;
+  --antd-border-radius: 8px;
+  --antd-font-size: 14px;
+
+  /* Component Specific */
+  --antd-button-height: 42px;
+  --antd-button-font-weight: 500;
+  --antd-button-primary-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  --antd-input-height: 42px;
+  --antd-select-height: 42px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --gradient-card: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+}
+
+:root.dark {
+  /* General Colors */
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card-bg: #1e293b;
+  --card-border: #334155;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --primary: #910a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+  --destructive: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+
+  /* Ant Design Token Variables */
+  --antd-bg-container: #1e293b;
+  --antd-text: #f1f5f9;
+  --antd-border-radius: 8px;
+  --antd-font-size: 14px;
+
+  /* Component Specific */
+  --antd-button-height: 42px;
+  --antd-button-font-weight: 500;
+  --antd-button-primary-shadow: 0 2px 4px rgba(145, 10, 10, 0.3);
+  --antd-input-height: 42px;
+  --antd-select-height: 42px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #910a0a 0%, #7a0808 100%);
+  --gradient-card: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Custom utility classes */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Card styles */
+.auth-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.auth-card:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .auth-card {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 2px 4px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* Auth page background pattern */
+.auth-bg {
+  background-color: var(--background);
+  background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+  background-size: 40px 40px;
+}
+
+:root.dark .auth-bg {
+  background-image: radial-gradient(circle at 1px 1px, var(--border) 0.5px, transparent 0);
+}

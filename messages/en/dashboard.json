@@ -1,0 +1,24 @@
+{
+    "admin": {
+      "title": "Admin Dashboard",
+      "description": "Manage all aspects of the system",
+      "totalUsers": "Total Users",
+      "companies": "Companies",
+      "systemHealth": "System Health",
+      "settings": "Settings",
+      "uptime": "Uptime this month",
+      "operational": "All systems operational"
+    },
+    "employee": {
+      "title": "Employee Dashboard",
+      "description": "Welcome to your personal workspace",
+      "profile": "Profile",
+      "hoursToday": "Hours Today",
+      "tasks": "Tasks",
+      "nextMeeting": "Next Meeting",
+      "profileComplete": "Profile is up to date",
+      "hoursRemaining": "hours remaining",
+      "tasksRemaining": "tasks remaining",
+      "teamStandup": "Team standup"
+    }
+}

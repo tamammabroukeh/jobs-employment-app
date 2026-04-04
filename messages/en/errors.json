@@ -1,0 +1,12 @@
+{
+    "unauthorized": {
+      "title": "Access Denied",
+      "description": "You don't have permission to access this page.",
+      "contact": "Please contact your administrator if you believe this is an error.",
+      "goToDashboard": "Go to Dashboard",
+      "signIn": "Sign In"
+    },
+    "noPermission": "You don't have permission to access this content.",
+    "noPermissionAction": "You don't have permission to perform this action.",
+    "signInRequired": "You must be signed in to access this content."
+}
