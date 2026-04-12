@@ -4,7 +4,7 @@ import { Typography as AntTypography } from 'antd';
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'text' | 'link' | 'xsmall'| 'small' | 'muted' | 'error' | 'success' | 'warning';
+export type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'p' | 'text' | 'link' | 'xsmall'| 'small' | 'muted' | 'error' | 'success' | 'warning';
 type TypographyTitleLevel = 1 | 2 | 5 | 3 | 4 | undefined
 
 interface TypographyProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onClick'> {

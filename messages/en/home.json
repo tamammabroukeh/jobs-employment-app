@@ -3,7 +3,10 @@
     "title": "Find Your Dream Job Today",
     "description": "Connect with top companies and discover opportunities that match your skills",
     "getStarted": "Get Started",
-    "learnMore": "Learn More"
+    "learnMore": "Learn More",
+    "searchPlaceholder": "Search for jobs, companies, or keywords...",
+    "searchButton": "Search",
+    "popularSearches": "Popular Searches"
   },
   "features": {
     "title": "Why Choose Us?",
@@ -34,6 +37,19 @@
     "education": "Education",
     "engineering": "Engineering",
     "customerService": "Customer Service"
+  },
+  "locations": {
+    "title": "Browse Jobs by Location",
+    "description": "Find opportunities in your preferred city or explore new locations",
+    "availableJobs": "Available Jobs",
+    "cairo": "Cairo",
+    "alexandria": "Alexandria",
+    "giza": "Giza",
+    "sharmElSheikh": "Sharm El Sheikh",
+    "hurghada": "Hurghada",
+    "luxor": "Luxor",
+    "aswan": "Aswan",
+    "portSaid": "Port Said"
   },
   "topCompanies": {
     "title": "Top Companies Hiring Now",

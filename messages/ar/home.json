@@ -3,7 +3,10 @@
     "title": "اعثر على وظيفة أحلامك اليوم",
     "description": "تواصل مع أفضل الشركات واكتشف الفرص التي تناسب مهاراتك",
     "getStarted": "ابدأ الآن",
-    "learnMore": "اعرف المزيد"
+    "learnMore": "اعرف المزيد",
+    "searchPlaceholder": "ابحث عن وظائف أو شركات أو كلمات مفتاحية...",
+    "searchButton": "بحث",
+    "popularSearches": "عمليات البحث الشائعة"
   },
   "features": {
     "title": "لماذا تختارنا؟",
@@ -34,6 +37,19 @@
     "education": "التعليم",
     "engineering": "الهندسة",
     "customerService": "خدمة العملاء"
+  },
+  "locations": {
+    "title": "تصفح الوظائف حسب الموقع",
+    "description": "ابحث عن فرص في مدينتك المفضلة أو استكشف مواقع جديدة",
+    "availableJobs": "وظيفة متاحة",
+    "cairo": "القاهرة",
+    "alexandria": "الإسكندرية",
+    "giza": "الجيزة",
+    "sharmElSheikh": "شرم الشيخ",
+    "hurghada": "الغردقة",
+    "luxor": "الأقصر",
+    "aswan": "أسوان",
+    "portSaid": "بورسعيد"
   },
   "topCompanies": {
     "title": "أفضل الشركات التي توظف الآن",

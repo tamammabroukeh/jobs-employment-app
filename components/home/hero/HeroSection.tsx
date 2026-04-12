@@ -1,4 +1,5 @@
 import HeroActions from "./hero-actions";
+import HeroSearch from "./HeroSearch";
 import { Typography } from "@/components/Reusable-Components";
 
 function HeroSection() {
@@ -13,6 +14,12 @@ function HeroSection() {
             Connect with top employers and discover opportunities that match
             your skills and aspirations.
           </Typography>
+          
+          {/* Search Component */}
+          <div className="mb-8">
+            <HeroSearch />
+          </div>
+          
           <HeroActions />
         </div>
       </div>

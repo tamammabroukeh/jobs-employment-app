@@ -8,5 +8,12 @@
     },
     "noPermission": "You don't have permission to access this content.",
     "noPermissionAction": "You don't have permission to perform this action.",
-    "signInRequired": "You must be signed in to access this content."
+    "signInRequired": "You must be signed in to access this content.",
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Invalid email address",
+      "minLength": "Must be at least {min} characters",
+      "maxLength": "Must be at most {max} characters",
+      "invalidFormat": "Invalid format"
+    }
 }

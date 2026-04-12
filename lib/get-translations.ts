@@ -80,3 +80,6 @@ export async function getSessionTranslations() {
 export async function getHomeTranslations() {
   return await getNextIntlTranslations("home")
 }
+export async function getFooterTranslations() {
+  return await getNextIntlTranslations("footer")
+}

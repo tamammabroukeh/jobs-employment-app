@@ -1,0 +1,32 @@
+{
+  "brand": "JobsPortal",
+  "brandDescription": "Your trusted platform for finding the perfect job and connecting with top employers. Start your career journey today.",
+  "forJobSeekers": {
+    "title": "For Job Seekers",
+    "browseJobs": "Browse Jobs",
+    "browseCompanies": "Browse Companies",
+    "savedJobs": "Saved Jobs",
+    "myApplications": "My Applications",
+    "profileSettings": "Profile Settings"
+  },
+  "forEmployers": {
+    "title": "For Employers",
+    "postJob": "Post a Job",
+    "manageJobs": "Manage Jobs",
+    "viewCandidates": "View Candidates",
+    "pricing": "Pricing Plans",
+    "resources": "Resources"
+  },
+  "company": {
+    "title": "Company",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "help": "Help Center",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "copyright": "© {year} JobsPortal. All rights reserved.",
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "cookies": "Cookie Policy"
+}

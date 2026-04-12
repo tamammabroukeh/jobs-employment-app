@@ -6,49 +6,49 @@ import CategoryCard from "./CategoryCard";
 const getCategoriesData = async () => {
   return [
     {
-      id: "technology",
+      id: "1",
       nameKey: "technology",
       icon: "fa-solid fa-laptop-code",
       jobCount: 1234,
     },
     {
-      id: "design",
+      id: "2",
       nameKey: "design",
       icon: "fa-solid fa-palette",
       jobCount: 856,
     },
     {
-      id: "marketing",
+      id: "3",
       nameKey: "marketing",
       icon: "fa-solid fa-bullhorn",
       jobCount: 742,
     },
     {
-      id: "business",
+      id: "4",
       nameKey: "business",
       icon: "fa-solid fa-briefcase",
       jobCount: 923,
     },
     {
-      id: "healthcare",
+      id: "5",
       nameKey: "healthcare",
       icon: "fa-solid fa-heart-pulse",
       jobCount: 567,
     },
     {
-      id: "education",
+      id: "6",
       nameKey: "education",
       icon: "fa-solid fa-graduation-cap",
       jobCount: 432,
     },
     {
-      id: "engineering",
+      id: "7",
       nameKey: "engineering",
       icon: "fa-solid fa-gears",
       jobCount: 891,
     },
     {
-      id: "customerService",
+      id: "8",
       nameKey: "customerService",
       icon: "fa-solid fa-headset",
       jobCount: 654,

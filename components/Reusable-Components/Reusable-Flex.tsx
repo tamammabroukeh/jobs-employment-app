@@ -7,14 +7,14 @@ interface IFlex extends FlexProps {
   classes?: string;
 }
 
-const Flex = ({ children, classes, style, justify = "center", align="center",gap="small", orientation = "horizontal", ...props }: IFlex) => {
+const Flex = ({ children, classes, className, style, justify = "center", align="center",gap="small", orientation = "horizontal", ...props }: IFlex) => {
   return (
     <AntFlex 
       justify={justify}
       orientation={orientation}
       align={align}
       gap={gap}
-      className={cn("text-muted-foreground", classes)} 
+      className={cn(classes, className, "w-full, h-full")} 
       style={style}
       {...props}
     >
