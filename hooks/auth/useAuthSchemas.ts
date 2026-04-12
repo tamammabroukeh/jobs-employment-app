@@ -1,6 +1,6 @@
-import { useTranslations } from "use-intl"
 import { useMemo } from "react"
 import { createAuthSchemas } from "@/schemas/auth-factory"
+import { useTypedTranslations } from "../use-translations"
 
 /**
  * Hook to get auth schemas with translations
@@ -13,12 +13,12 @@ import { createAuthSchemas } from "@/schemas/auth-factory"
  * })
  */
 export function useAuthSchemas() {
-  const t = useTranslations("errors.validation")
-  const tAuth = useTranslations("auth.validation")
+  const tValidation = useTypedTranslations("errors.validation")
+  const tAuth = useTypedTranslations("auth.validation")
 
   const schemas = useMemo(() => {
-    return createAuthSchemas(t, tAuth)
-  }, [t, tAuth])
+    return createAuthSchemas(tValidation, tAuth)
+  }, [tValidation, tAuth])
 
   return {
     loginSchema: schemas.login,

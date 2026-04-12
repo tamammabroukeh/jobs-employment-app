@@ -4,6 +4,7 @@ export type Messages = {
   dashboard: typeof import("../messages/en/dashboard.json")
   session: typeof import("../messages/en/session.json")
   home: typeof import("../messages/en/home.json")
+  footer: typeof import("../messages/en/footer.json")
 }
 
 export type IntlKeys =
@@ -16,6 +17,7 @@ export type IntlKeys =
   | `dashboard.employee.${keyof Messages["dashboard"]["employee"]}`
   | `errors.unauthorized.${keyof Messages["errors"]["unauthorized"]}`
   | `session.${keyof Messages["session"]}`
+  | `footer.${keyof Messages["footer"]}`
   | "errors.noPermission"
   | "errors.noPermissionAction"
   | "errors.signInRequired"
