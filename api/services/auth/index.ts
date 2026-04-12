@@ -1,6 +1,6 @@
 import apiFetcher from '@/api/api.instance';
 import { Methods } from '@/constants/methods';
-import { LoginFormData, SignupFormData, ForgotPasswordFormData, VerifyCodeFormData, ResetPasswordFormData } from '@/schemas/auth';
+import { LoginFormData, RegisterFormData, ForgotPasswordFormData, VerifyCodeFormData, ResetPasswordFormData } from '@/schemas/auth';
 import { IAuth, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';
 
 // API endpoints factory
@@ -11,7 +11,7 @@ export const authRepository = {
       body: JSON.stringify(credentials),
     }),
 
-  signUp: (credentials: SignupFormData): Promise<IAuth> =>
+  signUp: (credentials: RegisterFormData): Promise<IAuth> =>
     apiFetcher<IAuth>(`/auth/register`, {
       method: Methods.POST,
       body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { Flex as AntFlex, FlexProps } from 'antd';
 import React from 'react';
 
@@ -6,12 +7,14 @@ interface IFlex extends FlexProps {
   classes?: string;
 }
 
-const Flex = ({ children, classes, style, ...props }: IFlex) => {
+const Flex = ({ children, classes, style, justify = "center", align="center",gap="small", orientation = "horizontal", ...props }: IFlex) => {
   return (
     <AntFlex 
-      justify="center" 
-      align="center" 
-      className={classes} 
+      justify={justify}
+      orientation={orientation}
+      align={align}
+      gap={gap}
+      className={cn("text-muted-foreground", classes)} 
       style={style}
       {...props}
     >

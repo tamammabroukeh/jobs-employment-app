@@ -102,10 +102,10 @@ export default function VerifyCodePage() {
               submitButtonText={t('submit')}
               isLoading={isLoading}
               errors={form.formState.errors}
-              link={{
+              links={[{
                 title: t('resend'),
                 path: '/forgot-password',
-              }}
+              }]}
             />
           </div>
         </div>

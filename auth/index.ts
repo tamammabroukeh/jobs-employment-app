@@ -1,5 +1,8 @@
-import NextAuth, { NextAuthConfig } from "next-auth";
+import NextAuth from "next-auth";
 import authConfig from "./auth.config";
+import type { Session, User } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+
 const EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // Configure NextAuth
@@ -9,23 +12,14 @@ export const authClient = NextAuth({
     error: "/auth/error",
   },
   callbacks: {
-    authorized: ({ auth, request: { nextUrl } }) => {
-      console.log("nextUrl.pathname", nextUrl.pathname);
-      const privatePages = ["/favorite", "/my-orders", "/my-profile"];
-      // /^(\/(\/en|ar))?(\/(favorite|my-orders|my-profile))\/?$/i
-
-
-      const isLoggedIn = !!auth?.user;
-
-      // if (isPrivatePages) {
-      //   if (isLoggedIn) return !!auth;
-      //   return false;
-      // }
-      return true;
-    },
-    async jwt({ token, user, trigger, session }) {
-      console.log(Date.now(), token.exp ? token.exp * 1000 : undefined, "time", token, trigger, "trigger")
-      if (trigger === "update")
+    async jwt({ token, user, trigger, session }: { 
+      token: JWT; 
+      user?: User; 
+      trigger?: "signIn" | "signUp" | "update"; 
+      session?: Session;
+    }) {
+      console.log(Date.now(), token.exp ? (token.exp as number) * 1000 : undefined, "time", token, trigger, "trigger")
+      if (trigger === "update" && session)
         return { ...session, ...token }
       // Initial sign in
       if (user) {
@@ -33,18 +27,17 @@ export const authClient = NextAuth({
         token.sub = user.id?.toString();
         token.role = user?.role;
         token.accessToken = user?.accessToken;
-        token.first_name = user?.first_name;
-        token.last_name = user?.last_name;
-        token.email = user?.email;
+        token.refreshToken = user?.refreshToken;
+        token.tokenExpires = user?.tokenExpires;
         token.error = undefined;
       }
       // Add a 5-minute buffer to refresh before actual expiration
-      if (token.exp && (Date.now() < (token.exp * 1000) - EXPIRY_BUFFER)) {
-        console.log(Date.now(), token.exp ? token.exp * 1000 : undefined, "time")
+      if (token.exp && (Date.now() < ((token.exp as number) * 1000) - EXPIRY_BUFFER)) {
+        console.log(Date.now(), token.exp ? (token.exp as number) * 1000 : undefined, "time")
         return token;
       }
-      if (!token.user_type || !token.id) {
-        console.log(!token.user_type || !token.id, "!token.user_type || !token.id")
+      if (!token.role || !token.sub) {
+        console.log(!token.role || !token.sub, "!token.role || !token.sub")
         return token;
       }
       else {
@@ -80,17 +73,16 @@ export const authClient = NextAuth({
         }
       }
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       // Add custom properties to session
       if (token && session.user) {
-        session.user.first_name = token?.first_name as string;
-        session.user.last_name = token?.last_name as string;
-        session.user.role = token?.role as string;
-        session.accessToken = token?.accessToken as string;
+        session.user.id = token.sub as string;
+        session.user.role = token.role as "admin" | "owner" | "company" | "employee";
+        session.accessToken = token.accessToken as string;
 
         // Optionally pass error to client
         if (token.error === "RefreshTokenError") {
-          session.error = token.error;
+          session.error = token.error as string;
         }
       }
       return session;
@@ -98,10 +90,10 @@ export const authClient = NextAuth({
   },
   session: {
     strategy: "jwt",
-    maxAge: 1 * 1 * 60 * 60, // 1 days
+    maxAge: 1 * 1 * 60 * 60, // 1 hour
   },
   jwt: {
-    maxAge: 1 * 1 * 60 * 60, // 30 * 24 days
+    maxAge: 1 * 1 * 60 * 60, // 1 hour
   },
   cookies: {
     sessionToken: {
@@ -115,6 +107,6 @@ export const authClient = NextAuth({
     },
   },
   ...authConfig,
-} satisfies NextAuthConfig);
+});
 
 export const { handlers, auth, signOut, unstable_update } = authClient;

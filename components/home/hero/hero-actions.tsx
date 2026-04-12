@@ -8,7 +8,7 @@ function HeroActions() {
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center">
       <ReusableButton
-        btnText="Get Started"
+        btnText={"Get Started"}
         onClick={() => router.push(ROUTES.AUTH.LOGIN)}
         variant="primary"
         className="h-12 px-8 text-lg"

@@ -15,6 +15,24 @@ const ROUTES = {
   },
   JOB:{
     LIST:"/jobs"
+  },
+  COMPANIES:{
+    LIST:"/companies",
+    DETAIL:"/companies/:id"
+  },
+  PROFILE:{
+    VIEW:"/profile/:id",
+    EDIT:"/profile/edit/:id"
+  },
+  DASHBOARD:{
+    ROOT:"/dashboard",
+    ANALYTICS:"/dashboard/analytics",
+    JOBS:"/dashboard/jobs",
+    BOOKMARKS:"/dashboard/bookmarks",
+    ACTIVITIES:"/dashboard/activities",
+    SETTINGS:"/dashboard/settings",
+    NOTIFICATIONS:"/dashboard/notifications",
+    HELP:"/dashboard/help",
   }
 };
 

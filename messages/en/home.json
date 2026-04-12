@@ -1,0 +1,58 @@
+{
+  "hero": {
+    "title": "Find Your Dream Job Today",
+    "description": "Connect with top companies and discover opportunities that match your skills",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  },
+  "features": {
+    "title": "Why Choose Us?",
+    "description": "We provide the best platform for job seekers and employers to connect.",
+    "easySearch": {
+      "title": "Easy Search",
+      "description": "Find jobs that match your skills with our advanced search filters."
+    },
+    "topCompanies": {
+      "title": "Top Companies",
+      "description": "Connect with leading companies looking for talented individuals."
+    },
+    "fastApply": {
+      "title": "Fast Apply",
+      "description": "Apply to multiple jobs with just one click using your profile."
+    }
+  },
+  "categories": {
+    "title": "Browse Jobs by Category",
+    "description": "Explore thousands of job opportunities across different industries",
+    "viewAll": "View All Categories",
+    "availableJobs": "Available Jobs",
+    "technology": "Technology",
+    "design": "Design & Creative",
+    "marketing": "Marketing & Sales",
+    "business": "Business & Finance",
+    "healthcare": "Healthcare",
+    "education": "Education",
+    "engineering": "Engineering",
+    "customerService": "Customer Service"
+  },
+  "topCompanies": {
+    "title": "Top Companies Hiring Now",
+    "description": "Explore opportunities from leading companies across various industries",
+    "viewAll": "View All Companies",
+    "employees": "employees",
+    "openPositions": "open positions"
+  },
+  "recentJobs": {
+    "title": "Recent Job Openings",
+    "description": "Discover the latest opportunities from top employers",
+    "viewAll": "See All Jobs",
+    "postedOn": "Posted on",
+    "experience": "Experience",
+    "location": "Location",
+    "applyNow": "Apply Now"
+  },
+  "footer": {
+    "copyright": "© 2024 JobsPortal. All rights reserved.",
+    "brand": "JobsPortal"
+  }
+}

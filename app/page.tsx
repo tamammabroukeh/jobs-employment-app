@@ -1,7 +1,13 @@
 import Navbar from '@/components/navbar/Navbar';
 import HeroSection from '@/components/home/hero/HeroSection';
+import CategoriesSection from '@/components/home/categories/CategoriesSection';
+import TopCompaniesSection from '@/components/home/top-companies/TopCompaniesSection';
+import RecentJobsSection from '@/components/home/recent-jobs/RecentJobsSection';
+import { getTranslations } from '@/lib/get-translations';
+import { Typography } from '@/components/Reusable-Components';
 
-export default function Home() {
+export default async function Home() {
+  const t = await getTranslations('home');
 
   return (
     <div className="min-h-screen bg-background">
@@ -11,14 +17,25 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection />
 
+
+      {/* Top Companies Section */}
+      <TopCompaniesSection />
+
+      {/* Recent Jobs Section */}
+      <RecentJobsSection />
+
+      {/* Categories Section */}
+      <CategoriesSection />
       {/* Features Section */}
       <section className="py-20 bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Why Choose Us?</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              We provide the best platform for job seekers and employers to connect.
-            </p>
+            <Typography variant="h2" className="text-foreground mb-4">
+              {t('features.title')}
+            </Typography>
+            <Typography variant="p" className="text-muted-foreground max-w-2xl mx-auto">
+              {t('features.description')}
+            </Typography>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -27,10 +44,12 @@ export default function Home() {
               <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-magnifying-glass text-2xl text-primary" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Easy Search</h3>
-              <p className="text-muted-foreground">
-                Find jobs that match your skills with our advanced search filters.
-              </p>
+              <Typography variant="h3" className="text-foreground mb-2">
+                {t('features.easySearch.title')}
+              </Typography>
+              <Typography variant="p" className="text-muted-foreground">
+                {t('features.easySearch.description')}
+              </Typography>
             </div>
 
             {/* Feature 2 */}
@@ -38,8 +57,12 @@ export default function Home() {
               <div className="w-14 h-14 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-building text-2xl text-success" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Top Companies</h3>
-              <p className="text-muted-foreground">Connect with leading companies looking for talented individuals.</p>
+              <Typography variant="h3" className="text-foreground mb-2">
+                {t('features.topCompanies.title')}
+              </Typography>
+              <Typography variant="p" className="text-muted-foreground">
+                {t('features.topCompanies.description')}
+              </Typography>
             </div>
 
             {/* Feature 3 */}
@@ -47,8 +70,12 @@ export default function Home() {
               <div className="w-14 h-14 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <i className="fa-solid fa-rocket text-2xl text-warning" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">Fast Apply</h3>
-              <p className="text-muted-foreground">Apply to multiple jobs with just one click using your profile.</p>
+              <Typography variant="h3" className="text-foreground mb-2">
+                {t('features.fastApply.title')}
+              </Typography>
+              <Typography variant="p" className="text-muted-foreground">
+                {t('features.fastApply.description')}
+              </Typography>
             </div>
           </div>
         </div>
@@ -62,9 +89,13 @@ export default function Home() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <i className="fa-solid fa-briefcase text-white text-sm" />
               </div>
-              <span className="font-semibold text-foreground">JobsPortal</span>
+              <Typography variant="text" weight="semibold" className="text-foreground">
+                {t('footer.brand')}
+              </Typography>
             </div>
-            <p className="text-muted-foreground text-sm">© 2024 JobsPortal. All rights reserved.</p>
+            <Typography variant="small" className="text-muted-foreground">
+              {t('footer.copyright')}
+            </Typography>
           </div>
         </div>
       </footer>

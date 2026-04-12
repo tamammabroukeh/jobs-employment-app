@@ -7,5 +7,8 @@ import ReusableButton from './Reusable-Button';
 import ReusableDialog from './Reusable-Dialog';
 import ReusableLink from './Reusable-Link';
 import Flex from './Reusable-Flex';
+import ReusableCarousel from './Reusable-Carousel';
+import ReusableBadge from './Reusable-Badge';
+import { Typography } from './typography';
 
-export { ReusableCard, ReusableTabs, ReusableSelect, Flex, ReusableForm, ReusableInput, ReusableButton, ReusableDialog, ReusableLink };
+export { ReusableCard, ReusableTabs, ReusableSelect, Flex, ReusableForm, ReusableInput, ReusableButton, ReusableDialog, ReusableLink, ReusableCarousel, ReusableBadge, Typography };

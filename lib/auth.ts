@@ -136,6 +136,7 @@ import apiFetcher from "@/api/api.instance"
 import { IAuth, IRefreshToken } from "@/api/services/auth/interface"
 import { authFetcher } from "@/api/authInstace"
 import { Methods } from "@/constants/methods"
+import { UserRole } from "@/constants/roles"
 
 export interface User {
   id: string
@@ -147,80 +148,43 @@ export interface User {
   tokenExpires: number
 }
 
-export interface AuthResponse {
-  user: {
-    id: string
-    email: string
-    name: string
-    role: "admin" | "owner" | "company" | "employee"
-  }
-  access_token: string
-  refresh_token: string
-  expires_in: number
-}
-
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
-    console.log("[v0] Attempting to refresh access token")
-//           const response = await apiFetcher<IAuth>(`/auth/login`, {
-//             method: Methods.POST,
-//             body: JSON.stringify({
-//                 credentials
-//             //   email: "ian69@example.org",
-//             //   password: "password",
-//             }),
-//           });
+    console.log("[Auth] Attempting to refresh access token")
 
-//           console.log(response);
-//           const { data, message, access_token, expires_in } = response;
-//           // Handle API response errors
-//           if (!data && !access_token) {
-//             console.error("API Error:", message);
-//             return null;
-//           }
-
-//           // Return user data for session
-//           return {
-//             id: data?.id,
-//             first_name: data?.first_name,
-//             last_name: data?.last_name,
-//             email: data?.email,
-//             role: data?.role,
-//             accessToken: access_token as string,
-//           };
-//         } catch (error) {
-//           console.error("Authorization error:", error, error instanceof Error);
-//           // Enhanced error handling
-//           if (error instanceof Error) {
-//             console.error("NextAuth Error:", error.name, error.message);
-//           } else if (error instanceof Error) {
-//             console.error("Authorization error:", error.message);
-//           } else {
-//             console.error("Unknown authorization error:", error);
-//           }
-//           return null;
-//         }
     const response = await authFetcher<IRefreshToken>(`/auth/refresh`)
 
-
-
-    console.log("[v0] Token refresh successful")
+    console.log("[Auth] Token refresh successful")
 
     return {
       ...token,
       accessToken: response?.access_token,
       refreshToken: response.refresh_token ?? token.refreshToken,
-      tokenExpires: Date.now() + (response.expires_in ?? 5) * 1000,
+      tokenExpires: Date.now() + (response.expires_in ?? 3600) * 1000,
       error: undefined,
     }
   } catch (error) {
-    console.error("[v0] Error refreshing access token:", error)
+    console.error("[Auth] Error refreshing access token:", error)
     return {
       ...token,
       error: "RefreshAccessTokenError",
     }
   }
 }
+
+// Map UserRole to NextAuth role type
+const mapRole = (role: UserRole | undefined): "admin" | "owner" | "company" | "employee" => {
+  switch (role) {
+    case UserRole.ADMIN:
+      return "admin";
+    case UserRole.COMPANY:
+      return "company";
+    case UserRole.EMPLOYEE:
+      return "employee";
+    default:
+      return "employee";
+  }
+};
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -238,34 +202,32 @@ export const authOptions: NextAuthOptions = {
           const response = await apiFetcher<IAuth>(`/auth/login`, {
             method: Methods.POST,
             body: JSON.stringify({
-                credentials
-            //   email: "ian69@example.org",
-            //   password: "password",
+              email: credentials.email,
+              password: credentials.password,
             }),
           })
-           const { data, message, access_token } = response;
+          
+          const { data, message, access_token, expires_in } = response;
+          
           // Handle API response errors
-          if (!data && !access_token) {
+          if (!data || !access_token) {
             console.error("API Error:", message);
             return null;
           }
 
           return {
-            id: data.user.id,
-            email: data.user.email,
-            name: data.user.name,
-            role: data.user.role,
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token,
-            tokenExpires: Date.now() + data.expires_in * 1000,
+            id: String(data.id),
+            email: data.email,
+            name: `${data.first_name || ""} ${data.last_name || ""}`.trim() || data.email,
+            role: mapRole(data.role),
+            accessToken: access_token,
+            refreshToken: "", // Add if your API provides refresh token
+            tokenExpires: Date.now() + (expires_in || 3600) * 1000,
           }
         } catch (error) {
-          console.error("Authorization error:", error, error instanceof Error);
-          // Enhanced error handling
+          console.error("Authorization error:", error);
           if (error instanceof Error) {
             console.error("NextAuth Error:", error.name, error.message);
-          } else {
-            console.error("Unknown authorization error:", error);
           }
           return null;
         }
@@ -275,7 +237,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger }) {
       if (user) {
-        console.log("[v0] Initial sign in, setting up tokens")
+        console.log("[Auth] Initial sign in, setting up tokens")
         return {
           ...token,
           accessToken: user.accessToken,
@@ -286,7 +248,7 @@ export const authOptions: NextAuthOptions = {
       }
 
       if (trigger === "update") {
-        console.log("[v0] Session update triggered")
+        console.log("[Auth] Session update triggered")
         return token
       }
 
@@ -297,15 +259,15 @@ export const authOptions: NextAuthOptions = {
         return token
       }
 
-      console.log("[v0] Token expired or expiring soon, refreshing...")
+      console.log("[Auth] Token expired or expiring soon, refreshing...")
       return refreshAccessToken(token)
     },
     async session({ session, token }) {
       if (token.error) {
-        console.log("[v0] Session has error:", token.error)
+        console.log("[Auth] Session has error:", token.error)
         return {
           ...session,
-          error: token.error,
+          error: token.error as string,
         }
       }
 
@@ -313,34 +275,28 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          id: token.sub,
-          role: token.role,
+          id: token.sub as string,
+          role: token.role as "admin" | "owner" | "company" | "employee",
         },
-        accessToken: token.accessToken,
-        tokenExpires: token.tokenExpires,
-        error: token.error,
+        accessToken: token.accessToken as string,
+        error: undefined,
       }
     },
   },
   pages: {
-    signIn: "/auth/signin",
-    newUser: "/auth/signup",
+    signIn: "/auth/login",
   },
   session: {
     strategy: "jwt",
+    maxAge: 1 * 60 * 60, // 1 hour
   },
   secret: process.env.NEXTAUTH_SECRET,
   events: {
-    async signIn({ user, account, profile, isNewUser }) {
-      console.log("[v0] User signed in:", user.email)
+    async signIn({ user }) {
+      console.log("[Auth] User signed in:", user.email)
     },
-    async signOut({ session, token }) {
-      console.log("[v0] User signed out")
-    },
-    async session({ session, token }) {
-      if (token.error) {
-        console.log("[v0] Session check failed with error:", token.error)
-      }
+    async signOut() {
+      console.log("[Auth] User signed out")
     },
   },
 }

@@ -1,10 +1,10 @@
-import IComplaint from "@workspace/shared/api/services/complaints/complaints.interface";
+// import IComplaint from "@workspace/shared/api/services/complaints/complaints.interface";
 
-export interface IComplaintsData {
-  all_complaints: IComplaint[];
-  pending_complaints: IComplaint[];
-  resolved_complaints: IComplaint[];
-}
+// export interface IComplaintsData {
+//   all_complaints: IComplaint[];
+//   pending_complaints: IComplaint[];
+//   resolved_complaints: IComplaint[];
+// }
 export interface IComplaintStatistics {
   total_complaints: number;
   pending_complaints: number;
