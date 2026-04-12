@@ -1,17 +1,18 @@
 import HeroActions from "./hero-actions";
+import { Typography } from "@/components/Reusable-Components";
 
 function HeroSection() {
   return (
     <section className="auth-bg py-20 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl lg:text-6xl font-bold text-foreground mb-6">
+          <Typography variant="h1" className="text-foreground mb-6">
             Find Your Dream Job <span className="text-primary">Today</span>
-          </h1>
-          <p className="text-xl text-muted-foreground mb-8">
+          </Typography>
+          <Typography variant="p" className="text-xl text-muted-foreground mb-8">
             Connect with top employers and discover opportunities that match
             your skills and aspirations.
-          </p>
+          </Typography>
           <HeroActions />
         </div>
       </div>

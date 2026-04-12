@@ -3,6 +3,7 @@ export type Messages = {
   errors: typeof import("../messages/en/errors.json")
   dashboard: typeof import("../messages/en/dashboard.json")
   session: typeof import("../messages/en/session.json")
+  home: typeof import("../messages/en/home.json")
 }
 
 export type IntlKeys =

@@ -83,10 +83,10 @@ export default function ForgotPasswordPage() {
               submitButtonText={t('submit')}
               isLoading={isLoading}
               errors={form.formState.errors}
-              link={{
+              links={[{
                 title: t('backToLogin'),
                 path: '/login',
-              }}
+              }]}
             />
           </div>
         </div>

@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { IAuth } from "@/api/services/auth/interface";
 import { Methods } from "@/constants/methods";
 import { NextAuthOptions } from "next-auth";
+import { UserRole } from "@/constants/roles";
 
 // Notice this is only an object, not a full Auth.js instance
 export default {
@@ -31,32 +32,41 @@ export default {
 
           console.log(response);
           const { data, message, access_token, expires_in } = response;
+          
           // Handle API response errors
           if (!data && !access_token) {
             console.error("API Error:", message);
             return null;
           }
 
-          // Return user data for session
+          // Map UserRole to NextAuth role type
+          const mapRole = (role: UserRole | undefined): "admin" | "owner" | "company" | "employee" => {
+            switch (role) {
+              case UserRole.ADMIN:
+                return "admin";
+              case UserRole.COMPANY:
+                return "company";
+              case UserRole.EMPLOYEE:
+                return "employee";
+              default:
+                return "employee";
+            }
+          };
+
+          // Return user data for session matching the User type
           return {
-            id: data?.id,
-            first_name: data?.first_name,
-            last_name: data?.last_name,
-            email: data?.email,
-            role: data?.role,
+            id: String(data?.id || ""),
+            name: `${data?.first_name || ""} ${data?.last_name || ""}`.trim(),
+            email: data?.email || "",
+            role: mapRole(data?.role),
             accessToken: access_token as string,
+            refreshToken: "", // Add refresh token if available from API
+            tokenExpires: expires_in ? Date.now() + expires_in * 1000 : Date.now() + 3600000, // Default 1 hour
           };
         } catch (error) {
-          console.error(
-            "Authorization error:",
-            error,
-            error instanceof Error,
-          );
           // Enhanced error handling
           if (error instanceof Error) {
-            console.error("NextAuth Error:", error.name, error.message);
-          } else if (error instanceof Error) {
-            console.error("Authorization error:", error.message);
+            console.error("Authorization error:", error.name, error.message);
           } else {
             console.error("Unknown authorization error:", error);
           }

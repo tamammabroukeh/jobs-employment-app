@@ -1,16 +1,12 @@
+'use client';
+
 import { useCallback } from 'react';
-import {usePathname, useRouter} from "next/navigation"
+import { usePathname, useRouter, useSearchParams as useNextSearchParams } from "next/navigation";
+
 /**
  * Custom hook for managing URL search parameters
  * @returns {{
- *   searchParams: {
-        * searchParams: URLSearchParams;
-        * getParam: (key: string) => string | null;
-        * setParam: (key: string, value: string) => void;
-        * deleteParam: (key: string) => void;
-        * getAllParams: () => Record<string, string>;
-        * clearAllParams: () => void;
-    * },
+ *   searchParams: URLSearchParams,
  *   getParam: (key: string) => string | null,
  *   setParam: (key: string, value: string) => void,
  *   deleteParam: (key: string) => void,
@@ -18,26 +14,10 @@ import {usePathname, useRouter} from "next/navigation"
  *   clearAllParams: () => void
  * }}
  */
-export const useSearchParams = (): {
-  searchParams: {
-    searchParams: URLSearchParams;
-    getParam: (key: string) => string | null;
-    setParam: (key: string, value: string) => void;
-    deleteParam: (key: string) => void;
-    getAllParams: () => Record<string, string>;
-    clearAllParams: () => void;
-  };
-  getParam: (key: string) => string | null;
-  setParam: (key: string, value: string) => void;
-  deleteParam: (key: string) => void;
-  getAllParams: () => Record<string, string>;
-  clearAllParams: () => void;
-} => {
-  
+export const useSearchParams = () => {
   const router = useRouter();
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  // Get current search params from URL
+  const searchParams = useNextSearchParams();
+  const pathname = usePathname();
 
   /**
    * Get a specific parameter value
@@ -45,7 +25,9 @@ export const useSearchParams = (): {
    * @returns {string | null} - The parameter value or null if not found
    */
   const getParam = useCallback(
-    (key: string) => searchParams.getParam(key),
+    (key: string): string | null => {
+      return searchParams.get(key);
+    },
     [searchParams]
   );
 
@@ -56,8 +38,9 @@ export const useSearchParams = (): {
    */
   const setParam = useCallback(
     (key: string, value: string) => {
-      searchParams.setParam(key, value);
-      router.push(`${pathname}?${searchParams.toString()}`);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(key, value);
+      router.push(`${pathname}?${params.toString()}`);
     },
     [searchParams, router, pathname]
   );
@@ -68,8 +51,9 @@ export const useSearchParams = (): {
    */
   const deleteParam = useCallback(
     (key: string) => {
-      searchParams.deleteParam(key);
-      router.push(`${pathname}?${searchParams.toString()}`);
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete(key);
+      router.push(`${pathname}?${params.toString()}`);
     },
     [searchParams, router, pathname]
   );
@@ -78,10 +62,13 @@ export const useSearchParams = (): {
    * Get all parameters as an object
    * @returns {Record<string, string>} - Object with all parameters
    */
-  const getAllParams = useCallback(
-    () => searchParams.getAllParams(),
-    [searchParams]
-  );
+  const getAllParams = useCallback((): Record<string, string> => {
+    const params: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      params[key] = value;
+    });
+    return params;
+  }, [searchParams]);
 
   /**
    * Clear all parameters from URL

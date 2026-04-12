@@ -13,11 +13,12 @@ export default getRequestConfig(async () => {
   }
 
   // Load all message files for the locale
-  const [auth, errors, dashboard, session] = await Promise.all([
+  const [auth, errors, dashboard, session, home] = await Promise.all([
     import(`../messages/${locale}/auth.json`).then((m) => m.default),
     import(`../messages/${locale}/errors.json`).then((m) => m.default),
     import(`../messages/${locale}/dashboard.json`).then((m) => m.default),
     import(`../messages/${locale}/session.json`).then((m) => m.default),
+    import(`../messages/${locale}/home.json`).then((m) => m.default),
   ])
 
   return {
@@ -27,6 +28,7 @@ export default getRequestConfig(async () => {
       errors,
       dashboard,
       session,
+      home,
     },
   }
 })

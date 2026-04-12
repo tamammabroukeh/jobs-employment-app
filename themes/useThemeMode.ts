@@ -3,29 +3,53 @@
 import { ThemeMode } from '@/types/theme-types';
 import { useState, useEffect } from 'react';
 
-export const useThemeMode = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme') as ThemeMode;
-      if (savedTheme) return savedTheme;
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+const getInitialTheme = (): ThemeMode => {
+  if (typeof window === 'undefined') return 'light';
+  
+  try {
+    const savedTheme = localStorage.getItem('theme') as ThemeMode;
+    if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+    
+    // Check system preference
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
     }
-    return 'light';
-  });
+  } catch (e) {
+    console.error('Error reading theme from localStorage:', e);
+  }
+  
+  return 'light';
+};
+
+export const useThemeMode = () => {
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     // Apply dark class to html element
+    const root = document.documentElement;
     if (themeMode === 'dark') {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
     }
-  }, [themeMode]);
+
+    // Save to localStorage
+    try {
+      localStorage.setItem('theme', themeMode);
+    } catch (e) {
+      console.error('Error saving theme to localStorage:', e);
+    }
+  }, [themeMode, mounted]);
 
   const toggleTheme = () => {
-    const newTheme = themeMode === 'light' ? 'dark' : 'light';
-    setThemeMode(newTheme);
-    localStorage.setItem('theme', newTheme);
+    setThemeMode(prev => prev === 'light' ? 'dark' : 'light');
   };
 
   return { themeMode, toggleTheme };
