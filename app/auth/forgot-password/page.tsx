@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { useTranslations } from 'use-intl';
 import ReusableForm from '@/components/Reusable-Components/Reusable-Form';
 import { Flex } from '@/components/Reusable-Components';
-import { forgotPasswordAction } from '@/api/services/auth/actions';
+import { forgotPasswordAction } from '@/apis/services/auth/actions';
 import { forgotPasswordSchema, ForgotPasswordFormData } from '@/schemas/auth';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';

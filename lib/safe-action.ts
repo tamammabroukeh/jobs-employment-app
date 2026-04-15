@@ -1,4 +1,4 @@
-import { ActionError, FetchError } from "@/api/types/error";
+import { ActionError, FetchError } from "@/apis/types/error";
 import {
   createSafeActionClient,
   DEFAULT_SERVER_ERROR_MESSAGE,

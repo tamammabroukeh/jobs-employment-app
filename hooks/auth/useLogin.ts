@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { useTranslations } from "use-intl"
-import { signInAction } from "@/api/services/auth/actions"
+import { signInAction } from "@/apis/services/auth/actions"
 import ROUTES from "@/constants/routes"
 import { useAuthSchemas } from "./useAuthSchemas"
 

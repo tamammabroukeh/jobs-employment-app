@@ -1,6 +1,6 @@
-import apiFetcher from "@/api/api.instance";
+import apiFetcher from "@/apis/api.instance";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IAuth } from "@/api/services/auth/interface";
+import { IAuth } from "@/apis/services/auth/interface";
 import { Methods } from "@/constants/methods";
 import { NextAuthOptions } from "next-auth";
 import { UserRole } from "@/constants/roles";

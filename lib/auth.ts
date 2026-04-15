@@ -1,8 +1,8 @@
 // import { NextAuthOptions } from "next-auth";
 // import CredentialsProvider from "next-auth/providers/credentials";
 // import { jwtDecode } from "jwt-decode";
-// import apiFetcher from "@/api/api.instance";
-// import { IAuth,IRefreshToken } from "@/api/services/auth/interface";
+// import apiFetcher from "@/apis/api.instance";
+// import { IAuth,IRefreshToken } from "@/apis/services/auth/interface";
 // import { Token } from "@/types/auth-types";
 // import { Methods } from "@/constants/methods";
 
@@ -132,9 +132,9 @@
 import type { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import type { JWT } from "next-auth/jwt"
-import apiFetcher from "@/api/api.instance"
-import { IAuth, IRefreshToken } from "@/api/services/auth/interface"
-import { authFetcher } from "@/api/authInstace"
+import apiFetcher from "@/apis/api.instance"
+import { IAuth, IRefreshToken } from "@/apis/services/auth/interface"
+import { authFetcher } from "@/apis/authInstace"
 import { Methods } from "@/constants/methods"
 import { UserRole } from "@/constants/roles"
 

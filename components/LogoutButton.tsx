@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import ReusableButton from './Reusable-Components/Reusable-Button';
-import { signOutAction } from '@/api/services/auth/actions';
+import { signOutAction } from '@/apis/services/auth/actions';
 
 interface LogoutButtonProps {
   className?: string;

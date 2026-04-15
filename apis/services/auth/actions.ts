@@ -2,7 +2,7 @@
 
 import { signIn, signOut } from 'next-auth/react';
 import { loginSchema, registerSchema, forgotPasswordSchema, verifyCodeSchema, resetPasswordSchema } from '@/schemas/auth';
-import { ActionError } from '@/api/types/error';
+import { ActionError } from '@/apis/types/error';
 import { messages } from '@/constants/messages';
 import { actionClient } from '@/lib/safe-action';
 import { authRepository } from './index';
