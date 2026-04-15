@@ -3,35 +3,27 @@
 import { ThemeMode } from '@/types/theme-types';
 import { useState, useEffect } from 'react';
 
-const getInitialTheme = (): ThemeMode => {
-  if (typeof window === 'undefined') return 'light';
-  
-  try {
-    const savedTheme = localStorage.getItem('theme') as ThemeMode;
-    if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
-    
-    // Check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-  } catch (e) {
-    console.error('Error reading theme from localStorage:', e);
-  }
-  
-  return 'light';
-};
-
 export const useThemeMode = () => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialTheme);
-  const [mounted, setMounted] = useState(false);
+  // Use lazy initialization to avoid calling getInitialTheme on every render
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    if (typeof window === 'undefined') return 'light';
+    
+    try {
+      const savedTheme = localStorage.getItem('theme') as ThemeMode;
+      if (savedTheme === 'dark' || savedTheme === 'light') return savedTheme;
+      
+      // Check system preference
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+    } catch (e) {
+      console.error('Error reading theme from localStorage:', e);
+    }
+    
+    return 'light';
+  });
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     // Apply dark class to html element
     const root = document.documentElement;
     if (themeMode === 'dark') {
@@ -46,7 +38,7 @@ export const useThemeMode = () => {
     } catch (e) {
       console.error('Error saving theme to localStorage:', e);
     }
-  }, [themeMode, mounted]);
+  }, [themeMode]);
 
   const toggleTheme = () => {
     setThemeMode(prev => prev === 'light' ? 'dark' : 'light');

@@ -30,7 +30,7 @@ export default async function RootLayout({
   const rtl = isRTL(locale);
 
   return (
-    <html lang={locale} dir={rtl ? "rtl" : "ltr"}>
+    <html lang={locale} dir={rtl ? "rtl" : "ltr"} suppressHydrationWarning>
       <head>
         <meta name="color-scheme" content="light dark" />
         <script
