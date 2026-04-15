@@ -1,4 +1,4 @@
-import apiFetcher from '@/api/api.instance';
+import apiFetcher from '@/apis/api.instance';
 import { Methods } from '@/constants/methods';
 import { LoginFormData, RegisterFormData, ForgotPasswordFormData, VerifyCodeFormData, ResetPasswordFormData } from '@/schemas/auth';
 import { IAuth, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';

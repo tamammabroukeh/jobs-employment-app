@@ -1,6 +1,6 @@
-import apiFetcher from "@/api/api.instance";
+import apiFetcher from "@/apis/api.instance";
 import { IAdminOffice } from "./interface";
-import { APIResponse } from "@/api/types";
+import { APIResponse } from "@/apis/types";
 
 
 export const adminOfficesRepository = {

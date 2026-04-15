@@ -1,11 +1,11 @@
 // "use server";
-// import apiFetcher from "@/api/api.instance";
+// import apiFetcher from "@/apis/api.instance";
 // import { actionClient } from "@/lib/safe-action";
 // import { complaintSchema } from "@/schemas/complaint";
 // import IComplaint from "@workspace/shared/api/services/complaints/complaints.interface";
-// import { APIResponse } from "@/api/types";
+// import { APIResponse } from "@/apis/types";
 // import { messages } from "@/constants/messages";
-// import { ActionError } from "@/api/types/error";
+// import { ActionError } from "@/apis/types/error";
 
 // export const createComplaintAction = actionClient
 //   .inputSchema(complaintSchema)
