@@ -1,0 +1,26 @@
+{
+  "topCompanies": {
+    "title": "Top Companies Hiring Now",
+    "description": "Explore opportunities from leading companies across various industries"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by job title, company, or keywords...",
+    "jobType": "Job Type",
+    "selectJobType": "Select job types",
+    "city": "City",
+    "selectCity": "Select cities",
+    "jobRole": "Job Role",
+    "selectJobRole": "Select job roles",
+    "jobLevel": "Job Level",
+    "selectJobLevel": "Select job levels",
+    "clearAll": "Clear All Filters"
+  },
+  "cardLabels": {
+    "experience": "Experience",
+    "postedOn": "Posted on",
+    "applyNow": "Apply Now"
+  },
+  "noJobsFound": "No Jobs Found",
+  "noJobsDescription": "Try adjusting your filters or search criteria to find more opportunities",
+  "showingResults": "Showing {start}-{end} of {total} jobs"
+}

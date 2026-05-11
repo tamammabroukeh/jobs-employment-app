@@ -36,4 +36,22 @@ const ROUTES = {
   }
 };
 
+export const NAVBAR_LINKS = [
+  {
+    label: "Home",
+    href: ROUTES.HOME,
+    showInNavbar: true,
+  },
+  {
+    label: "Jobs",
+    href: ROUTES.JOB.LIST,
+    showInNavbar: true,
+  },
+  {
+    label: "Companies",
+    href: ROUTES.COMPANIES.LIST,
+    showInNavbar: true,
+  },
+];
+
 export default ROUTES;

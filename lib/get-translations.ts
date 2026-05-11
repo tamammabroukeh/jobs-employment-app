@@ -83,3 +83,10 @@ export async function getHomeTranslations() {
 export async function getFooterTranslations() {
   return await getNextIntlTranslations("footer")
 }
+export async function getJobsTranslations() {
+  return await getNextIntlTranslations("jobs")
+}
+
+export async function getCompaniesTranslations() {
+  return await getNextIntlTranslations("companies")
+}

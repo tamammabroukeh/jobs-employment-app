@@ -5,6 +5,8 @@ export type Messages = {
   session: typeof import("../messages/en/session.json")
   home: typeof import("../messages/en/home.json")
   footer: typeof import("../messages/en/footer.json")
+  jobs: typeof import("../messages/en/jobs.json")
+  companies: typeof import("../messages/en/companies.json")
 }
 
 export type IntlKeys =

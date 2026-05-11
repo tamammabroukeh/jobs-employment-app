@@ -12,6 +12,7 @@ import { forgotPasswordAction } from '@/apis/services/auth/actions';
 import { forgotPasswordSchema, ForgotPasswordFormData } from '@/schemas/auth';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
+import ROUTES from '@/constants/routes';
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -85,7 +86,7 @@ export default function ForgotPasswordPage() {
               errors={form.formState.errors}
               links={[{
                 title: t('backToLogin'),
-                path: '/login',
+                path: ROUTES.AUTH.LOGIN,
               }]}
             />
           </div>

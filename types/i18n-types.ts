@@ -51,6 +51,7 @@ export type DashboardKeys = NamespaceKeys<'dashboard'>
 export type SessionKeys = NamespaceKeys<'session'>
 export type HomeKeys = NamespaceKeys<'home'>
 export type FooterKeys = NamespaceKeys<'footer'>
+export type JobsKeys = NamespaceKeys<'jobs'>
 
 // Helper type for translation function with values
 export type TranslationValues = Record<string, string | number | boolean | Date>
