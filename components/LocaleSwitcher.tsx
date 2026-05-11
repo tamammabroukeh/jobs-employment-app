@@ -13,9 +13,10 @@ export default function LocaleSwitcher() {
   const locale = useLocale();
   const [isPending, startTransition] = useTransition();
 
-  const handleChange = (newLocale: string) => {
+  const handleChange = (newLocale: string | string[]) => {
+    const localeValue = Array.isArray(newLocale) ? newLocale[0] : newLocale;
     startTransition(() => {
-      document.cookie = `locale=${newLocale}; path=/; max-age=31536000`;
+      document.cookie = `locale=${localeValue}; path=/; max-age=31536000`;
       window.location.reload();
     });
   };

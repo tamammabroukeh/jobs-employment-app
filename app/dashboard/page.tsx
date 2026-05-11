@@ -17,7 +17,7 @@ export default async function DashboardPage() {
   const userName = session.user.first_name || session.user.email?.split('@')[0] || 'User';
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,6 +117,6 @@ export default async function DashboardPage() {
           </div>
         </ReusableCard>
       </main>
-    </div>
+    </>
   );
 }

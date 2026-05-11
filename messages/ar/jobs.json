@@ -1,0 +1,26 @@
+{
+  "topCompanies": {
+    "title": "أفضل الشركات التي توظف الآن",
+    "description": "استكشف الفرص من الشركات الرائدة في مختلف الصناعات"
+  },
+  "filters": {
+    "searchPlaceholder": "ابحث بالمسمى الوظيفي أو الشركة أو الكلمات المفتاحية...",
+    "jobType": "نوع الوظيفة",
+    "selectJobType": "اختر أنواع الوظائف",
+    "city": "المدينة",
+    "selectCity": "اختر المدن",
+    "jobRole": "دور الوظيفة",
+    "selectJobRole": "اختر أدوار الوظائف",
+    "jobLevel": "مستوى الوظيفة",
+    "selectJobLevel": "اختر مستويات الوظائف",
+    "clearAll": "مسح جميع الفلاتر"
+  },
+  "cardLabels": {
+    "experience": "الخبرة",
+    "postedOn": "نشر في",
+    "applyNow": "قدم الآن"
+  },
+  "noJobsFound": "لم يتم العثور على وظائف",
+  "noJobsDescription": "حاول تعديل الفلاتر أو معايير البحث للعثور على المزيد من الفرص",
+  "showingResults": "عرض {start}-{end} من {total} وظيفة"
+}

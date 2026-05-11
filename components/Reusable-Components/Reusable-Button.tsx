@@ -9,6 +9,7 @@ interface IReusableButton extends Omit<ButtonProps, 'type' | 'htmlType' | 'varia
   isLoading?: boolean;
   variant?: 'primary' | 'default' | 'dashed' | 'text' | 'link';
   type?: 'button' | 'submit' | 'reset';
+  iconOnly?: boolean;
 }
 
 export default function ReusableButton({
@@ -19,6 +20,8 @@ export default function ReusableButton({
   isLoading,
   variant = 'default',
   children,
+  iconOnly = false,
+  icon,
   ...props
 }: IReusableButton) {
   return (
@@ -28,11 +31,12 @@ export default function ReusableButton({
       type={variant}
       htmlType={type}
       className={className}
-      icon={isLoading ? <LoadingOutlined spin /> : undefined}
+      icon={isLoading ? <LoadingOutlined spin /> : icon}
       loading={isLoading}
+      shape={iconOnly ? 'default' : undefined}
     >
-      {children}
-      {btnText}
+      {!iconOnly && children}
+      {!iconOnly && btnText}
     </Button>
   );
 }

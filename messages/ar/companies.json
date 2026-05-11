@@ -1,0 +1,24 @@
+{
+  "pageTitle": "تصفح الشركات",
+  "pageDescription": "اكتشف شركات رائعة واستكشف فرص العمل",
+  "topCompanies": {
+    "title": "أفضل الشركات التي توظف الآن",
+    "description": "استكشف الفرص من الشركات الرائدة في مختلف الصناعات"
+  },
+  "search": {
+    "placeholder": "ابحث عن الشركات بالاسم أو الموقع أو الصناعة..."
+  },
+  "cardLabels": {
+    "rating": "التقييم",
+    "reviews": "تقييم",
+    "openJobs": "الوظائف المتاحة",
+    "location": "الموقع",
+    "companySize": "حجم الشركة",
+    "employees": "موظف",
+    "employeesPlus": "+ موظف",
+    "viewCompany": "عرض الشركة"
+  },
+  "noCompaniesFound": "لم يتم العثور على شركات",
+  "noCompaniesDescription": "حاول تعديل معايير البحث للعثور على المزيد من الشركات",
+  "showingResults": "عرض {start}-{end} من {total} شركة"
+}

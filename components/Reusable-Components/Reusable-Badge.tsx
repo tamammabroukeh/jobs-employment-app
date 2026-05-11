@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Typography } from "./typography";
 
 type BadgeVariant = "primary" | "success" | "warning" | "danger" | "info" | "default";
 type BadgeSize = "sm" | "md" | "lg";
@@ -21,15 +20,9 @@ const variantStyles: Record<BadgeVariant, string> = {
 };
 
 const sizeStyles: Record<BadgeSize, string> = {
-  sm: "px-2 py-0.5",
-  md: "px-3 py-1",
-  lg: "px-4 py-1.5",
-};
-
-const typographyVariantMap: Record<BadgeSize, "xsmall" | "small" | "text"> = {
-  sm: "xsmall",
-  md: "small",
-  lg: "text",
+  sm: "px-2 py-0.5 text-xs",
+  md: "px-3 py-1 text-sm",
+  lg: "px-4 py-1.5 text-base",
 };
 
 export default function ReusableBadge({
@@ -39,17 +32,15 @@ export default function ReusableBadge({
   className,
 }: ReusableBadgeProps) {
   return (
-    <Typography
-      variant={typographyVariantMap[size]}
-      weight="medium"
+    <span
       className={cn(
-        "inline-flex items-center rounded-full transition-colors",
+        "inline-flex items-center rounded-full font-medium transition-colors",
         variantStyles[variant],
         sizeStyles[size],
         className
       )}
     >
       {children}
-    </Typography>
+    </span>
   );
 }

@@ -1,0 +1,230 @@
+'use client';
+
+import { useState, useCallback } from 'react';
+import JobFilters, { JobFiltersState } from './JobFilters';
+import JobsList from './JobsList';
+
+// Mock data - Replace with actual API call
+const mockJobs = [
+  {
+    id: '1',
+    displayId: 'JOB-001',
+    companyName: 'Google',
+    companyLogo: 'https://logo.clearbit.com/google.com',
+    title: 'Senior Frontend Developer',
+    createdAt: '2024-01-15',
+    roles: ['Frontend', 'React'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Senior'],
+    experience: '5+ years',
+    location: 'San Francisco, CA',
+  },
+  {
+    id: '2',
+    displayId: 'JOB-002',
+    companyName: 'Microsoft',
+    companyLogo: 'https://logo.clearbit.com/microsoft.com',
+    title: 'Backend Engineer',
+    createdAt: '2024-01-14',
+    roles: ['Backend', 'Node.js'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Mid-level'],
+    experience: '3-5 years',
+    location: 'Seattle, WA',
+  },
+  {
+    id: '3',
+    displayId: 'JOB-003',
+    companyName: 'Apple',
+    companyLogo: 'https://logo.clearbit.com/apple.com',
+    title: 'iOS Developer',
+    createdAt: '2024-01-13',
+    roles: ['Mobile', 'iOS'],
+    types: ['Full-time', 'On-site'],
+    levels: ['Senior'],
+    experience: '4+ years',
+    location: 'Cupertino, CA',
+  },
+  {
+    id: '4',
+    displayId: 'JOB-004',
+    companyName: 'Amazon',
+    companyLogo: 'https://logo.clearbit.com/amazon.com',
+    title: 'DevOps Engineer',
+    createdAt: '2024-01-12',
+    roles: ['DevOps', 'AWS'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Mid-level'],
+    experience: '3+ years',
+    location: 'Austin, TX',
+  },
+  {
+    id: '5',
+    displayId: 'JOB-005',
+    companyName: 'Meta',
+    companyLogo: 'https://logo.clearbit.com/meta.com',
+    title: 'Full Stack Developer',
+    createdAt: '2024-01-11',
+    roles: ['Full Stack', 'React', 'Node.js'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Senior'],
+    experience: '5+ years',
+    location: 'Menlo Park, CA',
+  },
+  {
+    id: '6',
+    displayId: 'JOB-006',
+    companyName: 'Netflix',
+    companyLogo: 'https://logo.clearbit.com/netflix.com',
+    title: 'Data Engineer',
+    createdAt: '2024-01-10',
+    roles: ['Data', 'Python'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Mid-level'],
+    experience: '3-5 years',
+    location: 'Los Gatos, CA',
+  },
+  {
+    id: '7',
+    displayId: 'JOB-007',
+    companyName: 'Tesla',
+    companyLogo: 'https://logo.clearbit.com/tesla.com',
+    title: 'Software Engineer',
+    createdAt: '2024-01-09',
+    roles: ['Backend', 'Python'],
+    types: ['Full-time', 'On-site'],
+    levels: ['Mid-level'],
+    experience: '3-5 years',
+    location: 'Austin, TX',
+  },
+  {
+    id: '8',
+    displayId: 'JOB-008',
+    companyName: 'Spotify',
+    companyLogo: 'https://logo.clearbit.com/spotify.com',
+    title: 'Frontend Developer',
+    createdAt: '2024-01-08',
+    roles: ['Frontend', 'React'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Junior'],
+    experience: '2-3 years',
+    location: 'New York, NY',
+  },
+  {
+    id: '9',
+    displayId: 'JOB-009',
+    companyName: 'Adobe',
+    companyLogo: 'https://logo.clearbit.com/adobe.com',
+    title: 'UI/UX Designer',
+    createdAt: '2024-01-07',
+    roles: ['Design', 'UI/UX'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Mid-level'],
+    experience: '3-5 years',
+    location: 'San Francisco, CA',
+  },
+  {
+    id: '10',
+    displayId: 'JOB-010',
+    companyName: 'Salesforce',
+    companyLogo: 'https://logo.clearbit.com/salesforce.com',
+    title: 'Product Manager',
+    createdAt: '2024-01-06',
+    roles: ['Product', 'Management'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Senior'],
+    experience: '5+ years',
+    location: 'San Francisco, CA',
+  },
+  {
+    id: '11',
+    displayId: 'JOB-011',
+    companyName: 'IBM',
+    companyLogo: 'https://logo.clearbit.com/ibm.com',
+    title: 'Cloud Architect',
+    createdAt: '2024-01-05',
+    roles: ['DevOps', 'Cloud'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Lead'],
+    experience: '7+ years',
+    location: 'Boston, MA',
+  },
+  {
+    id: '12',
+    displayId: 'JOB-012',
+    companyName: 'Oracle',
+    companyLogo: 'https://logo.clearbit.com/oracle.com',
+    title: 'Database Administrator',
+    createdAt: '2024-01-04',
+    roles: ['Data', 'Database'],
+    types: ['Full-time', 'On-site'],
+    levels: ['Mid-level'],
+    experience: '4-6 years',
+    location: 'Austin, TX',
+  },
+  {
+    id: '13',
+    displayId: 'JOB-013',
+    companyName: 'Uber',
+    companyLogo: 'https://logo.clearbit.com/uber.com',
+    title: 'Mobile Developer',
+    createdAt: '2024-01-03',
+    roles: ['Mobile', 'React Native'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Senior'],
+    experience: '5+ years',
+    location: 'San Francisco, CA',
+  },
+  {
+    id: '14',
+    displayId: 'JOB-014',
+    companyName: 'Airbnb',
+    companyLogo: 'https://logo.clearbit.com/airbnb.com',
+    title: 'Full Stack Engineer',
+    createdAt: '2024-01-02',
+    roles: ['Full Stack', 'JavaScript'],
+    types: ['Full-time', 'Remote'],
+    levels: ['Mid-level'],
+    experience: '3-5 years',
+    location: 'San Francisco, CA',
+  },
+  {
+    id: '15',
+    displayId: 'JOB-015',
+    companyName: 'LinkedIn',
+    companyLogo: 'https://logo.clearbit.com/linkedin.com',
+    title: 'Marketing Manager',
+    createdAt: '2024-01-01',
+    roles: ['Marketing', 'Management'],
+    types: ['Full-time', 'Hybrid'],
+    levels: ['Manager'],
+    experience: '6+ years',
+    location: 'Seattle, WA',
+  },
+];
+
+export default function JobsSearchSection() {
+  const [filters, setFilters] = useState<JobFiltersState>({
+    search: '',
+    types: [],
+    cities: [],
+    roles: [],
+    levels: [],
+  });
+
+  const handleFiltersChange = useCallback((newFilters: JobFiltersState) => {
+    setFilters(newFilters);
+  }, []);
+
+  return (
+    <section className="py-12 bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Filters */}
+        <JobFilters onFiltersChange={handleFiltersChange} />
+
+        {/* Jobs List */}
+        <JobsList jobs={mockJobs} filters={filters} />
+      </div>
+    </section>
+  );
+}

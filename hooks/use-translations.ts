@@ -60,3 +60,11 @@ export function useHomeTranslations() {
 export function useFooterTranslations() {
   return useNextIntlTranslations("footer")
 }
+
+export function useJobsTranslations() {
+  return useNextIntlTranslations("jobs")
+}
+
+export function useCompaniesTranslations() {
+  return useNextIntlTranslations("companies")
+}

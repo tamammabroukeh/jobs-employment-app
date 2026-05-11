@@ -1,0 +1,24 @@
+{
+  "pageTitle": "Browse Companies",
+  "pageDescription": "Discover amazing companies and explore career opportunities",
+  "topCompanies": {
+    "title": "Top Companies Hiring Now",
+    "description": "Explore opportunities from leading companies across various industries"
+  },
+  "search": {
+    "placeholder": "Search companies by name, location, or industry..."
+  },
+  "cardLabels": {
+    "rating": "Rating",
+    "reviews": "reviews",
+    "openJobs": "Open Positions",
+    "location": "Location",
+    "companySize": "Company Size",
+    "employees": "employees",
+    "employeesPlus": "+ employees",
+    "viewCompany": "View Company"
+  },
+  "noCompaniesFound": "No Companies Found",
+  "noCompaniesDescription": "Try adjusting your search criteria to find more companies",
+  "showingResults": "Showing {start}-{end} of {total} companies"
+}
