@@ -90,3 +90,7 @@ export async function getJobsTranslations() {
 export async function getCompaniesTranslations() {
   return await getNextIntlTranslations("companies")
 }
+
+export async function getJobDetailTranslations() {
+  return await getNextIntlTranslations("jobDetail")
+}

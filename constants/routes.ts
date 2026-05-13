@@ -14,11 +14,15 @@ const ROUTES = {
     TECH_LEADERS: "/user-management/tech-leaders",
   },
   JOB:{
-    LIST:"/jobs"
+    LIST:"/jobs",
+    DETAIL:"/jobs/:id",
+    getDetail: (id: string) => `/jobs/${id}`,
   },
   COMPANIES:{
     LIST:"/companies",
-    DETAIL:"/companies/:id"
+    DETAIL:"/companies/:id",
+    getDetail: (id: string) => `/companies/${id}`,
+    RATE: "/companies/rate",
   },
   PROFILE:{
     VIEW:"/profile/:id",
