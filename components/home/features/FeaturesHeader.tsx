@@ -1,9 +1,8 @@
 import { Typography } from "@/components/Reusable-Components";
-import { getTranslations } from "@/lib/get-translations";
-import React from "react";
+import { getHomeTranslations } from "@/lib/get-translations";
 
 async function FeaturesHeader() {
-  const t = await getTranslations("home");
+  const t = await getHomeTranslations();
   return (
     <div className="text-center mb-12">
       <Typography variant="h2" className="text-foreground mb-4">

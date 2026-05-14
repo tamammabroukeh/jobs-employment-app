@@ -1,6 +1,6 @@
 import { Typography } from '@/components/Reusable-Components';
 import JobCard from '@/components/home/recent-jobs/JobCard';
-import { getTranslations } from '@/lib/get-translations';
+import { getHomeTranslations } from "@/lib/get-translations";
 
 interface Job {
   id: string;
@@ -21,7 +21,7 @@ interface CompanyJobsProps {
 }
 
 export default async function CompanyJobs({ jobs }: CompanyJobsProps) {
-  const t = await getTranslations("companies");
+  const t = await getHomeTranslations();
 
   if (jobs.length === 0) {
     return (

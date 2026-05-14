@@ -1,6 +1,6 @@
-import { getTranslations } from "@/lib/get-translations";
 import { Typography } from "@/components/Reusable-Components";
 import LocationCard from "./LocationCard";
+import { getHomeTranslations } from "@/lib/get-translations";
 
 // Mock data - Replace with actual API call
 const getLocationsData = async () => {
@@ -57,7 +57,7 @@ const getLocationsData = async () => {
 };
 
 export default async function LocationsSection() {
-  const t = await getTranslations("home.locations");
+  const t = await getHomeTranslations();
   const locations = await getLocationsData();
 
   return (

@@ -1,6 +1,6 @@
 import { Flex, Typography } from "@/components/Reusable-Components";
 import { TypographyVariant } from "@/components/Reusable-Components/typography";
-import { getTranslations } from "@/lib/get-translations";
+import { getHomeTranslations } from "@/lib/get-translations";
 import { cn } from "@/lib/utils";
 import { NamespaceKeys } from "@/types/i18n-types";
 interface IFeatureCard {
@@ -19,7 +19,7 @@ async function FeatureCard({
   descriptionVariant = "p",
   parentIconClasses,
 }: IFeatureCard) {
-  const t = await getTranslations("home");
+  const t = await getHomeTranslations();
   return (
     <div className="auth-card p-6 text-center">
       <div className={cn("w-14 h-14 rounded-2xl mx-auto mb-4", parentIconClasses)}>

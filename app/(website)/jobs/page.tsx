@@ -1,7 +1,7 @@
 import TopCompaniesCarousel from '@/components/home/top-companies/TopCompaniesCarousel';
 import JobsSearchSection from '@/components/jobs/JobsSearchSection';
 import { Typography } from '@/components/Reusable-Components';
-import { getTranslations } from '@/lib/get-translations';
+import { getJobsTranslations } from '@/lib/get-translations';
 
 // Mock data - Replace with actual API call
 const mockCompanies = [
@@ -48,7 +48,7 @@ const mockCompanies = [
 ];
 
 export default async function JobsPage() {
-  const t = await getTranslations('jobs');
+  const t = await getJobsTranslations();
 
   return (
     <>

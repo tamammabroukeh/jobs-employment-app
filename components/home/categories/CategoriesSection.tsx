@@ -1,4 +1,4 @@
-import { getTranslations } from "@/lib/get-translations";
+import { getHomeTranslations } from "@/lib/get-translations";
 import { Typography } from "@/components/Reusable-Components";
 import CategoryCard from "./CategoryCard";
 
@@ -57,7 +57,7 @@ const getCategoriesData = async () => {
 };
 
 export default async function CategoriesSection() {
-  const t = await getTranslations("home.categories");
+  const t = await getHomeTranslations();
   const categories = await getCategoriesData();
 
   return (
