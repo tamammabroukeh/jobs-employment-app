@@ -13,7 +13,7 @@ export default getRequestConfig(async () => {
   }
 
   // Load all message files for the locale
-  const [auth, errors, dashboard, session, home, footer, jobs, companies, jobDetail] = await Promise.all([
+  const [auth, errors, dashboard, session, home, footer, jobs, companies, jobDetail, profile] = await Promise.all([
     import(`../messages/${locale}/auth.json`).then((m) => m.default),
     import(`../messages/${locale}/errors.json`).then((m) => m.default),
     import(`../messages/${locale}/dashboard.json`).then((m) => m.default),
@@ -23,6 +23,7 @@ export default getRequestConfig(async () => {
     import(`../messages/${locale}/jobs.json`).then((m) => m.default),
     import(`../messages/${locale}/companies.json`).then((m) => m.default),
     import(`../messages/${locale}/job-detail.json`).then((m) => m.default),
+    import(`../messages/${locale}/profile.json`).then((m) => m.default),
   ])
 
   return {
@@ -37,6 +38,7 @@ export default getRequestConfig(async () => {
       jobs,
       companies,
       jobDetail,
+      profile
     },
   }
 })

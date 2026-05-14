@@ -15,6 +15,7 @@ interface IReusableSelect {
   mode?: 'multiple' | 'tags';
   allowClear?: boolean;
   showSearch?: boolean;
+  size?: "large" | "middle" | "small";
   maxTagCount?: SelectProps['maxTagCount'];
   value?: string | string[];
 }
@@ -32,6 +33,7 @@ const ReusableSelect = ({
   showSearch = false,
   maxTagCount,
   value,
+  size
 }: IReusableSelect) => {
   return (
     <div className="w-full">
@@ -47,6 +49,7 @@ const ReusableSelect = ({
         onChange={onValueChange}
         className={triggerStyle}
         style={{ width: '100%' }}
+        size={size}
         mode={mode}
         allowClear={allowClear}
         showSearch={showSearch}

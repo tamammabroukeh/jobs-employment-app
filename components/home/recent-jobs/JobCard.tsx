@@ -1,8 +1,8 @@
-import { getTranslations } from "@/lib/get-translations";
 import JobCardHeader from "./JobCardHeader";
 import JobCardBadges from "./JobCardBadges";
 import JobCardDetails from "./JobCardDetails";
 import JobCardFooter from "./JobCardFooter";
+import { getHomeTranslations } from "@/lib/get-translations";
 
 interface JobCardProps {
   id: string;
@@ -31,7 +31,7 @@ export default async function JobCard({
   location,
   displayId,
 }: JobCardProps) {
-  const t = await getTranslations("home.recentJobs");
+  const t = await getHomeTranslations();
 
   return (
     <div className="auth-card p-6 hover:shadow-xl transition-all duration-300 group h-full flex flex-col">

@@ -25,8 +25,10 @@ const ROUTES = {
     RATE: "/companies/rate",
   },
   PROFILE:{
-    VIEW:"/profile/:id",
-    EDIT:"/profile/edit/:id"
+    VIEW:"/profile",
+    DETAIL:"/profile/:id",
+    EDIT:"/profile/edit/:id",
+    getDetail: (id: string) => `/profile/${id}`,
   },
   DASHBOARD:{
     ROOT:"/dashboard",
@@ -54,6 +56,11 @@ export const NAVBAR_LINKS = [
   {
     label: "Companies",
     href: ROUTES.COMPANIES.LIST,
+    showInNavbar: true,
+  },
+  {
+    label: "Profile",
+    href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
   },
 ];
