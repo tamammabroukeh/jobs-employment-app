@@ -1,6 +1,6 @@
-import { getTranslations } from '@/lib/get-translations';
 import TopCompaniesCarousel from './TopCompaniesCarousel';
 import { ReusableButton, Typography } from '@/components/Reusable-Components';
+import { getHomeTranslations } from '@/lib/get-translations';
 import Link from 'next/link';
 
 // Mock data - Replace with actual API call
@@ -48,7 +48,7 @@ const mockCompanies = [
 ];
 
 export default async function TopCompaniesSection() {
-  const t = await getTranslations('home');
+  const t = await getHomeTranslations();
   
   return (
     <section className="py-20 bg-background">

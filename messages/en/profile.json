@@ -1,0 +1,165 @@
+{
+  "title": "My Profile",
+  "userInfo": {
+    "title": "User Information",
+    "personalInfo": {
+      "title": "Personal Information",
+      "edit": "Edit Personal Info",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "age": "Age",
+      "nationality": "Nationality",
+      "gender": "Gender",
+      "maritalStatus": "Marital Status",
+      "city": "City",
+      "address": "Address",
+      "email": "Email",
+      "phone": "Phone",
+      "dateOfBirth": "Date of Birth",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "years": "years"
+    },
+    "careerInfo": {
+      "title": "Career Information",
+      "edit": "Edit Career Info",
+      "experience": "Experience",
+      "jobLevel": "Job Level",
+      "education": "Education",
+      "currentJobStatus": "Current Job Status",
+      "salaryRange": "Salary Range",
+      "from": "From",
+      "to": "To",
+      "experienceYears": "Experience Years",
+      "educationLevel": "Education Level",
+      "jobTypes": "Job Types",
+      "jobRoles": "Job Roles",
+      "workCities": "Work Cities",
+      "save": "Save Changes",
+      "cancel": "Cancel"
+    },
+    "contactInfo": {
+      "title": "Contact Information",
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "socialLinks": {
+      "title": "Social Media & Portfolio",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "portfolio": "Portfolio",
+      "twitter": "Twitter"
+    }
+  },
+  "education": {
+    "title": "Education",
+    "addEducation": "Add Education",
+    "editEducation": "Edit Education",
+    "noEducation": "No education added yet",
+    "certificateType": "Certificate Type",
+    "university": "University",
+    "faculty": "Faculty",
+    "major": "Major",
+    "majorName": "Type your major name",
+    "grade": "Grade",
+    "fromDate": "From Date (Month/Year)",
+    "awardedDate": "Awarded On Or Expected Date",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "uploadCertificate": "Upload Certificate",
+    "certificateImage": "Certificate Image",
+    "deleteCertificate": "Delete Certificate",
+    "confirmDelete": "Are you sure you want to delete this education?",
+    "confirmDeleteTitle": "Delete Education",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "experience": {
+    "title": "Experience",
+    "addExperience": "Add Experience",
+    "editExperience": "Edit Experience",
+    "noExperience": "No experience added yet",
+    "jobTitle": "Job Title",
+    "companyName": "Company Name",
+    "jobRoles": "Job Roles",
+    "fromDate": "From Date (Month/Year)",
+    "toDate": "To Date (Month/Year)",
+    "currentlyWorking": "I currently work here",
+    "description": "Description",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this experience?",
+    "confirmDeleteTitle": "Delete Experience",
+    "yes": "Yes",
+    "no": "No",
+    "present": "Present"
+  },
+  "skills": {
+    "title": "Skills",
+    "editSkills": "Edit Skills",
+    "noSkills": "No skills added yet",
+    "skillName": "Skill Name",
+    "skillLevel": "Proficiency Level",
+    "addSkill": "Add Skill",
+    "save": "Save All Skills",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "skillLevels": {
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "expert": "Expert"
+  },
+  "certificateTypes": {
+    "highSchool": "High School",
+    "bachelor": "Bachelor's Degree",
+    "master": "Master's Degree",
+    "phd": "PhD",
+    "diploma": "Diploma",
+    "certificate": "Certificate"
+  },
+  "gradeOptions": {
+    "excellent": "Excellent",
+    "veryGood": "Very Good",
+    "good": "Good",
+    "pass": "Pass"
+  },
+  "genderOptions": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "maritalStatusOptions": {
+    "single": "Single",
+    "married": "Married",
+    "divorced": "Divorced",
+    "widowed": "Widowed"
+  },
+  "jobStatusOptions": {
+    "employed": "Employed",
+    "unemployed": "Unemployed",
+    "freelancer": "Freelancer",
+    "student": "Student"
+  },
+  "educationLevelOptions": {
+    "highSchool": "High School",
+    "bachelor": "Bachelor's Degree",
+    "master": "Master's Degree",
+    "phd": "PhD"
+  },
+  "jobLevelOptions": {
+    "entry": "Entry Level",
+    "junior": "Junior",
+    "mid": "Mid Level",
+    "senior": "Senior",
+    "lead": "Lead",
+    "manager": "Manager"
+  }
+}

@@ -20,5 +20,67 @@
   },
   "noCompaniesFound": "لم يتم العثور على شركات",
   "noCompaniesDescription": "حاول تعديل معايير البحث للعثور على المزيد من الشركات",
-  "showingResults": "عرض {start}-{end} من {total} شركة"
+  "showingResults": "عرض {start}-{end} من {total} شركة",
+  "detail": {
+    "tabs": {
+      "overview": "نظرة عامة",
+      "reviews": "التقييمات",
+      "jobs": "الوظائف",
+      "directApply": "التقديم المباشر"
+    },
+    "overview": {
+      "about": "عن الشركة",
+      "founded": "تأسست في",
+      "employees": "الموظفون",
+      "location": "الموقع",
+      "website": "الموقع الإلكتروني",
+      "socialMedia": "وسائل التواصل الاجتماعي",
+      "visitWebsite": "زيارة الموقع"
+    },
+    "reviews": {
+      "addReview": "إضافة تقييم",
+      "overallRating": "التقييم الإجمالي",
+      "totalRatings": "تقييم",
+      "wouldRecommend": "هل توصي بهذه الشركة لصديق؟",
+      "ceoPerformance": "أداء المدير التنفيذي",
+      "ratingsByCategory": "التقييمات حسب الفئة",
+      "categories": {
+        "compensation": "التعويضات والمزايا",
+        "culture": "البيئة والثقافة",
+        "workLife": "التوازن بين العمل والحياة",
+        "diversity": "التنوع والشمول",
+        "management": "الإدارة العليا"
+      },
+      "userReviews": "تقييمات المستخدمين",
+      "recommend": "توصي بها لصديق؟",
+      "ceoApproval": "أداء المدير التنفيذي",
+      "subratings": "التقييمات الفرعية",
+      "agree": "موافق",
+      "disagree": "غير موافق",
+      "noReviews": "لا توجد تقييمات بعد",
+      "noReviewsDescription": "كن أول من يقيم هذه الشركة"
+    },
+    "jobs": {
+      "title": "الوظائف المتاحة",
+      "description": "استكشف الوظائف المتاحة في هذه الشركة",
+      "noJobs": "لا توجد وظائف متاحة",
+      "noJobsDescription": "هذه الشركة ليس لديها وظائف متاحة في الوقت الحالي"
+    },
+    "directApply": {
+      "title": "التقديم المباشر",
+      "description": "تولي الشركات أهمية خاصة للموظفين المتحمسين للانضمام إلى فريقهم. يمكنك تقديم طلب مميز يعبر عن قدراتك ورغبتك في الانضمام إلى الشركة",
+      "form": {
+        "fullName": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "coverLetter": "خطاب التغطية",
+        "coverLetterPlaceholder": "أخبرنا لماذا تريد الانضمام إلى هذه الشركة وما الذي يجعلك مناسبًا...",
+        "resume": "تحميل السيرة الذاتية",
+        "submit": "إرسال الطلب",
+        "submitting": "جاري الإرسال..."
+      },
+      "success": "تم إرسال الطلب بنجاح!",
+      "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."
+    }
+  }
 }

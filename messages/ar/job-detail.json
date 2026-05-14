@@ -1,0 +1,46 @@
+{
+  "pageTitle": "تفاصيل الوظيفة",
+  "applyNow": "قدم الآن",
+  "shareJob": "مشاركة الوظيفة",
+  "applyDialog": {
+    "title": "التقديم على \"{jobTitle}\"",
+    "applicationDetails": "تفاصيل التقديم",
+    "currentStatus": "حالة العمل الحالية",
+    "statusWorking": "أعمل حاليًا",
+    "statusNotWorking": "لا أعمل",
+    "noticePeriod": "فترة الإشعار",
+    "noticePeriodOptions": {
+      "immediate": "فورًا",
+      "oneWeek": "أسبوع واحد",
+      "twoWeeks": "أسبوعان",
+      "oneMonth": "شهر واحد",
+      "twoMonths": "شهران"
+    },
+    "expectedSalary": "الراتب المتوقع (دولار)",
+    "salaryFrom": "من",
+    "salaryTo": "إلى",
+    "confirmApply": "تأكيد التقديم",
+    "cancel": "إلغاء",
+    "applying": "جاري الإرسال...",
+    "success": "تم إرسال الطلب بنجاح!",
+    "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."
+  },
+  "jobDetails": {
+    "title": "تفاصيل الوظيفة",
+    "experience": "الخبرة",
+    "location": "الموقع",
+    "postedOn": "تاريخ النشر",
+    "jobType": "نوع الوظيفة",
+    "jobLevel": "مستوى الوظيفة"
+  },
+  "jobDescription": {
+    "title": "وصف الوظيفة",
+    "roles": "أدوار الوظيفة"
+  },
+  "companyInfo": {
+    "title": "عن الشركة",
+    "location": "الموقع",
+    "socialMedia": "وسائل التواصل الاجتماعي",
+    "viewCompany": "عرض ملف الشركة"
+  }
+}

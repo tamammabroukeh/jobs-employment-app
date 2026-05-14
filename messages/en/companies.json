@@ -20,5 +20,67 @@
   },
   "noCompaniesFound": "No Companies Found",
   "noCompaniesDescription": "Try adjusting your search criteria to find more companies",
-  "showingResults": "Showing {start}-{end} of {total} companies"
+  "showingResults": "Showing {start}-{end} of {total} companies",
+  "detail": {
+    "tabs": {
+      "overview": "Overview",
+      "reviews": "Reviews",
+      "jobs": "Jobs",
+      "directApply": "Direct Apply"
+    },
+    "overview": {
+      "about": "About Company",
+      "founded": "Founded",
+      "employees": "Employees",
+      "location": "Location",
+      "website": "Website",
+      "socialMedia": "Social Media",
+      "visitWebsite": "Visit Website"
+    },
+    "reviews": {
+      "addReview": "Add Review",
+      "overallRating": "Overall Rating",
+      "totalRatings": "ratings",
+      "wouldRecommend": "Would you recommend this company to a friend?",
+      "ceoPerformance": "CEO Job Performance",
+      "ratingsByCategory": "Ratings By Category",
+      "categories": {
+        "compensation": "Compensations and benefits",
+        "culture": "Environment and culture",
+        "workLife": "Work / life balance",
+        "diversity": "Diversity & Inclusion",
+        "management": "Senior management"
+      },
+      "userReviews": "User Reviews",
+      "recommend": "Recommend to a friend?",
+      "ceoApproval": "CEO Performance",
+      "subratings": "Subratings",
+      "agree": "Agree",
+      "disagree": "Disagree",
+      "noReviews": "No Reviews Yet",
+      "noReviewsDescription": "Be the first to review this company"
+    },
+    "jobs": {
+      "title": "Available Positions",
+      "description": "Explore open positions at this company",
+      "noJobs": "No Open Positions",
+      "noJobsDescription": "This company has no open positions at the moment"
+    },
+    "directApply": {
+      "title": "Direct Apply",
+      "description": "Companies give special importance to employees who are enthusiastic about joining their team. You can submit a distinctive application that expresses your capabilities and desire to join the company",
+      "form": {
+        "fullName": "Full Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "coverLetter": "Cover Letter",
+        "coverLetterPlaceholder": "Tell us why you want to join this company and what makes you a great fit...",
+        "resume": "Upload Resume",
+        "submit": "Submit Application",
+        "submitting": "Submitting..."
+      },
+      "success": "Application submitted successfully!",
+      "error": "Failed to submit application. Please try again."
+    }
+  }
 }

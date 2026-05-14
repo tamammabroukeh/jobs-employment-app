@@ -10,7 +10,7 @@ interface JobCardFooterProps {
 export default function JobCardFooter({ jobId, applyNowLabel }: JobCardFooterProps) {
   return (
     <div className="pt-4 border-t border-border">
-      <Link href={`${ROUTES.JOB.LIST}/${jobId}`} className="block">
+      <Link href={ROUTES.JOB.getDetail(jobId)} className="block">
         <ReusableButton variant="primary" className="w-full">
           {applyNowLabel}
           <i className="fa-solid fa-arrow-right ml-2" />

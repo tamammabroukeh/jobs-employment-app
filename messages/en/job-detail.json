@@ -1,0 +1,46 @@
+{
+  "pageTitle": "Job Details",
+  "applyNow": "Apply Now",
+  "shareJob": "Share Job",
+  "applyDialog": {
+    "title": "Apply for \"{jobTitle}\"",
+    "applicationDetails": "Application Details",
+    "currentStatus": "Current Job Status",
+    "statusWorking": "Currently Working",
+    "statusNotWorking": "Not Working",
+    "noticePeriod": "Notice Period",
+    "noticePeriodOptions": {
+      "immediate": "Immediately",
+      "oneWeek": "One Week",
+      "twoWeeks": "Two Weeks",
+      "oneMonth": "One Month",
+      "twoMonths": "Two Months"
+    },
+    "expectedSalary": "Expected Salary (USD)",
+    "salaryFrom": "From",
+    "salaryTo": "To",
+    "confirmApply": "Confirm Application",
+    "cancel": "Cancel",
+    "applying": "Submitting...",
+    "success": "Application submitted successfully!",
+    "error": "Failed to submit application. Please try again."
+  },
+  "jobDetails": {
+    "title": "Job Details",
+    "experience": "Experience",
+    "location": "Location",
+    "postedOn": "Posted on",
+    "jobType": "Job Type",
+    "jobLevel": "Job Level"
+  },
+  "jobDescription": {
+    "title": "Job Description",
+    "roles": "Job Roles"
+  },
+  "companyInfo": {
+    "title": "About Company",
+    "location": "Location",
+    "socialMedia": "Social Media",
+    "viewCompany": "View Company Profile"
+  }
+}

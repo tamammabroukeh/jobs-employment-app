@@ -7,6 +7,8 @@ export type Messages = {
   footer: typeof import("../messages/en/footer.json")
   jobs: typeof import("../messages/en/jobs.json")
   companies: typeof import("../messages/en/companies.json")
+  jobDetail: typeof import("../messages/en/job-detail.json")
+  profile: typeof import("../messages/en/profile.json")
 }
 
 export type IntlKeys =

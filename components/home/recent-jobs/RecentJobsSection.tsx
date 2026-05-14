@@ -1,8 +1,8 @@
-import { getTranslations } from '@/lib/get-translations';
 import { Typography, ReusableButton } from '@/components/Reusable-Components';
 import Link from 'next/link';
 import JobCard from './JobCard';
 import ROUTES from '@/constants/routes';
+import { getHomeTranslations } from '@/lib/get-translations';
 
 // Mock data - Replace with actual API call
 const mockJobs = [
@@ -126,7 +126,7 @@ const mockJobs = [
 ];
 
 export default async function RecentJobsSection() {
-  const t = await getTranslations('home.recentJobs');
+  const t = await getHomeTranslations();
 
   return (
     <section className="py-20 bg-background">

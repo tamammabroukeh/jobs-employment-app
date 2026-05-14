@@ -14,15 +14,21 @@ const ROUTES = {
     TECH_LEADERS: "/user-management/tech-leaders",
   },
   JOB:{
-    LIST:"/jobs"
+    LIST:"/jobs",
+    DETAIL:"/jobs/:id",
+    getDetail: (id: string) => `/jobs/${id}`,
   },
   COMPANIES:{
     LIST:"/companies",
-    DETAIL:"/companies/:id"
+    DETAIL:"/companies/:id",
+    getDetail: (id: string) => `/companies/${id}`,
+    RATE: "/companies/rate",
   },
   PROFILE:{
-    VIEW:"/profile/:id",
-    EDIT:"/profile/edit/:id"
+    VIEW:"/profile",
+    DETAIL:"/profile/:id",
+    EDIT:"/profile/edit/:id",
+    getDetail: (id: string) => `/profile/${id}`,
   },
   DASHBOARD:{
     ROOT:"/dashboard",
@@ -50,6 +56,11 @@ export const NAVBAR_LINKS = [
   {
     label: "Companies",
     href: ROUTES.COMPANIES.LIST,
+    showInNavbar: true,
+  },
+  {
+    label: "Profile",
+    href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
   },
 ];
