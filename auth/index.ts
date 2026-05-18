@@ -109,4 +109,4 @@ export const authClient = NextAuth({
   ...authConfig,
 });
 
-export const { handlers, auth, signOut, unstable_update } = authClient;
+export const { handlers, auth, signIn, signOut, unstable_update } = authClient;

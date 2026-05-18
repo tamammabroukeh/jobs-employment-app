@@ -1,35 +1,48 @@
 import { UserRole } from '@/constants/roles';
 
 export interface IUser {
-  id: string | number;
-  username?: string;
-  first_name?: string;
-  last_name?: string;
+  id: string;
+  name: string;
   email: string;
-  role: UserRole;
-  phone_number?: string;
-  avatar?: string;
-  created_at?: string;
-  updated_at?: string;
+  roles: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface IAuthResponse {
+  message: string;
+  user: IUser;
+  access_token: string;
+  token_type: string;
+  expires_in: number;
 }
 
 export interface IAuth {
-  status?: boolean;
-  message?: string;
-  access_token?: string;
-  token_type?: string;
-  expires_in?: number;
-  data?: IUser;
+  message: string;
+  user: IUser;
+  access_token: string;
+  token_type: string;
+  expires_in: number;
 }
 
 export interface IRefreshToken {
-  status?: boolean;
-  message?: string;
-  access_token?: string;
+  access_token: string;
   refresh_token?: string;
-  token_type?: string;
-  expires_in?: number;
-  data?: IUser;
+  token_type: string;
+  expires_in: number;
+}
+
+export interface IRegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  password_confirmation: string;
+  role: string;
+}
+
+export interface ILoginRequest {
+  email: string;
+  password: string;
 }
 
 export interface IForgotPasswordResponse {

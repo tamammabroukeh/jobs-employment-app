@@ -1,47 +1,37 @@
 import apiFetcher from '@/apis/api.instance';
 import { Methods } from '@/constants/methods';
-import { LoginFormData, RegisterFormData, ForgotPasswordFormData, VerifyCodeFormData, ResetPasswordFormData } from '@/schemas/auth';
-import { IAuth, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';
+import { IAuth, IRegisterRequest, ILoginRequest, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';
 
 // API endpoints factory
 export const authRepository = {
-  signIn: (credentials: LoginFormData): Promise<IAuth> =>
+  signIn: (credentials: ILoginRequest): Promise<IAuth> =>
     apiFetcher<IAuth>(`/auth/login`, {
       method: Methods.POST,
       body: JSON.stringify(credentials),
     }),
 
-  signUp: (credentials: RegisterFormData): Promise<IAuth> =>
+  signUp: (data: IRegisterRequest): Promise<IAuth> =>
     apiFetcher<IAuth>(`/auth/register`, {
       method: Methods.POST,
-      body: JSON.stringify({
-        username: credentials.username,
-        email: credentials.email,
-        password: credentials.password,
-        role: credentials.role,
-      }),
+      body: JSON.stringify(data),
     }),
 
-  forgotPassword: (data: ForgotPasswordFormData): Promise<IForgotPasswordResponse> =>
+  forgotPassword: (data: { email: string }): Promise<IForgotPasswordResponse> =>
     apiFetcher<IForgotPasswordResponse>(`/auth/forgot-password`, {
       method: Methods.POST,
       body: JSON.stringify(data),
     }),
 
-  verifyCode: (data: VerifyCodeFormData): Promise<IVerifyCodeResponse> =>
+  verifyCode: (data: { email: string; code: string }): Promise<IVerifyCodeResponse> =>
     apiFetcher<IVerifyCodeResponse>(`/auth/verify-code`, {
       method: Methods.POST,
       body: JSON.stringify(data),
     }),
 
-  resetPassword: (data: ResetPasswordFormData): Promise<IResetPasswordResponse> =>
+  resetPassword: (data: { email: string; code: string; password: string }): Promise<IResetPasswordResponse> =>
     apiFetcher<IResetPasswordResponse>(`/auth/reset-password`, {
       method: Methods.POST,
-      body: JSON.stringify({
-        email: data.email,
-        code: data.code,
-        password: data.password,
-      }),
+      body: JSON.stringify(data),
     }),
 
   getProfile: (): Promise<IUser> =>
