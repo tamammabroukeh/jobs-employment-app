@@ -8,20 +8,21 @@ import { ErrorMessages } from "@/constants/errors";
 const baseUrl = process.env.BASE_URL;
 const DEFAULT_REVALIDATION_TIME = 3600 * 3; // 3 hours
 const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 30000);
+const MAX_RETRIES = 2; // Retry failed requests up to 2 times
 
 /**
- * Enhanced API fetcher with error handling and locale support
+ * Enhanced API fetcher with error handling, retry logic, and locale support
  * @param path - API endpoint path
  * @param requestInit - Fetch request options
+ * @param retryCount - Current retry attempt (internal use)
  * @returns Promise with the response data
  */
-// interface RequestOptions extends RequestInit {
-//   timeout?: number;
-// }
 export default async function apiFetcher<T>(
   path: string,
   requestInit?: RequestInit,
+  retryCount: number = 0,
 ): Promise<T> {
+  console.log('baseUrl', baseUrl)
   const url = normalizeUrl(baseUrl, path);
   const timeout = API_TIMEOUT;
   const controller = new AbortController();
@@ -36,22 +37,21 @@ export default async function apiFetcher<T>(
       ...requestInit?.headers,
     } as HeadersInit,
     next: {
-
       revalidate: DEFAULT_REVALIDATION_TIME,
       ...requestInit?.next,
-
     },
     signal: controller.signal,
     ...requestInit,
   };
-  console.log(`Fetching: ${url}`); //${JSON.stringify(init)}
+  console.log(`Fetching: ${url} (attempt ${retryCount + 1}/${MAX_RETRIES + 1})`);
+  
   try {
     const response = await fetch(url, init);
     console.log(
       `Fetch Response status:${response.status} statusText:${response.statusText} Ok:${response.ok}`,
     );
-    console.log(url, JSON.stringify(response.url), JSON.stringify(response.body)); //JSON.stringify(response.body)
-    // console.log(url,response);
+    console.log(url, JSON.stringify(response.url), JSON.stringify(response.body));
+    
     // Clean up timeout regardless of outcome
     clearTimeout(timeoutId);
 
@@ -59,6 +59,19 @@ export default async function apiFetcher<T>(
     return await handleResponse<T>(response);
   } catch (error) {
     clearTimeout(timeoutId);
+    
+    // Retry logic for timeout and network errors
+    const isRetryableError = 
+      (error instanceof DOMException && error.name === "AbortError") ||
+      (error instanceof TypeError && error.message.includes("fetch failed"));
+    
+    if (isRetryableError && retryCount < MAX_RETRIES) {
+      console.log(`Retrying request (${retryCount + 1}/${MAX_RETRIES})...`);
+      // Wait before retrying (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+      return apiFetcher<T>(path, requestInit, retryCount + 1);
+    }
+    
     return handleFetchError(error, timeout);
   }
 }

@@ -136,7 +136,6 @@ import apiFetcher from "@/apis/api.instance"
 import { IAuth, IRefreshToken } from "@/apis/services/auth/interface"
 import { authFetcher } from "@/apis/authInstace"
 import { Methods } from "@/constants/methods"
-import { UserRole } from "@/constants/roles"
 
 export interface User {
   id: string
@@ -172,14 +171,20 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
   }
 }
 
-// Map UserRole to NextAuth role type
-const mapRole = (role: UserRole | undefined): "admin" | "owner" | "company" | "employee" => {
+// Map role string to NextAuth role type
+const mapRole = (roles: string[] | undefined): "admin" | "owner" | "company" | "employee" => {
+  if (!roles || roles.length === 0) return "employee";
+  
+  const role = roles[0].toLowerCase();
+  
   switch (role) {
-    case UserRole.ADMIN:
+    case "admin":
       return "admin";
-    case UserRole.COMPANY:
+    case "owner":
+      return "owner";
+    case "company":
       return "company";
-    case UserRole.EMPLOYEE:
+    case "employee":
       return "employee";
     default:
       return "employee";
@@ -207,27 +212,27 @@ export const authOptions: NextAuthOptions = {
             }),
           })
           
-          const { data, message, access_token, expires_in } = response;
+          console.log("[Auth] Login response:", response);
           
           // Handle API response errors
-          if (!data || !access_token) {
-            console.error("API Error:", message);
+          if (!response.user || !response.access_token) {
+            console.error("[Auth] API Error:", response.message);
             return null;
           }
 
           return {
-            id: String(data.id),
-            email: data.email,
-            name: `${data.first_name || ""} ${data.last_name || ""}`.trim() || data.email,
-            role: mapRole(data.role),
-            accessToken: access_token,
+            id: response.user.id,
+            email: response.user.email,
+            name: response.user.name,
+            role: mapRole(response.user.roles),
+            accessToken: response.access_token,
             refreshToken: "", // Add if your API provides refresh token
-            tokenExpires: Date.now() + (expires_in || 3600) * 1000,
+            tokenExpires: Date.now() + (response.expires_in || 3600) * 1000,
           }
         } catch (error) {
-          console.error("Authorization error:", error);
+          console.error("[Auth] Authorization error:", error);
           if (error instanceof Error) {
-            console.error("NextAuth Error:", error.name, error.message);
+            console.error("[Auth] NextAuth Error:", error.name, error.message);
           }
           return null;
         }
@@ -244,6 +249,7 @@ export const authOptions: NextAuthOptions = {
           refreshToken: user.refreshToken,
           tokenExpires: user.tokenExpires,
           role: user.role,
+          id: user.id,
         }
       }
 
@@ -275,7 +281,7 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          id: token.sub as string,
+          id: token.id as string,
           role: token.role as "admin" | "owner" | "company" | "employee",
         },
         accessToken: token.accessToken as string,

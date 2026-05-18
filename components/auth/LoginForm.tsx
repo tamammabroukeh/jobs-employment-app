@@ -12,10 +12,9 @@ function LoginForm() {
         <Typography variant="h2">
           {t("title")}
         </Typography>
-        <Typography  className="text-muted-foreground">
+        <Typography className="text-muted-foreground">
           {t("description")}
         </Typography>
-        <p className="text-muted-foreground">{t("description")}</p>
       </div>
       <ReusableForm
         form={form}
