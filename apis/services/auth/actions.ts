@@ -1,12 +1,13 @@
 'use server';
 
-import { signIn as nextAuthSignIn, signOut as nextAuthSignOut } from '@/auth';
+// import { cookies } from 'next/headers';
 import { loginSchema, registerSchema, forgotPasswordSchema, verifyCodeSchema, resetPasswordSchema } from '@/schemas/auth';
 import { ActionError } from '@/apis/types/error';
 import { messages } from '@/constants/messages';
 import { actionClient } from '@/lib/safe-action';
 import { authRepository } from './index';
 import { IRegisterRequest } from './interface';
+import { deleteCookie } from '@/apis/cookie';
 
 // Register Action - Returns auth data for session creation
 export const registerAction = actionClient.schema(registerSchema).action(async ({ parsedInput: data }) => {
@@ -52,33 +53,54 @@ export const registerAction = actionClient.schema(registerSchema).action(async (
   }
 });
 
-// Sign In Action
+// Sign In Action - Direct implementation without NextAuth signIn
 export const signInAction = actionClient.schema(loginSchema).action(async ({ parsedInput: data }) => {
   try {
-    console.log("[Sign In Action] Attempting sign in for:", data.email);
+    console.log("[Sign In Action] ========== STARTING SIGN IN ==========");
+    console.log("[Sign In Action] Email:", data.email);
+    console.log("[Sign In Action] Password length:", data.password?.length);
     
-    const result = await nextAuthSignIn('credentials', {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-    });
+    // Call the login API directly
+    const response = await authRepository.signIn(data);
+    
+    console.log("[Sign In Action] ========== API RESPONSE ==========");
+    console.log("[Sign In Action] Has access_token?", !!response.access_token);
+    console.log("[Sign In Action] Has user?", !!response.user);
 
-    console.log("[Sign In Action] Sign in result:", result);
-
-    if (result?.error) {
-      console.error("[Sign In Action] Sign in error:", result.error);
+    if (!response.access_token || !response.user) {
+      console.error("[Sign In Action] Missing access_token or user");
       throw new ActionError(messages.error.auth.invalidCredential);
     }
 
-    if (!result?.ok) {
-      console.error("[Sign In Action] Sign in not ok");
-      throw new ActionError(messages.error.auth.invalidCredential);
-    }
-
-    console.log("[Sign In Action] Sign in successful");
-    return { success: true, message: messages.success.auth.login.title };
+    console.log("[Sign In Action] ========== LOGIN SUCCESSFUL ==========");
+    console.log("[Sign In Action] User ID:", response.user.id);
+    console.log("[Sign In Action] User email:", response.user.email);
+    
+    // Return success with user data
+    return { 
+      success: true, 
+      message: messages.success.auth.login.title,
+      user: response.user,
+      accessToken: response.access_token,
+      tokenType: response.token_type,
+      expiresIn: response.expires_in,
+    };
   } catch (error) {
+    console.error('[Sign In Action] ========== EXCEPTION ==========');
     console.error('[Sign In Action] Error:', error);
+    
+    // Extract more detailed error information
+    if (error && typeof error === 'object' && 'info' in error) {
+      console.error('[Sign In Action] Error info:', error.info);
+      const errorInfo = error.info as Record<string, string>;
+      
+      // Check if there's a message in the error info
+      if (errorInfo && typeof errorInfo === 'object' && 'message' in errorInfo) {
+        console.error('[Sign In Action] API Error Message:', errorInfo.message);
+        throw new ActionError(errorInfo.message || messages.error.auth.invalidCredential);
+      }
+    }
+    
     if (error instanceof ActionError) throw error;
     throw new ActionError(messages.error.auth.invalidCredential);
   }
@@ -142,9 +164,39 @@ export const resetPasswordAction = actionClient.schema(resetPasswordSchema).acti
 // Sign Out Action
 export const signOutAction = actionClient.action(async () => {
   try {
-    await nextAuthSignOut({ redirect: false });
+    console.log('[Sign Out Action] ========== STARTING LOGOUT ==========');
+    
+    // Step 1: Call the logout API to invalidate the token on the server
+    try {
+      const response = await authRepository.logout();
+      console.log('[Sign Out Action] API logout successful:', response.message);
+    } catch (apiError) {
+      // Log the error but continue with NextAuth signOut
+      // This ensures the user is logged out locally even if the API call fails
+      console.error('[Sign Out Action] API logout failed:', apiError);
+      console.log('[Sign Out Action] Continuing with local logout...');
+    }
+    
+    // Step 2: Clear the NextAuth session cookies
+    // const cookieStore = await cookies();
+    deleteCookie("next-auth.session-token")
+    deleteCookie("__Secure-next-auth.session-token")
+    deleteCookie("next-auth.csrf-token")
+    deleteCookie("__Secure-next-auth.csrf-token")
+    deleteCookie("next-auth.callback-url")
+    deleteCookie("__Secure-next-auth.callback-url")
+    // Delete NextAuth session cookies
+    // cookieStore.delete('next-auth.session-token');
+    // cookieStore.delete('__Secure-next-auth.session-token');
+    // cookieStore.delete('next-auth.csrf-token');
+    // cookieStore.delete('__Secure-next-auth.csrf-token');
+    // cookieStore.delete('next-auth.callback-url');
+    // cookieStore.delete('__Secure-next-auth.callback-url');
+    
+    console.log('[Sign Out Action] ========== LOGOUT SUCCESSFUL ==========');
     return { success: true, message: messages.success.auth.logout };
   } catch (error) {
+    console.error('[Sign Out Action] ========== EXCEPTION ==========');
     console.error('[Sign Out Action] Error:', error);
     throw new ActionError('Failed to logout. Please try again.');
   }

@@ -66,10 +66,10 @@ export default async function CategoriesSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <Typography variant="h2" className="text-foreground mb-4">
-            {t("title")}
+            {t("categories.title")}
           </Typography>
           <Typography variant="p" className="text-muted-foreground max-w-2xl mx-auto">
-            {t("description")}
+            {t("categories.description")}
           </Typography>
         </div>
 
@@ -79,10 +79,10 @@ export default async function CategoriesSection() {
             <CategoryCard
               key={category.id}
               id={category.id}
-              name={t(category.nameKey)}
+              name={category.nameKey}
               icon={category.icon}
               jobCount={category.jobCount}
-              availableJobsLabel={t("availableJobs")}
+              availableJobsLabel={t("categories.availableJobs")}
             />
           ))}
         </div>

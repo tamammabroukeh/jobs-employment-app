@@ -1,4 +1,5 @@
 import apiFetcher from '@/apis/api.instance';
+import { authFetcher } from '@/apis/authInstace';
 import { Methods } from '@/constants/methods';
 import { IAuth, IRegisterRequest, ILoginRequest, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';
 
@@ -35,7 +36,12 @@ export const authRepository = {
     }),
 
   getProfile: (): Promise<IUser> =>
-    apiFetcher<IUser>(`/auth/profile`, {
+    authFetcher<IUser>(`/auth/profile`, {
       method: Methods.GET,
+    }),
+
+  logout: (): Promise<{ message: string }> =>
+    authFetcher<{ message: string }>(`/auth/logout`, {
+      method: Methods.POST,
     }),
 };

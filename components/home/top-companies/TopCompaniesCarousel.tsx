@@ -1,5 +1,3 @@
-'use client';
-
 import { ReusableCarousel } from '@/components/Reusable-Components';
 import CompanyCard from './CompanyCard';
 

@@ -32,7 +32,7 @@ export default async function JobCard({
   displayId,
 }: JobCardProps) {
   const t = await getHomeTranslations();
-
+  
   return (
     <div className="auth-card p-6 hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
       {/* Header: Company Logo & Info */}
@@ -53,13 +53,13 @@ export default async function JobCard({
           experience={experience}
           location={location}
           createdAt={createdAt}
-          experienceLabel={t("experience")}
-          postedOnLabel={t("postedOn")}
+          experienceLabel={t("recentJobs.experience")}
+          postedOnLabel={t("recentJobs.postedOn")}
         />
       </div>
 
       {/* Footer: Apply Button */}
-      <JobCardFooter jobId={id} applyNowLabel={t("applyNow")} />
+      <JobCardFooter jobId={id} applyNowLabel={t("recentJobs.applyNow")} />
     </div>
   );
 }
