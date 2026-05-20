@@ -5,6 +5,7 @@ import { IntlProvider } from 'use-intl';
 import { Toaster } from 'sonner';
 import { DeepPartial } from 'react-hook-form';
 import ThemeProvider from './ThemeProvider';
+import { SessionProvider } from 'next-auth/react';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -14,13 +15,15 @@ interface ProvidersProps {
 
 export default function Providers({ children, locale, messages }: ProvidersProps) {
   return (
-    <IntlProvider locale={locale} messages={messages}>
-      <ThemeProvider>
-        <AntdRegistry>
-          {children}
-          <Toaster position="top-right" richColors />
-        </AntdRegistry>
-      </ThemeProvider>
-    </IntlProvider>
+    <SessionProvider>
+      <IntlProvider locale={locale} messages={messages}>
+        <ThemeProvider>
+          <AntdRegistry>
+            {children}
+            <Toaster position="top-right" richColors />
+          </AntdRegistry>
+        </ThemeProvider>
+      </IntlProvider>
+    </SessionProvider>
   );
 }

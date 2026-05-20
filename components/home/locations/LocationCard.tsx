@@ -25,7 +25,7 @@ export default function LocationCard({
         styleForCard="hover:shadow-xl hover:border-primary/50 transition-all duration-300 group cursor-pointer h-full border border-border overflow-hidden"
         styleForContent="p-0"
       >
-        <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+        <div className="relative h-48 w-full overflow-hidden bg-linear-to-br from-primary/20 to-primary/5">
           {!image ? (
             <Image
               src={image}
@@ -38,7 +38,7 @@ export default function LocationCard({
               <i className="fa-solid fa-location-dot text-6xl text-primary/30" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
         </div>
         
         <div className="p-6 text-center">

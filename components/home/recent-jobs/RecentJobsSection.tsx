@@ -134,10 +134,10 @@ export default async function RecentJobsSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <Typography variant="h2" className="text-foreground mb-4">
-            {t('title')}
+            {t('recentJobs.title')}
           </Typography>
           <Typography variant="p" className="text-muted-foreground max-w-2xl mx-auto">
-            {t('description')}
+            {t('recentJobs.description')}
           </Typography>
         </div>
         {/* Jobs Grid */}
@@ -168,7 +168,7 @@ export default async function RecentJobsSection() {
               size="large"
               className="px-8"
             >
-              {t('viewAll')}
+              {t('recentJobs.viewAll')}
               <i className="fa-solid fa-arrow-right ml-2" />
             </ReusableButton>
           </Link>

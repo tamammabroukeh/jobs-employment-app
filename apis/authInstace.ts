@@ -1,19 +1,25 @@
 "use server";
 import apiFetcher from "./api.instance";
 import { RequestInit } from "next/dist/server/web/spec-extension/request";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function authFetcher<T>(
   path: string,
   requestInit?: RequestInit,
 ): Promise<T> {
-   const session = await getSession();
+  const session = await getServerSession(authOptions);
   const token = session?.accessToken;
   const isAuthorized = !!token;
+  
   console.log("authFetcher", path);
+  console.log("Has session?", !!session);
+  console.log("Has token?", !!token);
+  
   if (!isAuthorized) {
     throw new Error("Unauthorized: No valid session token found");
   }
+  
   // Add authorization header with the token
   const authHeaders: HeadersInit = {
     Authorization: `Bearer ${token}`,

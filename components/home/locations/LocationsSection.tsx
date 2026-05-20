@@ -66,10 +66,10 @@ export default async function LocationsSection() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <Typography variant="h2" className="text-foreground mb-4">
-            {t("title")}
+            {t("locations.title")}
           </Typography>
           <Typography variant="p" className="text-muted-foreground max-w-2xl mx-auto">
-            {t("description")}
+            {t("locations.description")}
           </Typography>
         </div>
 
@@ -79,10 +79,10 @@ export default async function LocationsSection() {
             <LocationCard
               key={location.id}
               id={location.id}
-              name={t(location.nameKey)}
+              name={location.nameKey}
               image={location.image}
               jobCount={location.jobCount}
-              availableJobsLabel={t("availableJobs")}
+              availableJobsLabel={t("locations.availableJobs")}
             />
           ))}
         </div>
