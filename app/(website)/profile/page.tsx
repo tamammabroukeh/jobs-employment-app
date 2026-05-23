@@ -4,14 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import { UserInfoSection, EducationSection, ExperienceSection, SkillsSection } from '@/components/profile';
 import { UserProfile, PersonalInfo, CareerInfo, Education, Experience, Skill } from '@/types/profile';
 import { Typography } from '@/components/Reusable-Components';
-import { 
-  UserOutlined, 
-  BookOutlined, 
-  TrophyOutlined, 
-  CodeOutlined,
-  CheckCircleOutlined 
-} from '@ant-design/icons';
-import { Progress } from 'antd';
 
 // Mock data - replace with actual API call
 const mockProfile: UserProfile = {
@@ -99,66 +91,6 @@ const mockProfile: UserProfile = {
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile>(mockProfile);
-  const [activeSection, setActiveSection] = useState('user-info');
-  
-  const userInfoRef = useRef<HTMLDivElement>(null);
-  const educationRef = useRef<HTMLDivElement>(null);
-  const experienceRef = useRef<HTMLDivElement>(null);
-  const skillsRef = useRef<HTMLDivElement>(null);
-
-  // Calculate profile completion percentage
-  const calculateProfileCompletion = () => {
-    let completed = 0;
-    const total = 4;
-
-    if (profile.personalInfo && profile.careerInfo) completed++;
-    if (profile.educations.length > 0) completed++;
-    if (profile.experiences.length > 0) completed++;
-    if (profile.skills.length > 0) completed++;
-
-    return Math.round((completed / total) * 100);
-  };
-
-  const profileCompletion = calculateProfileCompletion();
-
-  // Scroll to section
-  const scrollToSection = (ref: React.RefObject<HTMLDivElement>, sectionId: string) => {
-    setActiveSection(sectionId);
-    ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // Intersection Observer for active section
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    const sections = [
-      { ref: userInfoRef, id: 'user-info' },
-      { ref: educationRef, id: 'education' },
-      { ref: experienceRef, id: 'experience' },
-      { ref: skillsRef, id: 'skills' },
-    ];
-
-    sections.forEach(({ ref, id }) => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSection(id);
-            }
-          });
-        },
-        { threshold: 0.3, rootMargin: '-100px 0px -50% 0px' }
-      );
-
-      if (ref.current) {
-        observer.observe(ref.current);
-        observers.push(observer);
-      }
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
-    };
-  }, []);
 
   const handleUpdatePersonalInfo = (data: PersonalInfo) => {
     setProfile((prev) => ({

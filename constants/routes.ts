@@ -47,21 +47,31 @@ export const NAVBAR_LINKS = [
     label: "Home",
     href: ROUTES.HOME,
     showInNavbar: true,
+    authRequired: false, // Public - always visible
   },
   {
     label: "Jobs",
     href: ROUTES.JOB.LIST,
     showInNavbar: true,
+    authRequired: false, // Public - always visible
   },
   {
     label: "Companies",
     href: ROUTES.COMPANIES.LIST,
     showInNavbar: true,
+    authRequired: false, // Public - always visible
   },
   {
     label: "Profile",
     href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
+    authRequired: true, // Protected - only visible when logged in
+  },
+  {
+    label: "Dashboard",
+    href: ROUTES.DASHBOARD.ROOT,
+    showInNavbar: true,
+    authRequired: true, // Protected - only visible when logged in
   },
 ];
 
