@@ -24,13 +24,11 @@ const nextConfig: NextConfig = {
         remotePatterns:[
             {
                 protocol:"https",
-                hostname:"logo.clearbit.com",
-                pathname:"/**"
+                hostname:"**", // Accept all HTTPS hostnames
             },
             {
-                protocol:"https",
-                hostname:"images.unsplash.com",
-                pathname:"/**"
+                protocol:"http",
+                hostname:"**", // Accept all HTTP hostnames (for development)
             }
         ]
     }

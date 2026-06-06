@@ -1,7 +1,7 @@
 import apiFetcher from '@/apis/api.instance';
 import { authFetcher } from '@/apis/authInstace';
 import { Methods } from '@/constants/methods';
-import { IAuth, IRegisterRequest, ILoginRequest, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser } from './interface';
+import { IAuth, IRegisterRequest, ILoginRequest, IForgotPasswordResponse, IVerifyCodeResponse, IResetPasswordResponse, IUser, IRefreshToken } from './interface';
 
 // API endpoints factory
 export const authRepository = {
@@ -42,6 +42,11 @@ export const authRepository = {
 
   logout: (): Promise<{ message: string }> =>
     authFetcher<{ message: string }>(`/auth/logout`, {
+      method: Methods.POST,
+    }),
+
+  refreshToken: (): Promise<IRefreshToken> =>
+    authFetcher<IRefreshToken>(`/auth/refresh`, {
       method: Methods.POST,
     }),
 };

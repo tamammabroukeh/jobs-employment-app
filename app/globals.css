@@ -143,3 +143,40 @@ body {
 :root.dark .auth-bg {
   background-image: radial-gradient(circle at 1px 1px, var(--border) 0.5px, transparent 0);
 }
+
+
+/* Ant Design Pagination Styles */
+.antd-pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.antd-pagination .ant-pagination-item {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  transition: all 0.2s;
+}
+
+.antd-pagination .ant-pagination-item:hover {
+  border-color: var(--primary);
+}
+
+.antd-pagination .ant-pagination-item-active {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.antd-pagination .ant-pagination-item-active a {
+  color: var(--primary-foreground);
+}
+
+.antd-pagination .ant-pagination-prev,
+.antd-pagination .ant-pagination-next {
+  border-radius: 0.5rem;
+}
+
+.antd-pagination .ant-pagination-options {
+  margin-left: 1rem;
+}
