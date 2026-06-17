@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from '@/hooks/use-profile';
-import { Education } from '@/types/profile';
+import { IEducation } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { Controller } from 'react-hook-form';
 import { useEffect } from 'react';
@@ -11,8 +11,8 @@ import { useEffect } from 'react';
 interface EducationDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  education?: Education;
-  onSave: (data: Omit<Education, 'id'>) => void;
+  education?: IEducation;
+  onSave: (data: IEducation) => void;
 }
 
 export default function EducationDialog({
@@ -22,16 +22,16 @@ export default function EducationDialog({
   onSave,
 }: EducationDialogProps) {
   const t = useProfileTranslations();
-  const { control, handleSubmit, formState: { errors }, reset } = useForm<Omit<Education, 'id'>>({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<IEducation>({
     defaultValues: education || {
-      certificateType: 'bachelor',
+      certificate_type: 'bachelor',
       university: '',
       faculty: '',
       major: '',
-      majorName: '',
+      major_name: '',
       grade: 'good',
-      fromDate: '',
-      awardedDate: '',
+      from_date: '',
+      awarded_date: '',
     },
   });
 
@@ -41,7 +41,7 @@ export default function EducationDialog({
     }
   }, [education, reset]);
 
-  const onSubmit = (data: Omit<Education, 'id'>) => {
+  const onSubmit = (data: IEducation) => {
     onSave(data);
     reset();
     setIsOpen(false);
@@ -117,14 +117,14 @@ export default function EducationDialog({
         <Form layout="vertical" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Controller
-              name="certificateType"
+              name="certificate_type"
               control={control}
               rules={{ required: 'Certificate type is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('education.certificateType')}
-                  validateStatus={errors.certificateType ? 'error' : ''}
-                  help={errors.certificateType?.message}
+                  validateStatus={errors.certificate_type ? 'error' : ''}
+                  help={errors.certificate_type?.message}
                 >
                   <Select {...field} options={certificateTypeOptions} placeholder={t('education.certificateType')} />
                 </Form.Item>
@@ -177,14 +177,14 @@ export default function EducationDialog({
             />
 
             <Controller
-              name="majorName"
+              name="major_name"
               control={control}
               rules={{ required: 'Major name is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('education.majorName')}
-                  validateStatus={errors.majorName ? 'error' : ''}
-                  help={errors.majorName?.message}
+                  validateStatus={errors.major_name ? 'error' : ''}
+                  help={errors.major_name?.message}
                   className="md:col-span-2"
                 >
                   <Input {...field} placeholder={t('education.majorName')} />
@@ -210,14 +210,14 @@ export default function EducationDialog({
             <div />
 
             <Controller
-              name="fromDate"
+              name="from_date"
               control={control}
               rules={{ required: 'From date is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('education.fromDate')}
-                  validateStatus={errors.fromDate ? 'error' : ''}
-                  help={errors.fromDate?.message}
+                  validateStatus={errors.from_date ? 'error' : ''}
+                  help={errors.from_date?.message}
                 >
                   <Input {...field} type="month" placeholder={t('education.fromDate')} />
                 </Form.Item>
@@ -225,14 +225,14 @@ export default function EducationDialog({
             />
 
             <Controller
-              name="awardedDate"
+              name="awarded_date"
               control={control}
               rules={{ required: 'Awarded date is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('education.awardedDate')}
-                  validateStatus={errors.awardedDate ? 'error' : ''}
-                  help={errors.awardedDate?.message}
+                  validateStatus={errors.awarded_date ? 'error' : ''}
+                  help={errors.awarded_date?.message}
                 >
                   <Input {...field} type="month" placeholder={t('education.awardedDate')} />
                 </Form.Item>

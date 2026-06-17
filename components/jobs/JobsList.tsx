@@ -5,20 +5,7 @@ import JobCardClient from './JobCardClient';
 import { Typography, ReusableButton } from '@/components/Reusable-Components';
 import { useTypedTranslations } from '@/hooks/use-translations';
 import type { JobFiltersState } from './JobFilters';
-
-interface Job {
-  id: string;
-  displayId: string;
-  companyName: string;
-  companyLogo: string;
-  title: string;
-  createdAt: string;
-  roles: string[];
-  types: string[];
-  levels: string[];
-  experience: string;
-  location: string;
-}
+import { Job } from '@/apis/services/jobs/interfaces';
 
 interface JobsListProps {
   jobs: Job[];

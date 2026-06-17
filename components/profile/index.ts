@@ -1,6 +1,7 @@
 ﻿export { default as UserInfoSection } from './UserInfoSection';
 export { default as PersonalInfoDialog } from './PersonalInfoDialog';
 export { default as CareerInfoDialog } from './CareerInfoDialog';
+export { default as SocialLinksDialog } from './SocialLinksDialog';
 export { default as EducationSection } from './EducationSection';
 export { default as EducationDialog } from './EducationDialog';
 export { default as CertificateUploadDialog } from './CertificateUploadDialog';

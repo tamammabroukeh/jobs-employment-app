@@ -35,7 +35,9 @@
       "location": "Location",
       "website": "Website",
       "socialMedia": "Social Media",
-      "visitWebsite": "Visit Website"
+      "visitWebsite": "Visit Website",
+      "industry": "Industry",
+      "companySize": "Company Size"
     },
     "reviews": {
       "addReview": "Add Review",

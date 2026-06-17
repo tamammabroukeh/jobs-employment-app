@@ -3,15 +3,15 @@
 import { useState } from 'react';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from '@/hooks/use-profile';
-import { Skill } from '@/types/profile';
+import { ISkill } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 
 interface SkillsDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  skills: Skill[];
-  onSave: (skills: Skill[]) => void;
+  skills: ISkill[];
+  onSave: (skills: ISkill[]) => void;
 }
 
 export default function SkillsDialog({
@@ -21,7 +21,7 @@ export default function SkillsDialog({
   onSave,
 }: SkillsDialogProps) {
   const t = useProfileTranslations();
-  const [localSkills, setLocalSkills] = useState<Skill[]>(skills);
+  const [localSkills, setLocalSkills] = useState<ISkill[]>(skills);
 
   const skillLevelOptions = [
     { label: t('skillLevels.beginner'), value: 'beginner' },
@@ -31,22 +31,21 @@ export default function SkillsDialog({
   ];
 
   const handleAddSkill = () => {
-    const newSkill: Skill = {
-      id: Date.now().toString(),
+    const newSkill: ISkill = {
       name: '',
       level: 'beginner',
     };
     setLocalSkills([...localSkills, newSkill]);
   };
 
-  const handleDeleteSkill = (id: string) => {
-    setLocalSkills(localSkills.filter((skill) => skill.id !== id));
+  const handleDeleteSkill = (index: number) => {
+    setLocalSkills(localSkills.filter((_, i) => i !== index));
   };
 
-  const handleSkillChange = (id: string, field: 'name' | 'level', value: string) => {
+  const handleSkillChange = (index: number, field: 'name' | 'level', value: string) => {
     setLocalSkills(
-      localSkills.map((skill) =>
-        skill.id === id ? { ...skill, [field]: value } : skill
+      localSkills.map((skill, i) =>
+        i === index ? { ...skill, [field]: value } : skill
       )
     );
   };
@@ -92,7 +91,7 @@ export default function SkillsDialog({
           <Form layout="vertical">
             <div className="space-y-4 max-h-96 overflow-y-auto">
               {localSkills.map((skill, index) => (
-                <div key={skill.id} className="flex gap-3 items-start">
+                <div key={index} className="flex gap-3 items-start">
                   <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
                     <Form.Item
                       label={index === 0 ? t('skills.skillName') : ''}
@@ -100,7 +99,7 @@ export default function SkillsDialog({
                     >
                       <Input
                         value={skill.name}
-                        onChange={(e) => handleSkillChange(skill.id, 'name', e.target.value)}
+                        onChange={(e) => handleSkillChange(index, 'name', e.target.value)}
                         placeholder={t('skills.skillName')}
                       />
                     </Form.Item>
@@ -111,7 +110,7 @@ export default function SkillsDialog({
                     >
                       <Select
                         value={skill.level}
-                        onChange={(value) => handleSkillChange(skill.id, 'level', value)}
+                        onChange={(value) => handleSkillChange(index, 'level', value)}
                         options={skillLevelOptions}
                         placeholder={t('skills.skillLevel')}
                       />
@@ -120,7 +119,7 @@ export default function SkillsDialog({
 
                   <ReusableButton
                     btnText=""
-                    onClick={() => handleDeleteSkill(skill.id)}
+                    onClick={() => handleDeleteSkill(index)}
                     variant="default"
                     icon={<DeleteOutlined />}
                     className={index === 0 ? 'mt-8' : ''}

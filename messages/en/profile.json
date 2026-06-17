@@ -146,7 +146,8 @@
     "employed": "Employed",
     "unemployed": "Unemployed",
     "freelancer": "Freelancer",
-    "student": "Student"
+    "student": "Student",
+    "open_to_work":"Open To Work"
   },
   "educationLevelOptions": {
     "highSchool": "High School",

@@ -1,136 +1,37 @@
 import { getCompaniesTranslations } from '@/lib/get-translations';
 import { Typography, ReusableTabs } from '@/components/Reusable-Components';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Metadata } from 'next';
 import CompanyOverview from '@/components/companies/detail/CompanyOverview';
 import CompanyReviews from '@/components/companies/detail/CompanyReviews';
 import CompanyJobs from '@/components/companies/detail/CompanyJobs';
 import CompanyDirectApply from '@/components/companies/detail/CompanyDirectApply';
-
-// Mock data - Replace with actual API call
-const mockCompanyData = {
-  id: '1',
-  name: 'Google',
-  logo: 'https://logo.clearbit.com/google.com',
-  coverImage: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=400&fit=crop',
-  rating: 4.5,
-  reviewsCount: 1250,
-  description:
-    'Google is a multinational technology company that specializes in Internet-related services and products, including search, cloud computing, and advertising technologies. Founded in 1998, Google has grown to become one of the most influential companies in the world, shaping how billions of people access and interact with information online.',
-  founded: '1998',
-  employeeCount: '100,000+ employees',
-  location: 'Mountain View, CA',
-  website: 'https://www.google.com',
-  socialMedia: {
-    linkedin: 'https://www.linkedin.com/company/google',
-    twitter: 'https://twitter.com/Google',
-    facebook: 'https://www.facebook.com/Google',
-    instagram: 'https://www.instagram.com/google',
-  },
-  overallRating: 4.5,
-  totalRatings: 1250,
-  wouldRecommend: 85,
-  ceoPerformance: 92,
-  categoryRatings: {
-    compensation: 4.2,
-    culture: 4.6,
-    workLife: 4.1,
-    diversity: 4.4,
-    management: 4.3,
-  },
-  reviews: [
-    {
-      id: '1',
-      rating: 4,
-      userName: 'John Doe',
-      date: '27/01/2026',
-      position: 'Former employee, last year at 2022',
-      recommend: false,
-      ceoApproval: true,
-      subratings: {
-        compensation: 4,
-        culture: 4,
-        workLife: 3,
-        diversity: 5,
-        management: 3,
-      },
-      agrees: 5,
-      disagrees: 2,
-    },
-    {
-      id: '2',
-      rating: 5,
-      userName: 'Jane Smith',
-      date: '15/01/2026',
-      position: 'Current employee, 3 years',
-      recommend: true,
-      ceoApproval: true,
-      subratings: {
-        compensation: 5,
-        culture: 5,
-        workLife: 4,
-        diversity: 5,
-        management: 5,
-      },
-      agrees: 12,
-      disagrees: 1,
-    },
-  ],
-  jobs: [
-    {
-      id: '1',
-      displayId: 'JOB-001',
-      companyName: 'Google',
-      companyLogo: 'https://logo.clearbit.com/google.com',
-      title: 'Senior Frontend Developer',
-      createdAt: '2024-01-15',
-      roles: ['Frontend', 'React'],
-      types: ['Full-time', 'Remote'],
-      levels: ['Senior'],
-      experience: '5+ years',
-      location: 'San Francisco, CA',
-    },
-    {
-      id: '2',
-      displayId: 'JOB-002',
-      companyName: 'Google',
-      companyLogo: 'https://logo.clearbit.com/google.com',
-      title: 'Backend Engineer',
-      createdAt: '2024-01-14',
-      roles: ['Backend', 'Node.js'],
-      types: ['Full-time', 'Hybrid'],
-      levels: ['Mid-level'],
-      experience: '3-5 years',
-      location: 'Mountain View, CA',
-    },
-    {
-      id: '3',
-      displayId: 'JOB-003',
-      companyName: 'Google',
-      companyLogo: 'https://logo.clearbit.com/google.com',
-      title: 'Product Manager',
-      createdAt: '2024-01-13',
-      roles: ['Product', 'Management'],
-      types: ['Full-time', 'On-site'],
-      levels: ['Senior'],
-      experience: '5+ years',
-      location: 'New York, NY',
-    },
-  ],
-};
+import type { ICompany } from '@/apis/services/companies/interface';
+import { companiesRepository } from '@/apis/services/companies';
 
 interface CompanyDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
 export async function generateMetadata({ params }: CompanyDetailPageProps): Promise<Metadata> {
-  const { id } = await params;
-  // In real app, fetch company data based on id
-  const company = mockCompanyData;
+  try {
+    const { id } = await params;
+    const result = await companiesRepository.getCompanyById(id);
+    if (result) {
+      return {
+        title: `${result.name} - Company Profile`,
+        description: result.description,
+      };
+    }
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+  }
 
+  // Fallback metadata
   return {
-    title: `${company.name} - Company Profile`,
-    description: company.description,
+    title: 'Company Profile',
+    description: 'View company details, reviews, and available jobs',
   };
 }
 
@@ -138,8 +39,47 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
   const { id } = await params;
   const t = await getCompaniesTranslations();
 
-  // In real app, fetch company data based on id
-  const company = mockCompanyData;
+  // Fetch company data from API
+  let company: ICompany | null = null;
+  let error: string | null = null;
+
+  try {
+    const result = await companiesRepository.getCompanyById(id);
+    console.log('result', result)
+    if (result) {
+      // Use API data directly, just add empty arrays for reviews and jobs
+      company = {
+        ...result,
+      };
+    } else {
+      error = 'Failed to fetch company details';
+    }
+  } catch (err) {
+    console.error('Error fetching company details:', err);
+    error = 'Failed to load company details. Please try again later.';
+  }
+
+  // If there's an error, show error UI
+  if (error || !company) {
+    return (
+      <main className="min-h-screen bg-background flex items-center justify-center">
+        <div className="auth-card p-8 max-w-md text-center">
+          <Typography variant="h2" className="text-error mb-4">
+            {error || 'Company not found'}
+          </Typography>
+          <Typography variant="p" className="text-muted-foreground mb-6">
+            Unable to load company details. The company may not exist or there may be a network issue.
+          </Typography>
+          <Link
+            href="/companies"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          >
+            Back to Companies
+          </Link>
+        </div>
+      </main>
+    );
+  }
 
   const tabItems = [
     {
@@ -149,10 +89,13 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
         <CompanyOverview
           description={company.description}
           founded={company.founded}
-          employeeCount={company.employeeCount}
+          employeeCount={company.employee_count}
           location={company.location}
           website={company.website}
-          socialMedia={company.socialMedia}
+          socialMedia={company.social_media}
+          industry={company.industry}
+          companySize={company.company_size}
+          openPositions={company.open_positions}
         />
       ),
     },
@@ -162,11 +105,17 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
       children: (
         <CompanyReviews
           companyId={id}
-          overallRating={company.overallRating}
-          totalRatings={company.totalRatings}
-          wouldRecommend={company.wouldRecommend}
-          ceoPerformance={company.ceoPerformance}
-          categoryRatings={company.categoryRatings}
+          overallRating={company.rating}
+          totalRatings={company.review_count}
+          wouldRecommend={company.would_recommend}
+          ceoPerformance={company.ceo_performance}
+          categoryRatings={{
+            compensation: company.category_ratings?.compensation || 0,
+            culture: company.category_ratings?.culture || 0,
+            workLife: company.category_ratings?.work_life || 0,
+            diversity: company.category_ratings?.diversity || 0,
+            management: company.category_ratings?.management || 0,
+          }}
           reviews={company.reviews}
         />
       ),
@@ -186,9 +135,9 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
   return (
     <main className="min-h-screen bg-background">
       {/* Cover Image */}
-      <div className="relative w-full h-64 md:h-80 bg-gradient-to-r from-primary/20 to-primary/5">
+      <div className="relative w-full h-64 md:h-80 bg-linear-to-r from-primary/20 to-primary/5">
         <Image
-          src={company.coverImage}
+          src={company.cover_image || '/default-cover-image.png'}
           alt={`${company.name} cover`}
           fill
           className="object-cover"
@@ -204,7 +153,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
               {/* Company Logo */}
               <div className="w-32 h-32 relative rounded-xl overflow-hidden bg-card border-4 border-background shadow-lg shrink-0">
                 <Image
-                  src={company.logo}
+                  src={company.logo || '/default-company-logo.png'}
                   alt={company.name}
                   fill
                   className="object-contain p-4"
@@ -233,7 +182,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
                     ))}
                   </div>
                   <Typography variant="h5" className="text-muted-foreground">
-                    {company.rating.toFixed(1)} ({company.reviewsCount} reviews)
+                    {company.rating?.toFixed(1) || '0.0'} ({company.review_count || 0} reviews)
                   </Typography>
                 </div>
               </div>

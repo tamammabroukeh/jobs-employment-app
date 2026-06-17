@@ -1,5 +1,7 @@
 // Company/Employer Interfaces
 
+import { Job } from "../jobs/interfaces";
+
 export interface ICompanySocialMedia {
   linkedin?: string;
   twitter?: string;
@@ -41,6 +43,7 @@ export interface ICompany {
   ceo_performance: number;
   category_ratings: ICategoryRatings;
   reviews: any[]; // You can define a proper review interface if needed
+  jobs: Job[]
   open_positions: number;
   company_size_range: ICompanySizeRange;
   created_at: string;
@@ -59,9 +62,8 @@ export interface ICompaniesResponse {
   prev_page_url: string | null;
 }
 
-export interface ICompanyDetailResponse {
-  data: ICompany;
-}
+export interface ICompanyDetailResponse extends ICompany{}
+
 export type TSortByOption = "rating" | "name" | "open_positions" | "created_at"
 
 export interface ICompaniesQueryParams {

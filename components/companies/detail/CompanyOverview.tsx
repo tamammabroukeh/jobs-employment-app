@@ -16,6 +16,10 @@ interface CompanyOverviewProps {
     facebook?: string;
     instagram?: string;
   };
+  // Additional fields from API
+  industry?: string;
+  companySize?: string;
+  openPositions?: number;
 }
 
 export default function CompanyOverview({
@@ -25,6 +29,9 @@ export default function CompanyOverview({
   location,
   website,
   socialMedia,
+  industry,
+  companySize,
+  openPositions,
 }: CompanyOverviewProps) {
   const t = useCompaniesTranslations();
 
@@ -41,7 +48,7 @@ export default function CompanyOverview({
       </div>
 
       {/* Company Info Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Founded */}
         <div className="auth-card p-6">
           <div className="flex items-center gap-3 mb-2">
@@ -98,6 +105,51 @@ export default function CompanyOverview({
             <Typography variant="h5">{t('detail.overview.visitWebsite')}</Typography>
           </Link>
         </div>
+
+        {/* Industry - New field */}
+        {industry && (
+          <div className="auth-card p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <i className="fa-solid fa-industry text-primary text-xl" />
+              <Typography variant="h5" className="text-muted-foreground">
+                {t('detail.overview.industry')}
+              </Typography>
+            </div>
+            <Typography variant="h4" className="text-foreground">
+              {industry}
+            </Typography>
+          </div>
+        )}
+
+        {/* Company Size - New field */}
+        {companySize && (
+          <div className="auth-card p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <i className="fa-solid fa-building text-success text-xl" />
+              <Typography variant="h5" className="text-muted-foreground">
+                {t('detail.overview.companySize')}
+              </Typography>
+            </div>
+            <Typography variant="h4" className="text-foreground">
+              {companySize}
+            </Typography>
+          </div>
+        )}
+
+        {/* Open Positions - New field */}
+        {openPositions !== undefined && openPositions > 0 && (
+          <div className="auth-card p-6">
+            <div className="flex items-center gap-3 mb-2">
+              <i className="fa-solid fa-briefcase text-warning text-xl" />
+              <Typography variant="h5" className="text-muted-foreground">
+                {t('detail.overview.openPositions') || 'Open Positions'}
+              </Typography>
+            </div>
+            <Typography variant="h4" className="text-foreground">
+              {openPositions}
+            </Typography>
+          </div>
+        )}
       </div>
 
       {/* Social Media */}

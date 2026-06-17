@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from '@/hooks/use-profile';
-import { Experience } from '@/types/profile';
+import { IWorkExperience } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select, Checkbox } from 'antd';
 import { Controller, useWatch } from 'react-hook-form';
 import { useEffect } from 'react';
@@ -13,8 +13,8 @@ const { TextArea } = Input;
 interface ExperienceDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  experience?: Experience;
-  onSave: (data: Omit<Experience, 'id'>) => void;
+  experience?: IWorkExperience;
+  onSave: (data: IWorkExperience) => void;
 }
 
 export default function ExperienceDialog({
@@ -24,19 +24,19 @@ export default function ExperienceDialog({
   onSave,
 }: ExperienceDialogProps) {
   const t = useProfileTranslations();
-  const { control, handleSubmit, formState: { errors }, reset, setValue } = useForm<Omit<Experience, 'id'>>({
+  const { control, handleSubmit, formState: { errors }, reset, setValue } = useForm<IWorkExperience>({
     defaultValues: experience || {
-      jobTitle: '',
-      companyName: '',
-      jobRoles: [],
-      fromDate: '',
-      toDate: '',
-      isCurrentlyWorking: false,
+      job_title: '',
+      company_name: '',
+      job_roles: [],
+      from_date: '',
+      to_date: '',
+      is_currently_working: false,
       description: '',
     },
   });
 
-  const isCurrentlyWorking = useWatch({ control, name: 'isCurrentlyWorking' });
+  const is_currently_working = useWatch({ control, name: 'is_currently_working' });
 
   useEffect(() => {
     if (experience) {
@@ -45,12 +45,12 @@ export default function ExperienceDialog({
   }, [experience, reset]);
 
   useEffect(() => {
-    if (isCurrentlyWorking) {
-      setValue('toDate', '');
+    if (is_currently_working) {
+      setValue('to_date', '');
     }
-  }, [isCurrentlyWorking, setValue]);
+  }, [is_currently_working, setValue]);
 
-  const onSubmit = (data: Omit<Experience, 'id'>) => {
+  const onSubmit = (data: IWorkExperience) => {
     onSave(data);
     reset();
     setIsOpen(false);
@@ -111,14 +111,14 @@ export default function ExperienceDialog({
         <Form layout="vertical" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Controller
-              name="jobTitle"
+              name="job_title"
               control={control}
               rules={{ required: 'Job title is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('experience.jobTitle')}
-                  validateStatus={errors.jobTitle ? 'error' : ''}
-                  help={errors.jobTitle?.message}
+                  validateStatus={errors.job_title ? 'error' : ''}
+                  help={errors.job_title?.message}
                 >
                   <Select {...field} options={jobTitleOptions} placeholder={t('experience.jobTitle')} />
                 </Form.Item>
@@ -126,14 +126,14 @@ export default function ExperienceDialog({
             />
 
             <Controller
-              name="companyName"
+              name="company_name"
               control={control}
               rules={{ required: 'Company name is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('experience.companyName')}
-                  validateStatus={errors.companyName ? 'error' : ''}
-                  help={errors.companyName?.message}
+                  validateStatus={errors.company_name ? 'error' : ''}
+                  help={errors.company_name?.message}
                 >
                   <Input {...field} placeholder={t('experience.companyName')} />
                 </Form.Item>
@@ -141,14 +141,14 @@ export default function ExperienceDialog({
             />
 
             <Controller
-              name="jobRoles"
+              name="job_roles"
               control={control}
               rules={{ required: 'Job roles is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('experience.jobRoles')}
-                  validateStatus={errors.jobRoles ? 'error' : ''}
-                  help={errors.jobRoles?.message}
+                  validateStatus={errors.job_roles ? 'error' : ''}
+                  help={errors.job_roles?.message}
                   className="md:col-span-2"
                 >
                   <Select
@@ -162,30 +162,30 @@ export default function ExperienceDialog({
             />
 
             <Controller
-              name="fromDate"
+              name="from_date"
               control={control}
               rules={{ required: 'From date is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('experience.fromDate')}
-                  validateStatus={errors.fromDate ? 'error' : ''}
-                  help={errors.fromDate?.message}
+                  validateStatus={errors.from_date ? 'error' : ''}
+                  help={errors.from_date?.message}
                 >
                   <Input {...field} type="month" placeholder={t('experience.fromDate')} />
                 </Form.Item>
               )}
             />
 
-            {!isCurrentlyWorking && (
+            {!is_currently_working && (
               <Controller
-                name="toDate"
+                name="to_date"
                 control={control}
-                rules={{ required: !isCurrentlyWorking ? 'To date is required' : false }}
+                rules={{ required: !is_currently_working ? 'To date is required' : false }}
                 render={({ field }) => (
                   <Form.Item
                     label={t('experience.toDate')}
-                    validateStatus={errors.toDate ? 'error' : ''}
-                    help={errors.toDate?.message}
+                    validateStatus={errors.to_date ? 'error' : ''}
+                    help={errors.to_date?.message}
                   >
                     <Input {...field} type="month" placeholder={t('experience.toDate')} />
                   </Form.Item>
@@ -194,7 +194,7 @@ export default function ExperienceDialog({
             )}
 
             <Controller
-              name="isCurrentlyWorking"
+              name="is_currently_working"
               control={control}
               render={({ field }) => (
                 <Form.Item className="md:col-span-2">

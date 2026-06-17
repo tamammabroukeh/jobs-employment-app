@@ -18,6 +18,7 @@ export const companiesRepository = {
    * @returns Promise with paginated companies data
    */
   getCompanies: (params?: ICompaniesQueryParams): Promise<ICompaniesResponse> => {
+    // Use buildEndpoint with typed params - it handles undefined/null/empty values
     const endpoint = buildEndpoint('/companies', params);
     
     return apiFetcher<ICompaniesResponse>(endpoint, {
@@ -41,6 +42,7 @@ export const companiesRepository = {
    * @returns Promise with top companies data
    */
   getTopCompanies: (limit: number = 8): Promise<ICompaniesResponse> => {
+    // Using buildEndpoint directly with query params object
     const endpoint = buildEndpoint('/companies', {
       per_page: limit,
       sort_by: 'rating',

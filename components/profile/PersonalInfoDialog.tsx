@@ -3,15 +3,27 @@
 import { useForm } from 'react-hook-form';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from '@/hooks/use-profile';
-import { PersonalInfo } from '@/types/profile';
+import { IJobSeekerProfile, IUpdatePersonalInfoRequest } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { Controller } from 'react-hook-form';
 
 interface PersonalInfoDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  personalInfo: PersonalInfo;
-  onSave: (data: PersonalInfo) => void;
+  personalInfo: IJobSeekerProfile;
+  onSave: (data: IUpdatePersonalInfoRequest) => Promise<boolean>;
+}
+
+interface PersonalInfoFormData {
+  first_name: string;
+  last_name: string;
+  gender: string;
+  nationality: string;
+  city: string;
+  address: string;
+  phone: string;
+  date_of_birth: string;
+  marital_status: string;
 }
 
 export default function PersonalInfoDialog({
@@ -21,13 +33,35 @@ export default function PersonalInfoDialog({
   onSave,
 }: PersonalInfoDialogProps) {
   const t = useProfileTranslations();
-  const { control, handleSubmit, formState: { errors } } = useForm<PersonalInfo>({
-    defaultValues: personalInfo,
+  const { control, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>({
+    defaultValues: {
+      first_name: personalInfo.first_name,
+      last_name: personalInfo.last_name,
+      gender: personalInfo.gender,
+      nationality: personalInfo.nationality,
+      city: personalInfo.city,
+      address: personalInfo.address,
+      phone: personalInfo.phone,
+      date_of_birth: personalInfo.date_of_birth,
+      marital_status: personalInfo.marital_status,
+    },
   });
 
-  const onSubmit = (data: PersonalInfo) => {
-    onSave(data);
-    setIsOpen(false);
+  const onSubmit = async (data: PersonalInfoFormData) => {
+    // Create full_name from first and last name
+    const full_name = `${data.first_name} ${data.last_name}`;
+    const location = `${data.city}`;
+    
+    const success = await onSave({
+      ...data,
+      full_name,
+      location,
+    });
+    
+    // Only close dialog if update was successful
+    if (success) {
+      setIsOpen(false);
+    }
   };
 
   const genderOptions = [
@@ -71,14 +105,14 @@ export default function PersonalInfoDialog({
         <Form layout="vertical" className="mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Controller
-              name="firstName"
+              name="first_name"
               control={control}
               rules={{ required: 'First name is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('userInfo.personalInfo.firstName')}
-                  validateStatus={errors.firstName ? 'error' : ''}
-                  help={errors.firstName?.message}
+                  validateStatus={errors.first_name ? 'error' : ''}
+                  help={errors.first_name?.message}
                 >
                   <Input {...field} placeholder={t('userInfo.personalInfo.firstName')} />
                 </Form.Item>
@@ -86,14 +120,14 @@ export default function PersonalInfoDialog({
             />
 
             <Controller
-              name="lastName"
+              name="last_name"
               control={control}
               rules={{ required: 'Last name is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('userInfo.personalInfo.lastName')}
-                  validateStatus={errors.lastName ? 'error' : ''}
-                  help={errors.lastName?.message}
+                  validateStatus={errors.last_name ? 'error' : ''}
+                  help={errors.last_name?.message}
                 >
                   <Input {...field} placeholder={t('userInfo.personalInfo.lastName')} />
                 </Form.Item>
@@ -161,27 +195,6 @@ export default function PersonalInfoDialog({
             />
 
             <Controller
-              name="email"
-              control={control}
-              rules={{ 
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address'
-                }
-              }}
-              render={({ field }) => (
-                <Form.Item
-                  label={t('userInfo.personalInfo.email')}
-                  validateStatus={errors.email ? 'error' : ''}
-                  help={errors.email?.message}
-                >
-                  <Input {...field} type="email" placeholder={t('userInfo.personalInfo.email')} />
-                </Form.Item>
-              )}
-            />
-
-            <Controller
               name="phone"
               control={control}
               rules={{ required: 'Phone is required' }}
@@ -197,14 +210,14 @@ export default function PersonalInfoDialog({
             />
 
             <Controller
-              name="dateOfBirth"
+              name="date_of_birth"
               control={control}
               rules={{ required: 'Date of birth is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('userInfo.personalInfo.dateOfBirth')}
-                  validateStatus={errors.dateOfBirth ? 'error' : ''}
-                  help={errors.dateOfBirth?.message}
+                  validateStatus={errors.date_of_birth ? 'error' : ''}
+                  help={errors.date_of_birth?.message}
                 >
                   <Input
                     {...field}
@@ -217,14 +230,14 @@ export default function PersonalInfoDialog({
             />
 
             <Controller
-              name="maritalStatus"
+              name="marital_status"
               control={control}
               rules={{ required: 'Marital status is required' }}
               render={({ field }) => (
                 <Form.Item
                   label={t('userInfo.personalInfo.maritalStatus')}
-                  validateStatus={errors.maritalStatus ? 'error' : ''}
-                  help={errors.maritalStatus?.message}
+                  validateStatus={errors.marital_status ? 'error' : ''}
+                  help={errors.marital_status?.message}
                 >
                   <Select {...field} options={maritalStatusOptions} placeholder={t('userInfo.personalInfo.maritalStatus')} />
                 </Form.Item>
