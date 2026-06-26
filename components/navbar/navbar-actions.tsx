@@ -13,12 +13,17 @@ function NavbarActions() {
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   
-  // Filter navbar links based on authentication status
+  // Filter navbar links based on authentication status and user role
   const visibleLinks = NAVBAR_LINKS.filter(link => {
     if (!link.showInNavbar) return false;
     
     // If link requires auth, only show when authenticated
     if (link.authRequired && !isAuthenticated) return false;
+    
+    // If link has specific roles, check if user has matching role
+    if (link.roles && link.roles.length > 0 && user) {
+      return link.roles.includes(user.role);
+    }
     
     return true;
   });

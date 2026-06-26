@@ -6,15 +6,15 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { ISkill } from '@/apis/services/job-seeker/interface';
 import { EditOutlined } from '@ant-design/icons';
 import SkillsDialog from './SkillsDialog';
+import { updateSkillsAction } from '@/apis/services/job-seeker/actions';
+import { toast } from 'sonner';
 
 interface SkillsSectionProps {
   skills: ISkill[];
-  onSaveSkills: (skills: ISkill[]) => void;
 }
 
 export default function SkillsSection({
   skills,
-  onSaveSkills,
 }: SkillsSectionProps) {
   const t = useProfileTranslations();
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
@@ -23,10 +23,21 @@ export default function SkillsSection({
     setIsSkillsDialogOpen(true);
   };
 
-  const handleSaveSkills = async (updatedSkills: ISkill[]) => {
-    onSaveSkills(updatedSkills);
-  };
+  // Skills handler
+  const handleSaveSkills = async (skills: ISkill[]): Promise<boolean> => {
+    console.log("[SkillsSection] Updating skills:", skills);
+    const result = await updateSkillsAction({ skills });
+    console.log("[SkillsSection] Skills update result:", result);
 
+    if (result.data?.success) {
+      toast.success(result.data.message || "Skills updated successfully");
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
   const getSkillLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':

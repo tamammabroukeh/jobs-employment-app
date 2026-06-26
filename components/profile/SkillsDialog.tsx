@@ -11,7 +11,7 @@ interface SkillsDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   skills: ISkill[];
-  onSave: (skills: ISkill[]) => void;
+  onSave: (skills: ISkill[]) => Promise<boolean>;
 }
 
 export default function SkillsDialog({
@@ -22,6 +22,7 @@ export default function SkillsDialog({
 }: SkillsDialogProps) {
   const t = useProfileTranslations();
   const [localSkills, setLocalSkills] = useState<ISkill[]>(skills);
+  const [isSaving, setIsSaving] = useState(false);
 
   const skillLevelOptions = [
     { label: t('skillLevels.beginner'), value: 'beginner' },
@@ -50,11 +51,17 @@ export default function SkillsDialog({
     );
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Filter out skills with empty names
     const validSkills = localSkills.filter((skill) => skill.name.trim() !== '');
-    onSave(validSkills);
-    setIsOpen(false);
+    
+    setIsSaving(true);
+    const success = await onSave(validSkills);
+    setIsSaving(false);
+    
+    if (success) {
+      setIsOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -68,11 +75,13 @@ export default function SkillsDialog({
         btnText={t('skills.cancel')}
         onClick={handleCancel}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('skills.save')}
         onClick={handleSave}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

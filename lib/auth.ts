@@ -9,7 +9,7 @@ export interface User {
   id: string
   email: string
   name: string
-  role: "admin" | "owner" | "company" | "employee"
+  role: "admin" | "owner" | "employer" | "employee"
   accessToken: string
   refreshToken: string
   tokenExpires: number
@@ -59,7 +59,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 }
 
 // Map role string to NextAuth role type
-const mapRole = (roles: string[] | undefined): "admin" | "owner" | "company" | "employee" => {
+const mapRole = (roles: string[] | undefined): "admin" | "owner" | "employer" | "employee" => {
   if (!roles || roles.length === 0) return "employee";
   
   const role = roles[0].toLowerCase();
@@ -69,8 +69,9 @@ const mapRole = (roles: string[] | undefined): "admin" | "owner" | "company" | "
       return "admin";
     case "owner":
       return "owner";
-    case "company":
-      return "company";
+    case "employer":
+    case "company": // Support both "employer" and "company" from API
+      return "employer";
     case "employee":
       return "employee";
     default:
@@ -169,7 +170,7 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id as string,
-          role: token.role as "admin" | "owner" | "company" | "employee",
+          role: token.role as "admin" | "owner" | "employer" | "employee",
         },
         accessToken: token.accessToken as string,
         error: undefined,

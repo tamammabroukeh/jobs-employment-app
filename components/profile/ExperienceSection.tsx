@@ -5,20 +5,16 @@ import { ReusableCard, ReusableButton, Flex, ReusableDialog } from '@/components
 import { useProfileTranslations } from '@/hooks/use-profile';
 import { IWorkExperience } from '@/apis/services/job-seeker/interface';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { toast } from 'sonner';
+import { updateWorkExperienceAction } from '@/apis/services/job-seeker/actions';
 import ExperienceDialog from './ExperienceDialog';
 
 interface ExperienceSectionProps {
   experiences: IWorkExperience[];
-  onAddExperience: (data: IWorkExperience) => void;
-  onUpdateExperience: (index: number, data: IWorkExperience) => void;
-  onDeleteExperience: (index: number) => void;
 }
 
 export default function ExperienceSection({
   experiences,
-  onAddExperience,
-  onUpdateExperience,
-  onDeleteExperience,
 }: ExperienceSectionProps) {
   const t = useProfileTranslations();
   const [isExperienceDialogOpen, setIsExperienceDialogOpen] = useState(false);
@@ -26,7 +22,48 @@ export default function ExperienceSection({
   const [selectedExperience, setSelectedExperience] = useState<{ index: number; experience: IWorkExperience } | undefined>();
   const [experienceToDelete, setExperienceToDelete] = useState<number | null>(null);
 
-  const handleAddExperience = () => {
+  // Experience handler - calls the API to update work experience
+  const handleSaveWorkExperience = async (work_experience: IWorkExperience[]) => {
+    console.log('[ExperienceSection] Updating work experience:', work_experience);
+    const result = await updateWorkExperienceAction({ work_experience });
+    console.log('[ExperienceSection] Work experience update result:', result);
+
+    if (result.data?.success) {
+      toast.success(result.data.message || 'Work experience updated successfully');
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
+
+  const handleAddExperience = async (data: IWorkExperience) => {
+    const updatedWorkExperience = [...experiences, data];
+    const success = await handleSaveWorkExperience(updatedWorkExperience);
+    if (success) {
+      setIsExperienceDialogOpen(false);
+    }
+  };
+
+  const handleUpdateExperience = async (index: number, data: IWorkExperience) => {
+    const updatedWorkExperience = experiences.map((exp, i) => (i === index ? data : exp));
+    const success = await handleSaveWorkExperience(updatedWorkExperience);
+    if (success) {
+      setIsExperienceDialogOpen(false);
+    }
+  };
+
+  const handleDeleteExperience = async (index: number) => {
+    const updatedWorkExperience = experiences.filter((_, i) => i !== index);
+    const success = await handleSaveWorkExperience(updatedWorkExperience);
+    if (success) {
+      setIsDeleteDialogOpen(false);
+      setExperienceToDelete(null);
+    }
+  };
+
+  const handleOpenAddDialog = () => {
     setSelectedExperience(undefined);
     setIsExperienceDialogOpen(true);
   };
@@ -36,11 +73,11 @@ export default function ExperienceSection({
     setIsExperienceDialogOpen(true);
   };
 
-  const handleSaveExperience = (data: IWorkExperience) => {
+  const handleSaveExperience = async (data: IWorkExperience) => {
     if (selectedExperience) {
-      onUpdateExperience(selectedExperience.index, data);
+      await handleUpdateExperience(selectedExperience.index, data);
     } else {
-      onAddExperience(data);
+      await handleAddExperience(data);
     }
   };
 
@@ -51,9 +88,7 @@ export default function ExperienceSection({
 
   const handleConfirmDelete = () => {
     if (experienceToDelete !== null) {
-      onDeleteExperience(experienceToDelete);
-      setExperienceToDelete(null);
-      setIsDeleteDialogOpen(false);
+      handleDeleteExperience(experienceToDelete);
     }
   };
 
@@ -87,7 +122,7 @@ export default function ExperienceSection({
         <h2 className="text-2xl font-bold">{t('experience.title')}</h2>
         <ReusableButton
           btnText={t('experience.addExperience')}
-          onClick={handleAddExperience}
+          onClick={handleOpenAddDialog}
           variant="primary"
           icon={<PlusOutlined />}
         />

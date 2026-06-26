@@ -141,6 +141,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
  * Handle fetch errors and categorize them appropriately
  */
 function handleFetchError(error: unknown, timeout: number): never {
+  console.log('error', error)
   // Handle abort errors specifically
   if (error instanceof DOMException && error.name === "AbortError") {
     console.error("Request timed out after", timeout, "ms");

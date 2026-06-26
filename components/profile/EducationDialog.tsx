@@ -6,13 +6,13 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { IEducation } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { Controller } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface EducationDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   education?: IEducation;
-  onSave: (data: IEducation) => void;
+  onSave: (data: IEducation) => Promise<boolean>;
 }
 
 export default function EducationDialog({
@@ -22,6 +22,7 @@ export default function EducationDialog({
   onSave,
 }: EducationDialogProps) {
   const t = useProfileTranslations();
+  const [isSaving, setIsSaving] = useState(false);
   const { control, handleSubmit, formState: { errors }, reset } = useForm<IEducation>({
     defaultValues: education || {
       certificate_type: 'bachelor',
@@ -41,10 +42,15 @@ export default function EducationDialog({
     }
   }, [education, reset]);
 
-  const onSubmit = (data: IEducation) => {
-    onSave(data);
-    reset();
-    setIsOpen(false);
+  const onSubmit = async (data: IEducation) => {
+    setIsSaving(true);
+    const success = await onSave(data);
+    setIsSaving(false);
+    
+    if (success) {
+      reset();
+      setIsOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -95,11 +101,13 @@ export default function EducationDialog({
         btnText={t('education.cancel')}
         onClick={handleCancel}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('education.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

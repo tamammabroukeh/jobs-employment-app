@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Avatar } from "antd";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
+import { UserOutlined, EditOutlined, CameraOutlined } from "@ant-design/icons";
 import {
   ReusableCard,
   ReusableButton,
@@ -13,24 +13,23 @@ import { IJobSeekerProfile, IUpdatePersonalInfoRequest, IUpdateCareerInfoRequest
 import PersonalInfoDialog from "./PersonalInfoDialog";
 import CareerInfoDialog from "./CareerInfoDialog";
 import SocialLinksDialog from "./SocialLinksDialog";
+import { updateCareerInfoAction, updatePersonalInfoAction, updateSocialLinksAction } from "@/apis/services/job-seeker/actions";
+import { toast } from "sonner";
 
 interface UserInfoSectionProps {
   profile: IJobSeekerProfile;
-  onUpdatePersonalInfo: (data: IUpdatePersonalInfoRequest) => Promise<boolean>;
-  onUpdateCareerInfo: (data: IUpdateCareerInfoRequest) => Promise<boolean>;
-  onUpdateSocialLinks: (data: IUpdateSocialLinksRequest) => Promise<boolean>;
 }
 
 export default function UserInfoSection({
   profile,
-  onUpdatePersonalInfo,
-  onUpdateCareerInfo,
-  onUpdateSocialLinks,
 }: UserInfoSectionProps) {
   const t = useProfileTranslations();
   const [isPersonalDialogOpen, setIsPersonalDialogOpen] = useState(false);
   const [isCareerDialogOpen, setIsCareerDialogOpen] = useState(false);
   const [isSocialLinksDialogOpen, setIsSocialLinksDialogOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(profile.image);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const calculateAge = (dateOfBirth: string) => {
     const today = new Date();
@@ -45,21 +44,208 @@ export default function UserInfoSection({
     }
     return age;
   };
+  // Personal info handler
+  const handleUpdatePersonalInfo = async (data: IUpdatePersonalInfoRequest): Promise<boolean> => {
+    console.log('[ProfileClient] Updating personal info:', data);
+    const result = await updatePersonalInfoAction(data);
+    console.log('[ProfileClient] Personal info update result:', result);
+    
+    if (result.data?.success) {
+      toast.success(result.data.message || 'Personal information updated successfully');
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
 
+  // Career info handler
+  const handleUpdateCareerInfo = async (data: IUpdateCareerInfoRequest): Promise<boolean> => {
+    console.log('[ProfileClient] Updating career info:', data);
+    const result = await updateCareerInfoAction(data);
+    console.log('[ProfileClient] Career info update result:', result);
+    
+    if (result.data?.success) {
+      toast.success(result.data.message || 'Career information updated successfully');
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
+
+  // Social links handler
+  const handleUpdateSocialLinks = async (data: IUpdateSocialLinksRequest): Promise<boolean> => {
+    console.log('[ProfileClient] Updating social links:', data);
+    const result = await updateSocialLinksAction(data);
+    console.log('[ProfileClient] Social links update result:', result);
+    
+    if (result.data?.success) {
+      toast.success(result.data.message || 'Social links updated successfully');
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
+
+  // Handle profile image upload
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      toast.error('Please upload a valid image file (JPEG, PNG, or WebP)');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    setIsUploadingImage(true);
+
+    try {
+      // Compress and convert image
+      const compressedBase64 = await compressImage(file);
+      
+      // Update the preview immediately
+      setProfileImage(compressedBase64);
+
+      // Send to API
+      const result = await updatePersonalInfoAction({
+        image: compressedBase64,
+      });
+
+      if (result.data?.success) {
+        toast.success('Profile image updated successfully');
+      } else if (result.serverError) {
+        toast.error(result.serverError);
+        // Revert to original image on error
+        setProfileImage(profile.image);
+      }
+      
+      setIsUploadingImage(false);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast.error('Failed to upload image');
+      setProfileImage(profile.image);
+      setIsUploadingImage(false);
+    }
+
+    // Clear the input value so the same file can be selected again
+    if (event.target) {
+      event.target.value = '';
+    }
+  };
+
+  // Compress image before upload
+  const compressImage = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const img = new Image();
+        
+        img.onload = () => {
+          // Create canvas
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+
+          // Calculate new dimensions (max 800x800 while maintaining aspect ratio)
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+
+          // Set canvas dimensions
+          canvas.width = width;
+          canvas.height = height;
+
+          // Draw image on canvas
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Convert to base64 with compression
+          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8); // 0.8 quality
+          resolve(compressedBase64);
+        };
+
+        img.onerror = () => {
+          reject(new Error('Failed to load image'));
+        };
+
+        img.src = e.target?.result as string;
+      };
+
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
   return (
     <ReusableCard styleForCard="mb-6">
       <Flex classes="flex-col md:flex-row gap-6">
         {/* User Avatar and Basic Info */}
         <Flex classes="flex-col items-center md:items-start gap-4 md:w-1/4">
-          <Avatar
-            size={120}
-            src={
-              profile.image ||
-              "https://api.dicebear.com/7.x/avataaars/svg?seed=Default"
-            }
-            icon={<UserOutlined />}
-            className="border-4 border-primary"
-          />
+          <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
+            <Avatar
+              size={120}
+              src={
+                profileImage ||
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=Default"
+              }
+              icon={<UserOutlined />}
+              className="border-4 border-primary"
+            />
+            {/* Camera overlay */}
+            <div className={`absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center transition-opacity ${isUploadingImage ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+              {isUploadingImage ? (
+                <div className="text-white text-xs">Uploading...</div>
+              ) : (
+                <CameraOutlined className="text-white text-2xl" />
+              )}
+            </div>
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              onChange={handleImageUpload}
+              className="hidden"
+              disabled={isUploadingImage}
+            />
+          </div>
           <div className="text-center md:text-left">
             <h2 className="text-2xl font-bold">{profile.full_name}</h2>
             <p className="text-gray-500">{profile.location}</p>
@@ -213,21 +399,21 @@ export default function UserInfoSection({
         isOpen={isPersonalDialogOpen}
         setIsOpen={setIsPersonalDialogOpen}
         personalInfo={profile}
-        onSave={onUpdatePersonalInfo}
+        onSave={handleUpdatePersonalInfo}
       />
 
       <CareerInfoDialog
         isOpen={isCareerDialogOpen}
         setIsOpen={setIsCareerDialogOpen}
         careerInfo={profile}
-        onSave={onUpdateCareerInfo}
+        onSave={handleUpdateCareerInfo}
       />
 
       <SocialLinksDialog
         isOpen={isSocialLinksDialogOpen}
         setIsOpen={setIsSocialLinksDialogOpen}
         socialLinks={profile.social_links || { linkedin: '', github: '', portfolio: '', twitter: '' }}
-        onSave={onUpdateSocialLinks}
+        onSave={handleUpdateSocialLinks}
       />
     </ReusableCard>
   );

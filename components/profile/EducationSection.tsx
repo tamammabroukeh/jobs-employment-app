@@ -1,26 +1,35 @@
-﻿'use client';
+﻿"use client";
 
-import { useState } from 'react';
-import { ReusableCard, ReusableButton, Flex, ReusableDialog } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
-import { IEducation } from '@/apis/services/job-seeker/interface';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import EducationDialog from './EducationDialog';
+import { useState } from "react";
+import {
+  ReusableCard,
+  ReusableButton,
+  Flex,
+  ReusableDialog,
+} from "@/components/Reusable-Components";
+import { useProfileTranslations } from "@/hooks/use-profile";
+import { IEducation } from "@/apis/services/job-seeker/interface";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import EducationDialog from "./EducationDialog";
+import { updateEducationAction } from "@/apis/services/job-seeker/actions";
+import { toast } from "sonner";
 
 interface EducationSectionProps {
   educations: IEducation[];
-  onSaveEducation: (education_history: IEducation[]) => void;
 }
 
 export default function EducationSection({
   educations,
-  onSaveEducation,
 }: EducationSectionProps) {
   const t = useProfileTranslations();
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedEducation, setSelectedEducation] = useState<{ index: number; education: IEducation } | undefined>();
-  const [educationToDelete, setEducationToDelete] = useState<number | null>(null);
+  const [selectedEducation, setSelectedEducation] = useState<
+    { index: number; education: IEducation } | undefined
+  >();
+  const [educationToDelete, setEducationToDelete] = useState<number | null>(
+    null,
+  );
 
   const handleAddEducation = () => {
     setSelectedEducation(undefined);
@@ -32,20 +41,20 @@ export default function EducationSection({
     setIsEducationDialogOpen(true);
   };
 
-  const handleSaveEducation = (data: IEducation) => {
+  const handleSaveEducation = async (data: IEducation): Promise<boolean> => {
     let updatedEducationHistory: IEducation[];
-    
+
     if (selectedEducation) {
       // Update existing education
       updatedEducationHistory = educations.map((edu, i) =>
-        i === selectedEducation.index ? data : edu
+        i === selectedEducation.index ? data : edu,
       );
     } else {
       // Add new education
       updatedEducationHistory = [...educations, data];
     }
-    
-    onSaveEducation(updatedEducationHistory);
+
+    return await onSaveEducation(updatedEducationHistory);
   };
 
   const handleDeleteClick = (index: number) => {
@@ -53,27 +62,49 @@ export default function EducationSection({
     setIsDeleteDialogOpen(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (educationToDelete !== null) {
-      const updatedEducationHistory = educations.filter((_, i) => i !== educationToDelete);
-      onSaveEducation(updatedEducationHistory);
-      setEducationToDelete(null);
-      setIsDeleteDialogOpen(false);
+      const updatedEducationHistory = educations.filter(
+        (_, i) => i !== educationToDelete,
+      );
+      const success = await onSaveEducation(updatedEducationHistory);
+      
+      if (success) {
+        setEducationToDelete(null);
+        setIsDeleteDialogOpen(false);
+      }
     }
   };
 
   const formatDate = (dateString: string) => {
-    const [year, month] = dateString.split('-');
+    const [year, month] = dateString.split("-");
     const date = new Date(parseInt(year), parseInt(month) - 1);
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
   };
 
+  const onSaveEducation = async (education_history: IEducation[]): Promise<boolean> => {
+    console.log("[EducationSection] Updating education:", education_history);
+    const result = await updateEducationAction({ education_history });
+    console.log("[EducationSection] Education update result:", result);
+
+    if (result.data?.success) {
+      toast.success(result.data.message || "Education updated successfully");
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
   return (
     <ReusableCard styleForCard="mb-6">
       <Flex classes="justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{t('education.title')}</h2>
+        <h2 className="text-2xl font-bold">{t("education.title")}</h2>
         <ReusableButton
-          btnText={t('education.addEducation')}
+          btnText={t("education.addEducation")}
           onClick={handleAddEducation}
           variant="primary"
           icon={<PlusOutlined />}
@@ -82,7 +113,7 @@ export default function EducationSection({
 
       {educations.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
-          <p>{t('education.noEducation')}</p>
+          <p>{t("education.noEducation")}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -103,20 +134,21 @@ export default function EducationSection({
                   <Flex classes="gap-4 mt-2 text-sm text-gray-500">
                     <span>{t(`gradeOptions.${education.grade}`)}</span>
                     <span>
-                      {formatDate(education.from_date)} - {formatDate(education.awarded_date)}
+                      {formatDate(education.from_date)} -{" "}
+                      {formatDate(education.awarded_date)}
                     </span>
                   </Flex>
                 </div>
 
                 <Flex classes="gap-2">
                   <ReusableButton
-                    btnText={t('education.edit')}
+                    btnText={t("education.edit")}
                     onClick={() => handleEditEducation(education, index)}
                     variant="default"
                     icon={<EditOutlined />}
                   />
                   <ReusableButton
-                    btnText={t('education.delete')}
+                    btnText={t("education.delete")}
                     onClick={() => handleDeleteClick(index)}
                     variant="default"
                     icon={<DeleteOutlined />}
@@ -139,18 +171,18 @@ export default function EducationSection({
         isOpen={isDeleteDialogOpen}
         setIsOpen={setIsDeleteDialogOpen}
         dialogHeader={{
-          title: t('education.confirmDeleteTitle'),
-          description: t('education.confirmDelete'),
+          title: t("education.confirmDeleteTitle"),
+          description: t("education.confirmDelete"),
         }}
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('education.no')}
+              btnText={t("education.no")}
               onClick={() => setIsDeleteDialogOpen(false)}
               variant="default"
             />
             <ReusableButton
-              btnText={t('education.yes')}
+              btnText={t("education.yes")}
               onClick={handleConfirmDelete}
               variant="primary"
             />

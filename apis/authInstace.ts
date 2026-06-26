@@ -6,7 +6,6 @@ import { authOptions } from "@/lib/auth";
 import { refreshAccessToken } from "./utils/tokenManager";
 import { is401Error } from "./utils/errorHelpers";
 import { FetchError } from "./types/error";
-import { redirect } from "next/navigation";
 
 /**
  * Authenticated API fetcher with automatic token refresh

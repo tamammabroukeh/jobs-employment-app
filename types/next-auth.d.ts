@@ -49,14 +49,14 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string
-      role: "admin" | "owner" | "company" | "employee"
+      role: "admin" | "owner" | "employer" | "employee"
     } & DefaultSession["user"]
     accessToken?: string
     error?: string
   }
 
   interface User extends DefaultUser {
-    role: "admin" | "owner" | "company" | "employee"
+    role: "admin" | "owner" | "employer" | "employee"
     accessToken: string
     refreshToken: string
     tokenExpires: number
@@ -68,7 +68,7 @@ declare module "next-auth/jwt" {
     accessToken?: string
     refreshToken?: string
     tokenExpires?: number
-    role?: "admin" | "owner" | "company" | "employee"
+    role?: "admin" | "owner" | "employer" | "employee"
     error?: string
   }
 }

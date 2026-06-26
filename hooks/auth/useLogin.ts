@@ -66,9 +66,20 @@ export function useLogin() {
         if (signInResult?.ok) {
           console.log("[Login] Session created successfully!");
           toast.success(t("success"))
-          // Redirect to home page after successful login
-          router.push(ROUTES.HOME)
-          router.refresh()
+          
+          // Redirect based on user role
+          // Get the session to check role
+          const response = await fetch('/api/auth/session');
+          const session = await response.json();
+          
+          if (session?.user?.role === 'employer') {
+            // Redirect employers to manage-jobs
+            router.push(ROUTES.EMPLOYER.MANAGE_JOBS);
+          } else {
+            // Redirect other users to home
+            router.push(ROUTES.HOME);
+          }
+          router.refresh();
         } else {
           console.error("[Login] Failed to create session:", signInResult?.error);
           toast.error("Failed to create session. Please try again.")

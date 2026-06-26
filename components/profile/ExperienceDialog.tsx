@@ -6,7 +6,7 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { IWorkExperience } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select, Checkbox } from 'antd';
 import { Controller, useWatch } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const { TextArea } = Input;
 
@@ -14,7 +14,7 @@ interface ExperienceDialogProps {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
   experience?: IWorkExperience;
-  onSave: (data: IWorkExperience) => void;
+  onSave: (data: IWorkExperience) => Promise<void>;
 }
 
 export default function ExperienceDialog({
@@ -24,6 +24,7 @@ export default function ExperienceDialog({
   onSave,
 }: ExperienceDialogProps) {
   const t = useProfileTranslations();
+  const [isSaving, setIsSaving] = useState(false);
   const { control, handleSubmit, formState: { errors }, reset, setValue } = useForm<IWorkExperience>({
     defaultValues: experience || {
       job_title: '',
@@ -50,10 +51,11 @@ export default function ExperienceDialog({
     }
   }, [is_currently_working, setValue]);
 
-  const onSubmit = (data: IWorkExperience) => {
-    onSave(data);
-    reset();
-    setIsOpen(false);
+  const onSubmit = async (data: IWorkExperience) => {
+    setIsSaving(true);
+    await onSave(data);
+    setIsSaving(false);
+    // Note: Dialog will be closed by parent component if save is successful
   };
 
   const handleCancel = () => {
@@ -89,11 +91,13 @@ export default function ExperienceDialog({
         btnText={t('experience.cancel')}
         onClick={handleCancel}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('experience.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

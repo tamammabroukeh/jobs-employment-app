@@ -6,6 +6,7 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { ISocialLinks, IUpdateSocialLinksRequest } from '@/apis/services/job-seeker/interface';
 import { Form, Input } from 'antd';
 import { Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 interface SocialLinksDialogProps {
   isOpen: boolean;
@@ -28,6 +29,7 @@ export default function SocialLinksDialog({
   onSave,
 }: SocialLinksDialogProps) {
   const t = useProfileTranslations();
+  const [isSaving, setIsSaving] = useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm<SocialLinksFormData>({
     defaultValues: {
       linkedin: socialLinks.linkedin || '',
@@ -38,9 +40,11 @@ export default function SocialLinksDialog({
   });
 
   const onSubmit = async (data: SocialLinksFormData) => {
+    setIsSaving(true);
     const success = await onSave({
       social_links: data,
     });
+    setIsSaving(false);
     
     // Only close dialog if update was successful
     if (success) {
@@ -54,11 +58,13 @@ export default function SocialLinksDialog({
         btnText={t('userInfo.socialLinks.cancel')}
         onClick={() => setIsOpen(false)}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('userInfo.socialLinks.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

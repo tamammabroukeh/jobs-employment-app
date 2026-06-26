@@ -6,6 +6,7 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { IJobSeekerProfile, IUpdateCareerInfoRequest } from '@/apis/services/job-seeker/interface';
 import { Form, InputNumber, Select, Input } from 'antd';
 import { Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 interface CareerInfoDialogProps {
   isOpen: boolean;
@@ -37,6 +38,7 @@ export default function CareerInfoDialog({
   onSave,
 }: CareerInfoDialogProps) {
   const t = useProfileTranslations();
+  const [isSaving, setIsSaving] = useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm<CareerInfoFormData>({
     defaultValues: {
       salary_range_from: careerInfo.salary_range_from,
@@ -56,7 +58,9 @@ export default function CareerInfoDialog({
   });
 
   const onSubmit = async (data: CareerInfoFormData) => {
+    setIsSaving(true);
     const success = await onSave(data);
+    setIsSaving(false);
     
     // Only close dialog if update was successful
     if (success) {
@@ -117,11 +121,13 @@ export default function CareerInfoDialog({
         btnText={t('userInfo.careerInfo.cancel')}
         onClick={() => setIsOpen(false)}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('userInfo.careerInfo.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

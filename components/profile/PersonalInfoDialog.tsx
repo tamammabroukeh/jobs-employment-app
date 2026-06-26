@@ -6,6 +6,7 @@ import { useProfileTranslations } from '@/hooks/use-profile';
 import { IJobSeekerProfile, IUpdatePersonalInfoRequest } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { Controller } from 'react-hook-form';
+import { useState } from 'react';
 
 interface PersonalInfoDialogProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export default function PersonalInfoDialog({
   onSave,
 }: PersonalInfoDialogProps) {
   const t = useProfileTranslations();
+  const [isSaving, setIsSaving] = useState(false);
   const { control, handleSubmit, formState: { errors } } = useForm<PersonalInfoFormData>({
     defaultValues: {
       first_name: personalInfo.first_name,
@@ -52,11 +54,13 @@ export default function PersonalInfoDialog({
     const full_name = `${data.first_name} ${data.last_name}`;
     const location = `${data.city}`;
     
+    setIsSaving(true);
     const success = await onSave({
       ...data,
       full_name,
       location,
     });
+    setIsSaving(false);
     
     // Only close dialog if update was successful
     if (success) {
@@ -83,11 +87,13 @@ export default function PersonalInfoDialog({
         btnText={t('userInfo.personalInfo.cancel')}
         onClick={() => setIsOpen(false)}
         variant="default"
+        disabled={isSaving}
       />
       <ReusableButton
         btnText={t('userInfo.personalInfo.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
+        isLoading={isSaving}
       />
     </Flex>
   );

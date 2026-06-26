@@ -65,7 +65,7 @@ export default {
           console.log("[Auth Config] User roles:", response.user.roles);
 
           // Map role from roles array to NextAuth role type
-          const mapRole = (roles: string[] | undefined): "admin" | "owner" | "company" | "employee" => {
+          const mapRole = (roles: string[] | undefined): "admin" | "owner" | "employer" | "employee" => {
             if (!roles || roles.length === 0) {
               console.log("[Auth Config] No roles found, defaulting to employee");
               return "employee";
@@ -79,8 +79,9 @@ export default {
                 return "admin";
               case "owner":
                 return "owner";
+              case "employer":
               case "company":
-                return "company";
+                return "employer";
               case "employee":
                 return "employee";
               default:

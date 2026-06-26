@@ -5,8 +5,8 @@ import type { JWT } from "next-auth/jwt";
 
 const EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-// Configure NextAuth
-export const authClient = NextAuth({
+// Full auth options for NextAuth
+export const authOptions = {
   pages: {
     signIn: "/login",
     error: "/auth/error",
@@ -77,7 +77,7 @@ export const authClient = NextAuth({
       // Add custom properties to session
       if (token && session.user) {
         session.user.id = token.sub as string;
-        session.user.role = token.role as "admin" | "owner" | "company" | "employee";
+        session.user.role = token.role as "admin" | "owner" | "employer" | "employee";
         session.accessToken = token.accessToken as string;
 
         // Optionally pass error to client
@@ -107,6 +107,9 @@ export const authClient = NextAuth({
     },
   },
   ...authConfig,
-});
+} as const;
+
+// Configure NextAuth
+export const authClient = NextAuth(authOptions);
 
 export const { handlers, auth, signIn, signOut, unstable_update } = authClient;

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" fill="none">
+  <!-- Background -->
+  <rect width="500" height="400" fill="transparent"/>
+  
+  <!-- Desk -->
+  <rect x="150" y="250" width="200" height="10" fill="#E5E7EB" rx="2"/>
+  
+  <!-- Computer Screen -->
+  <rect x="180" y="150" width="140" height="100" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="3" rx="4"/>
+  <rect x="190" y="160" width="120" height="70" fill="#fff" stroke="#D1D5DB" stroke-width="1"/>
+  
+  <!-- Computer Lines (Code) -->
+  <line x1="200" y1="175" x2="280" y2="175" stroke="#9CA3AF" stroke-width="2"/>
+  <line x1="200" y1="190" x2="260" y2="190" stroke="#9CA3AF" stroke-width="2"/>
+  <line x1="200" y1="205" x2="290" y2="205" stroke="#9CA3AF" stroke-width="2"/>
+  
+  <!-- Computer Stand -->
+  <rect x="235" y="250" width="30" height="20" fill="#D1D5DB"/>
+  <rect x="220" y="265" width="60" height="5" fill="#E5E7EB" rx="2"/>
+  
+  <!-- Person -->
+  <circle cx="320" cy="200" r="25" fill="#E5E7EB"/>
+  <path d="M 320 225 L 320 285" stroke="#D1D5DB" stroke-width="8" stroke-linecap="round"/>
+  <path d="M 320 240 L 290 265" stroke="#D1D5DB" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 320 240 L 350 265" stroke="#D1D5DB" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 320 285 L 300 320" stroke="#D1D5DB" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 320 285 L 340 320" stroke="#D1D5DB" stroke-width="6" stroke-linecap="round"/>
+  
+  <!-- Briefcase Icon -->
+  <rect x="110" y="180" width="40" height="30" fill="#6366F1" rx="3"/>
+  <rect x="125" y="170" width="10" height="15" fill="#6366F1"/>
+  <line x1="115" y1="195" x2="145" y2="195" stroke="#fff" stroke-width="2"/>
+  
+  <!-- Pencil/Tool Icon -->
+  <path d="M 380 160 L 390 150 L 400 160 L 390 170 Z" fill="#10B981"/>
+  <rect x="375" y="165" width="8" height="20" fill="#10B981" transform="rotate(45 379 175)"/>
+  
+  <!-- X marks (no jobs) -->
+  <g opacity="0.3">
+    <line x1="430" y1="100" x2="450" y2="120" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+    <line x1="450" y1="100" x2="430" y2="120" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <g opacity="0.3">
+    <line x1="50" y1="280" x2="70" y2="300" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+    <line x1="70" y1="280" x2="50" y2="300" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Decorative dots -->
+  <circle cx="420" cy="240" r="4" fill="#9CA3AF" opacity="0.5"/>
+  <circle cx="440" cy="250" r="3" fill="#9CA3AF" opacity="0.5"/>
+  <circle cx="460" cy="235" r="5" fill="#9CA3AF" opacity="0.5"/>
+  
+  <circle cx="60" cy="120" r="4" fill="#9CA3AF" opacity="0.5"/>
+  <circle cx="80" cy="110" r="3" fill="#9CA3AF" opacity="0.5"/>
+  <circle cx="50" cy="100" r="5" fill="#9CA3AF" opacity="0.5"/>
+</svg>

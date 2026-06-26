@@ -5,16 +5,17 @@ import LogoutButton from '@/components/LogoutButton';
 import { UserRole } from '@/constants/roles';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
+import { getServerSession } from 'next-auth';
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await getServerSession()
 
   if (!session?.user) {
     redirect('/login');
   }
 
   const userRole = session.user.role as UserRole;
-  const userName = session.user.first_name || session.user.email?.split('@')[0] || 'User';
+  const userName = session.user.email?.split('@')[0] || 'User';
 
   return (
     <>
@@ -95,9 +96,9 @@ export default async function DashboardPage() {
             <div className="space-y-4">
               <div>
                 <label className="text-sm text-muted-foreground">Full Name</label>
-                <p className="text-foreground font-medium">
+                {/* <p className="text-foreground font-medium">
                   {session.user.first_name} {session.user.last_name || ''}
-                </p>
+                </p> */}
               </div>
               <div>
                 <label className="text-sm text-muted-foreground">Email Address</label>

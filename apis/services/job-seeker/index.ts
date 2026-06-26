@@ -21,19 +21,6 @@ export const jobSeekerRepository = {
     }),
 
   /**
-   * Update job seeker profile
-   * @param data - Profile update data
-   * @returns Promise with updated profile response
-   */
-  updateProfile: (data: IUpdateProfileRequest): Promise<IUpdateProfileResponse> => {
-    
-    return authFetcher<IUpdateProfileResponse>('/job-seeker/profile', {
-      method: Methods.PUT,
-      body: JSON.stringify(data),
-    });
-  },
-
-  /**
    * Update job seeker personal information
    * @param data - Personal information update data
    * @returns Promise with updated profile response

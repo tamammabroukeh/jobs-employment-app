@@ -1,0 +1,169 @@
+{
+  "forsa": {
+    "title": {
+      "create": "Add New Forsa",
+      "edit": "Edit Forsa"
+    },
+    "cvReceive": {
+      "title": "How do you want to receive CVs?",
+      "description": "Choose any delivery method/s you'd like to send your publish on.",
+      "byForsa": {
+        "title": "By Forsa",
+        "description": "Applicants will be visible in your talent pool"
+      },
+      "byEmail": {
+        "title": "By Email",
+        "description": "Applicants will send applications via email"
+      },
+      "byWebsite": {
+        "title": "Via Your Website",
+        "description": "Redirect candidates to your own website or application"
+      },
+      "communicationValue": "Email or Website URL"
+    },
+    "employeeSpec": {
+      "title": "Specify the required employee specification",
+      "jobTitle": "Job Title",
+      "category": "Category",
+      "roles": "Roles (comma-separated)",
+      "portfolioRequired": "Portfolio Required",
+      "coverLetterRequired": "Cover Letter Required",
+      "gender": "Gender Preference",
+      "ageFrom": "Minimum Age",
+      "ageTo": "Maximum Age",
+      "educationLevel": "Education Level",
+      "jobLevel": "Job Level",
+      "experienceYears": "Years of Experience",
+      "languages": "Languages (comma-separated)",
+      "vacancies": "Number of Vacancies",
+      "jobType": "Job Type",
+      "workMode": "Work Mode"
+    },
+    "locationDetails": {
+      "title": "Location & Address",
+      "city": "City",
+      "address": "Full Address"
+    },
+    "salaryDetails": {
+      "title": "Salary Information",
+      "salaryFrom": "Minimum Salary",
+      "salaryTo": "Maximum Salary",
+      "currency": "Currency",
+      "displaySalary": "Display Salary Publicly",
+      "incentives": "Additional Incentives"
+    },
+    "jobInfo": {
+      "title": "Fill out your Job Vacancy Information",
+      "description": "Job Description",
+      "requirements": "Requirements",
+      "questions": "Application Questions",
+      "questionsHelp": "One question per line. Format: question|true or question|false (for required/optional)",
+      "tags": "Tags (comma-separated)",
+      "expiresAt": "Job Expires At"
+    },
+    "placeholders": {
+      "jobTitle": "e.g., Senior Laravel Developer",
+      "selectCategory": "Select category",
+      "roles": "e.g., Frontend, React",
+      "selectGender": "Select gender preference",
+      "ageFrom": "e.g., 22",
+      "ageTo": "e.g., 40",
+      "selectEducationLevel": "Select education level",
+      "selectJobLevel": "Select job level",
+      "experienceYears": "e.g., 3",
+      "languages": "e.g., English, Arabic",
+      "vacancies": "e.g., 2",
+      "selectJobType": "Select job type",
+      "selectWorkMode": "Select work mode",
+      "city": "e.g., Beirut",
+      "address": "e.g., Downtown, Main Street",
+      "salaryFrom": "2000",
+      "salaryTo": "4000",
+      "incentives": "e.g., Health insurance, flexible hours",
+      "tags": "e.g., Laravel, PHP",
+      "description": "We are looking for...",
+      "requirements": "Minimum 3 years of Laravel experience...",
+      "questions": "What is your experience with Laravel?|true\nDescribe your ideal work environment|false",
+      "communicationValue": "Enter email or website URL",
+      "expiresAt": "YYYY-MM-DD"
+    },
+    "categories": {
+      "engineering": "Engineering",
+      "design": "Design",
+      "marketing": "Marketing",
+      "sales": "Sales",
+      "product": "Product",
+      "customerSupport": "Customer Support",
+      "hr": "HR",
+      "finance": "Finance",
+      "other": "Other"
+    },
+    "genders": {
+      "noPreference": "No Preference",
+      "male": "Male",
+      "female": "Female"
+    },
+    "educationLevels": {
+      "highSchool": "High School",
+      "diploma": "Diploma",
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD"
+    },
+    "jobLevels": {
+      "junior": "Junior",
+      "mid": "Mid-Level",
+      "senior": "Senior",
+      "lead": "Lead",
+      "manager": "Manager"
+    },
+    "jobTypes": {
+      "fullTime": "Full Time",
+      "partTime": "Part Time",
+      "contract": "Contract",
+      "internship": "Internship",
+      "freelance": "Freelance"
+    },
+    "workModes": {
+      "remote": "Remote",
+      "onSite": "On-Site",
+      "hybrid": "Hybrid"
+    },
+    "currencies": {
+      "usd": "USD",
+      "eur": "EUR",
+      "gbp": "GBP",
+      "lbp": "LBP"
+    },
+    "buttons": {
+      "submit": "Add New Forsa",
+      "update": "Update Forsa",
+      "submitting": "Submitting..."
+    },
+    "messages": {
+      "createSuccess": "Job created successfully!",
+      "updateSuccess": "Job updated successfully!",
+      "createError": "Failed to create job",
+      "updateError": "Failed to update job"
+    }
+  },
+  "manageJobs": {
+    "title": "Manage Jobs",
+    "tabs": {
+      "current": "Current Jobs",
+      "archived": "Archived Jobs"
+    },
+    "search": {
+      "placeholder": "Search by title...",
+      "recruiterName": "Recruiter name"
+    },
+    "empty": {
+      "title": "You haven't posted any posts yet",
+      "button": "Add New Job"
+    },
+    "card": {
+      "edit": "Edit",
+      "openJobs": "open jobs"
+    }
+  }
+}
