@@ -1,90 +1,110 @@
-﻿'use client';
+﻿"use client";
 
-import { useState } from 'react';
-import { ReusableCard, ReusableButton, Flex, ReusableDialog } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
-import { Education } from '@/types/profile';
-import { EditOutlined, DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
-import EducationDialog from './EducationDialog';
-import CertificateUploadDialog from './CertificateUploadDialog';
-import { Image } from 'antd';
+import { useState } from "react";
+import {
+  ReusableCard,
+  ReusableButton,
+  Flex,
+  ReusableDialog,
+} from "@/components/Reusable-Components";
+import { useProfileTranslations } from "@/hooks/use-profile";
+import { IEducation } from "@/apis/services/job-seeker/interface";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import EducationDialog from "./EducationDialog";
+import { updateEducationAction } from "@/apis/services/job-seeker/actions";
+import { toast } from "sonner";
 
 interface EducationSectionProps {
-  educations: Education[];
-  onAddEducation: (data: Omit<Education, 'id'>) => void;
-  onUpdateEducation: (id: string, data: Omit<Education, 'id'>) => void;
-  onDeleteEducation: (id: string) => void;
-  onUploadCertificate: (id: string, imageUrl: string) => void;
+  educations: IEducation[];
 }
 
 export default function EducationSection({
   educations,
-  onAddEducation,
-  onUpdateEducation,
-  onDeleteEducation,
-  onUploadCertificate,
 }: EducationSectionProps) {
   const t = useProfileTranslations();
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
-  const [isCertificateDialogOpen, setIsCertificateDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedEducation, setSelectedEducation] = useState<Education | undefined>();
-  const [educationToDelete, setEducationToDelete] = useState<string | null>(null);
+  const [selectedEducation, setSelectedEducation] = useState<
+    { index: number; education: IEducation } | undefined
+  >();
+  const [educationToDelete, setEducationToDelete] = useState<number | null>(
+    null,
+  );
 
   const handleAddEducation = () => {
     setSelectedEducation(undefined);
     setIsEducationDialogOpen(true);
   };
 
-  const handleEditEducation = (education: Education) => {
-    setSelectedEducation(education);
+  const handleEditEducation = (education: IEducation, index: number) => {
+    setSelectedEducation({ index, education });
     setIsEducationDialogOpen(true);
   };
 
-  const handleSaveEducation = (data: Omit<Education, 'id'>) => {
+  const handleSaveEducation = async (data: IEducation): Promise<boolean> => {
+    let updatedEducationHistory: IEducation[];
+
     if (selectedEducation) {
-      onUpdateEducation(selectedEducation.id, data);
+      // Update existing education
+      updatedEducationHistory = educations.map((edu, i) =>
+        i === selectedEducation.index ? data : edu,
+      );
     } else {
-      onAddEducation(data);
+      // Add new education
+      updatedEducationHistory = [...educations, data];
     }
+
+    return await onSaveEducation(updatedEducationHistory);
   };
 
-  const handleUploadCertificate = (education: Education) => {
-    setSelectedEducation(education);
-    setIsCertificateDialogOpen(true);
-  };
-
-  const handleSaveCertificate = (imageUrl: string) => {
-    if (selectedEducation) {
-      onUploadCertificate(selectedEducation.id, imageUrl);
-    }
-  };
-
-  const handleDeleteClick = (id: string) => {
-    setEducationToDelete(id);
+  const handleDeleteClick = (index: number) => {
+    setEducationToDelete(index);
     setIsDeleteDialogOpen(true);
   };
 
-  const handleConfirmDelete = () => {
-    if (educationToDelete) {
-      onDeleteEducation(educationToDelete);
-      setEducationToDelete(null);
-      setIsDeleteDialogOpen(false);
+  const handleConfirmDelete = async () => {
+    if (educationToDelete !== null) {
+      const updatedEducationHistory = educations.filter(
+        (_, i) => i !== educationToDelete,
+      );
+      const success = await onSaveEducation(updatedEducationHistory);
+      
+      if (success) {
+        setEducationToDelete(null);
+        setIsDeleteDialogOpen(false);
+      }
     }
   };
 
   const formatDate = (dateString: string) => {
-    const [year, month] = dateString.split('-');
+    const [year, month] = dateString.split("-");
     const date = new Date(parseInt(year), parseInt(month) - 1);
-    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
   };
 
+  const onSaveEducation = async (education_history: IEducation[]): Promise<boolean> => {
+    console.log("[EducationSection] Updating education:", education_history);
+    const result = await updateEducationAction({ education_history });
+    console.log("[EducationSection] Education update result:", result);
+
+    if (result.data?.success) {
+      toast.success(result.data.message || "Education updated successfully");
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
   return (
     <ReusableCard styleForCard="mb-6">
       <Flex classes="justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{t('education.title')}</h2>
+        <h2 className="text-2xl font-bold">{t("education.title")}</h2>
         <ReusableButton
-          btnText={t('education.addEducation')}
+          btnText={t("education.addEducation")}
           onClick={handleAddEducation}
           variant="primary"
           icon={<PlusOutlined />}
@@ -93,60 +113,43 @@ export default function EducationSection({
 
       {educations.length === 0 ? (
         <div className="text-center py-8 text-gray-500">
-          <p>{t('education.noEducation')}</p>
+          <p>{t("education.noEducation")}</p>
         </div>
       ) : (
         <div className="space-y-4">
-          {educations.map((education) => (
+          {educations.map((education, index) => (
             <div
-              key={education.id}
+              key={index}
               className="border rounded-lg p-4 hover:shadow-md transition-shadow"
             >
               <Flex classes="justify-between items-start">
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold">
-                    {t(`certificateTypes.${education.certificateType}`)}
+                    {t(`certificateTypes.${education.certificate_type}`)}
                   </h3>
-                  <p className="text-gray-600">{education.majorName}</p>
+                  <p className="text-gray-600">{education.major_name}</p>
                   <p className="text-sm text-gray-500 mt-1">
                     {education.university} • {education.faculty}
                   </p>
                   <Flex classes="gap-4 mt-2 text-sm text-gray-500">
                     <span>{t(`gradeOptions.${education.grade}`)}</span>
                     <span>
-                      {formatDate(education.fromDate)} - {formatDate(education.awardedDate)}
+                      {formatDate(education.from_date)} -{" "}
+                      {formatDate(education.awarded_date)}
                     </span>
                   </Flex>
-
-                  {education.certificateImage && (
-                    <div className="mt-3">
-                      <Image
-                        src={education.certificateImage}
-                        alt="Certificate"
-                        width={100}
-                        height={100}
-                        className="rounded-lg object-cover"
-                      />
-                    </div>
-                  )}
                 </div>
 
                 <Flex classes="gap-2">
                   <ReusableButton
-                    btnText={t('education.uploadCertificate')}
-                    onClick={() => handleUploadCertificate(education)}
-                    variant="default"
-                    icon={<UploadOutlined />}
-                  />
-                  <ReusableButton
-                    btnText={t('education.edit')}
-                    onClick={() => handleEditEducation(education)}
+                    btnText={t("education.edit")}
+                    onClick={() => handleEditEducation(education, index)}
                     variant="default"
                     icon={<EditOutlined />}
                   />
                   <ReusableButton
-                    btnText={t('education.delete')}
-                    onClick={() => handleDeleteClick(education.id)}
+                    btnText={t("education.delete")}
+                    onClick={() => handleDeleteClick(index)}
                     variant="default"
                     icon={<DeleteOutlined />}
                   />
@@ -160,33 +163,26 @@ export default function EducationSection({
       <EducationDialog
         isOpen={isEducationDialogOpen}
         setIsOpen={setIsEducationDialogOpen}
-        education={selectedEducation}
+        education={selectedEducation?.education}
         onSave={handleSaveEducation}
-      />
-
-      <CertificateUploadDialog
-        isOpen={isCertificateDialogOpen}
-        setIsOpen={setIsCertificateDialogOpen}
-        currentImage={selectedEducation?.certificateImage}
-        onSave={handleSaveCertificate}
       />
 
       <ReusableDialog
         isOpen={isDeleteDialogOpen}
         setIsOpen={setIsDeleteDialogOpen}
         dialogHeader={{
-          title: t('education.confirmDeleteTitle'),
-          description: t('education.confirmDelete'),
+          title: t("education.confirmDeleteTitle"),
+          description: t("education.confirmDelete"),
         }}
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('education.no')}
+              btnText={t("education.no")}
               onClick={() => setIsDeleteDialogOpen(false)}
               variant="default"
             />
             <ReusableButton
-              btnText={t('education.yes')}
+              btnText={t("education.yes")}
               onClick={handleConfirmDelete}
               variant="primary"
             />

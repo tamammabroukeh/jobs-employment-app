@@ -1,0 +1,169 @@
+{
+  "forsa": {
+    "title": {
+      "create": "إضافة فرصة جديدة",
+      "edit": "تعديل الفرصة"
+    },
+    "cvReceive": {
+      "title": "كيف تريد استقبال السير الذاتية؟",
+      "description": "اختر أي طريقة/طرق توصيل ترغب في إرسال نشرك عليها.",
+      "byForsa": {
+        "title": "عبر فرصة",
+        "description": "سيكون المتقدمون مرئيين في مجموعة المواهب الخاصة بك"
+      },
+      "byEmail": {
+        "title": "عبر البريد الإلكتروني",
+        "description": "سيرسل المتقدمون الطلبات عبر البريد الإلكتروني"
+      },
+      "byWebsite": {
+        "title": "عبر موقع الويب الخاص بك",
+        "description": "إعادة توجيه المرشحين إلى موقع الويب أو التطبيق الخاص بك"
+      },
+      "communicationValue": "البريد الإلكتروني أو رابط الموقع"
+    },
+    "employeeSpec": {
+      "title": "حدد مواصفات الموظف المطلوب",
+      "jobTitle": "المسمى الوظيفي",
+      "category": "الفئة",
+      "roles": "الأدوار (مفصولة بفواصل)",
+      "portfolioRequired": "المحفظة مطلوبة",
+      "coverLetterRequired": "خطاب التقديم مطلوب",
+      "gender": "تفضيل الجنس",
+      "ageFrom": "الحد الأدنى للعمر",
+      "ageTo": "الحد الأقصى للعمر",
+      "educationLevel": "المستوى التعليمي",
+      "jobLevel": "مستوى الوظيفة",
+      "experienceYears": "سنوات الخبرة",
+      "languages": "اللغات (مفصولة بفواصل)",
+      "vacancies": "عدد الشواغر",
+      "jobType": "نوع الوظيفة",
+      "workMode": "نمط العمل"
+    },
+    "locationDetails": {
+      "title": "الموقع والعنوان",
+      "city": "المدينة",
+      "address": "العنوان الكامل"
+    },
+    "salaryDetails": {
+      "title": "معلومات الراتب",
+      "salaryFrom": "الحد الأدنى للراتب",
+      "salaryTo": "الحد الأقصى للراتب",
+      "currency": "العملة",
+      "displaySalary": "عرض الراتب للعامة",
+      "incentives": "حوافز إضافية"
+    },
+    "jobInfo": {
+      "title": "املأ معلومات الوظيفة الشاغرة",
+      "description": "وصف الوظيفة",
+      "requirements": "المتطلبات",
+      "questions": "أسئلة التقديم",
+      "questionsHelp": "سؤال واحد لكل سطر. الصيغة: السؤال|true أو السؤال|false (للإلزامي/الاختياري)",
+      "tags": "الوسوم (مفصولة بفواصل)",
+      "expiresAt": "تاريخ انتهاء الوظيفة"
+    },
+    "placeholders": {
+      "jobTitle": "مثال، مطور لارافيل أول",
+      "selectCategory": "اختر الفئة",
+      "roles": "مثال، الواجهة الأمامية، React",
+      "selectGender": "اختر تفضيل الجنس",
+      "ageFrom": "مثال، 22",
+      "ageTo": "مثال، 40",
+      "selectEducationLevel": "اختر المستوى التعليمي",
+      "selectJobLevel": "اختر مستوى الوظيفة",
+      "experienceYears": "مثال، 3",
+      "languages": "مثال، الإنجليزية، العربية",
+      "vacancies": "مثال، 2",
+      "selectJobType": "اختر نوع الوظيفة",
+      "selectWorkMode": "اختر نمط العمل",
+      "city": "مثال، بيروت",
+      "address": "مثال، وسط البلد، الشارع الرئيسي",
+      "salaryFrom": "2000",
+      "salaryTo": "4000",
+      "incentives": "مثال، تأمين صحي، ساعات عمل مرنة",
+      "tags": "مثال، Laravel، PHP",
+      "description": "نحن نبحث عن...",
+      "requirements": "الحد الأدنى 3 سنوات خبرة في Laravel...",
+      "questions": "ما هي خبرتك في Laravel؟|true\nصف بيئة العمل المثالية لك|false",
+      "communicationValue": "أدخل البريد الإلكتروني أو رابط الموقع",
+      "expiresAt": "YYYY-MM-DD"
+    },
+    "categories": {
+      "engineering": "الهندسة",
+      "design": "التصميم",
+      "marketing": "التسويق",
+      "sales": "المبيعات",
+      "product": "المنتج",
+      "customerSupport": "دعم العملاء",
+      "hr": "الموارد البشرية",
+      "finance": "المالية",
+      "other": "أخرى"
+    },
+    "genders": {
+      "noPreference": "لا يوجد تفضيل",
+      "male": "ذكر",
+      "female": "أنثى"
+    },
+    "educationLevels": {
+      "highSchool": "ثانوية عامة",
+      "diploma": "دبلوم",
+      "bachelor": "بكالوريوس",
+      "master": "ماجستير",
+      "phd": "دكتوراه"
+    },
+    "jobLevels": {
+      "junior": "مبتدئ",
+      "mid": "متوسط",
+      "senior": "أول",
+      "lead": "قائد",
+      "manager": "مدير"
+    },
+    "jobTypes": {
+      "fullTime": "دوام كامل",
+      "partTime": "دوام جزئي",
+      "contract": "عقد",
+      "internship": "تدريب",
+      "freelance": "عمل حر"
+    },
+    "workModes": {
+      "remote": "عن بعد",
+      "onSite": "في الموقع",
+      "hybrid": "هجين"
+    },
+    "currencies": {
+      "usd": "دولار أمريكي",
+      "eur": "يورو",
+      "gbp": "جنيه إسترليني",
+      "lbp": "ليرة لبنانية"
+    },
+    "buttons": {
+      "submit": "إضافة فرصة جديدة",
+      "update": "تحديث الفرصة",
+      "submitting": "جاري الإرسال..."
+    },
+    "messages": {
+      "createSuccess": "تم إنشاء الوظيفة بنجاح!",
+      "updateSuccess": "تم تحديث الوظيفة بنجاح!",
+      "createError": "فشل في إنشاء الوظيفة",
+      "updateError": "فشل في تحديث الوظيفة"
+    }
+  },
+  "manageJobs": {
+    "title": "إدارة الوظائف",
+    "tabs": {
+      "current": "الوظائف الحالية",
+      "archived": "الوظائف المؤرشفة"
+    },
+    "search": {
+      "placeholder": "البحث بالعنوان...",
+      "recruiterName": "اسم المجند"
+    },
+    "empty": {
+      "title": "لم تقم بنشر أي منشورات بعد",
+      "button": "إضافة وظيفة جديدة"
+    },
+    "card": {
+      "edit": "تعديل",
+      "openJobs": "وظائف مفتوحة"
+    }
+  }
+}

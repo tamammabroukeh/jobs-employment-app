@@ -30,6 +30,7 @@ export interface IRefreshToken {
   refresh_token?: string;
   token_type: string;
   expires_in: number;
+  user: IUser;
 }
 
 export interface IRegisterRequest {

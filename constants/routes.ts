@@ -39,30 +39,59 @@ const ROUTES = {
     SETTINGS:"/dashboard/settings",
     NOTIFICATIONS:"/dashboard/notifications",
     HELP:"/dashboard/help",
+  },
+  EMPLOYER:{
+    MANAGE_JOBS: "/manage-jobs",
+    CREATE_JOB: "/forsa",
+    EDIT_JOB: "/forsa/:id",
+    getEditJob: (id: string) => `/forsa/${id}`,
+    PROFILE: "/employer-profile",
   }
 };
 
 export const NAVBAR_LINKS = [
-  {
-    label: "Home",
-    href: ROUTES.HOME,
-    showInNavbar: true,
-  },
+  // {
+  //   label: "Home",
+  //   href: ROUTES.HOME,
+  //   showInNavbar: true,
+  //   authRequired: false, // Public - always visible
+  //   roles: [], // Empty means all roles can access
+  // },
   {
     label: "Jobs",
     href: ROUTES.JOB.LIST,
     showInNavbar: true,
+    authRequired: false, // Public - always visible
+    roles: ["employee"],
   },
   {
     label: "Companies",
     href: ROUTES.COMPANIES.LIST,
     showInNavbar: true,
+    authRequired: false, // Public - always visible
+    roles: ["employee"],
   },
   {
     label: "Profile",
     href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
+    authRequired: true, // Protected - only visible when logged in
+    roles: ["employee"], // Only for job seekers
   },
+  {
+    label: "Manage Jobs",
+    href: ROUTES.EMPLOYER.MANAGE_JOBS,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employer"], // Only for employers
+  },
+  {
+    label: "Profile",
+    href: ROUTES.EMPLOYER.PROFILE,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employer"], // Only for employers
+  }
 ];
 
 export default ROUTES;

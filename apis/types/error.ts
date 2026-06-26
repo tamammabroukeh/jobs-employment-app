@@ -97,16 +97,12 @@ function determineErrorType(
  * Error class for server actions
  */
 export class ActionError extends Error {
-  // code?: string;
-  // details?: Record<string, any>;
-  // constructor(message: string, code?: string, details?: Record<string, any>) {
-  //   super(message);
-  //   this.name = 'ActionError';
-  //   this.code = code;
-  //   this.details = details;
-  //   // Capture stack trace for better debugging
-  //   if (Error.captureStackTrace) {
-  //     Error.captureStackTrace(this, ActionError);
-  //   }
-  // }
+  constructor(message: string) {
+    super(message);
+    this.name = 'ActionError';
+    // Capture stack trace for better debugging
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ActionError);
+    }
+  }
 }

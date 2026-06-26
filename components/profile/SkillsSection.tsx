@@ -3,18 +3,18 @@
 import { useState } from 'react';
 import { ReusableCard, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from '@/hooks/use-profile';
-import { Skill } from '@/types/profile';
+import { ISkill } from '@/apis/services/job-seeker/interface';
 import { EditOutlined } from '@ant-design/icons';
 import SkillsDialog from './SkillsDialog';
+import { updateSkillsAction } from '@/apis/services/job-seeker/actions';
+import { toast } from 'sonner';
 
 interface SkillsSectionProps {
-  skills: Skill[];
-  onSaveSkills: (skills: Skill[]) => void;
+  skills: ISkill[];
 }
 
 export default function SkillsSection({
   skills,
-  onSaveSkills,
 }: SkillsSectionProps) {
   const t = useProfileTranslations();
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
@@ -23,25 +23,22 @@ export default function SkillsSection({
     setIsSkillsDialogOpen(true);
   };
 
-  const handleSaveSkills = async (updatedSkills: Skill[]) => {
-    try {
-      console.log('Saving skills to API:', updatedSkills);
-      
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/profile/skills', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ skills: updatedSkills }),
-      // });
-      // if (!response.ok) throw new Error('Failed to save skills');
-      
-      onSaveSkills(updatedSkills);
-    } catch (error) {
-      console.error('Error saving skills:', error);
-    }
-  };
+  // Skills handler
+  const handleSaveSkills = async (skills: ISkill[]): Promise<boolean> => {
+    console.log("[SkillsSection] Updating skills:", skills);
+    const result = await updateSkillsAction({ skills });
+    console.log("[SkillsSection] Skills update result:", result);
 
-  const getSkillLevelColor = (level: Skill['level']) => {
+    if (result.data?.success) {
+      toast.success(result.data.message || "Skills updated successfully");
+      return true;
+    } else if (result.serverError) {
+      toast.error(result.serverError);
+      return false;
+    }
+    return false;
+  };
+  const getSkillLevelColor = (level: string) => {
     switch (level) {
       case 'beginner':
         return 'bg-blue-100 text-blue-700';
@@ -74,9 +71,9 @@ export default function SkillsSection({
         </div>
       ) : (
         <div className="flex flex-wrap gap-3">
-          {skills.map((skill) => (
+          {skills.map((skill, index) => (
             <div
-              key={skill.id}
+              key={index}
               className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:shadow-md transition-shadow"
             >
               <span className="font-medium">{skill.name}</span>

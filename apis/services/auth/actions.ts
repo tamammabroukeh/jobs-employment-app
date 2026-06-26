@@ -201,3 +201,54 @@ export const signOutAction = actionClient.action(async () => {
     throw new ActionError('Failed to logout. Please try again.');
   }
 });
+
+// Refresh Token Action
+export const refreshTokenAction = actionClient.action(async () => {
+  try {
+    console.log('[Refresh Token Action] ========== STARTING TOKEN REFRESH ==========');
+    
+    // Call the refresh token API
+    const response = await authRepository.refreshToken();
+    
+    console.log('[Refresh Token Action] ========== API RESPONSE ==========');
+    console.log('[Refresh Token Action] Has access_token?', !!response.access_token);
+    console.log('[Refresh Token Action] Has user?', !!response.user);
+
+    if (!response.access_token || !response.user) {
+      console.error('[Refresh Token Action] Missing access_token or user');
+      throw new ActionError('Failed to refresh token');
+    }
+
+    console.log('[Refresh Token Action] ========== REFRESH SUCCESSFUL ==========');
+    console.log('[Refresh Token Action] User ID:', response.user.id);
+    console.log('[Refresh Token Action] Token expires in:', response.expires_in, 'seconds');
+    
+    // Return success with new token data
+    return { 
+      success: true, 
+      message: 'Token refreshed successfully',
+      user: response.user,
+      accessToken: response.access_token,
+      tokenType: response.token_type,
+      expiresIn: response.expires_in,
+    };
+  } catch (error) {
+    console.error('[Refresh Token Action] ========== EXCEPTION ==========');
+    console.error('[Refresh Token Action] Error:', error);
+    
+    // Extract more detailed error information
+    if (error && typeof error === 'object' && 'info' in error) {
+      console.error('[Refresh Token Action] Error info:', error.info);
+      const errorInfo = error.info as Record<string, string>;
+      
+      // Check if there's a message in the error info
+      if (errorInfo && typeof errorInfo === 'object' && 'message' in errorInfo) {
+        console.error('[Refresh Token Action] API Error Message:', errorInfo.message);
+        throw new ActionError(errorInfo.message || 'Failed to refresh token');
+      }
+    }
+    
+    if (error instanceof ActionError) throw error;
+    throw new ActionError('Failed to refresh token. Please login again.');
+  }
+});

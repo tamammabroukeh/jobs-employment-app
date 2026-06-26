@@ -10,13 +10,29 @@ import { useAuth } from "@/hooks/useAuth";
 
 function NavbarActions() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
+  
+  // Filter navbar links based on authentication status and user role
+  const visibleLinks = NAVBAR_LINKS.filter(link => {
+    if (!link.showInNavbar) return false;
+    
+    // If link requires auth, only show when authenticated
+    if (link.authRequired && !isAuthenticated) return false;
+    
+    // If link has specific roles, check if user has matching role
+    if (link.roles && link.roles.length > 0 && user) {
+      return link.roles.includes(user.role);
+    }
+    
+    return true;
+  });
+  
   return (
     <div className="flex items-center gap-6 w-full">
       {/* Navigation Links - Left Side */}
       <nav className="flex items-center gap-6 flex-1">
-        {NAVBAR_LINKS.filter(link => link.showInNavbar).map((link) => (
+        {visibleLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
@@ -37,9 +53,9 @@ function NavbarActions() {
         <LocaleSwitcher />
         
         {isAuthenticated ? (
-          // Show logout button when user is logged in
+          // Show user info and logout button when user is logged in
           <>
-            <LogoutButton />
+              <LogoutButton />
           </>
         ) : (
           // Show login/register buttons when user is not logged in

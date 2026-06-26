@@ -31,7 +31,7 @@ export interface SessionUser {
   id: string;
   email: string;
   name: string;
-  role: "admin" | "owner" | "company" | "employee";
+  role: "admin" | "owner" | "employer" | "employee";
 }
 
 export interface AuthSession {
