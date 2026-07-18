@@ -7,7 +7,7 @@ import { ErrorMessages } from "@/constants/errors";
 // Configuration
 const baseUrl = process.env.BASE_URL;
 const DEFAULT_REVALIDATION_TIME = 3600 * 3; // 3 hours
-const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 30000);
+const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 50000);
 const MAX_RETRIES = 2; // Retry failed requests up to 2 times
 
 /**
@@ -19,7 +19,7 @@ const MAX_RETRIES = 2; // Retry failed requests up to 2 times
  */
 export default async function apiFetcher<T>(
   path: string,
-  requestInit?: RequestInit,
+  requestInit?: RequestInit & { skipDefaultHeaders?: boolean },
   retryCount: number = 0,
 ): Promise<T> {
   console.log("baseUrl", baseUrl);
@@ -28,20 +28,32 @@ export default async function apiFetcher<T>(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);
   console.log('requestInit', requestInit)
-  console.log('asdasssssssssssss', 
-    {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...requestInit?.headers,
-    } as HeadersInit
-  )
+  
+  // Check if body is FormData - if so, don't set Content-Type (let browser handle it)
+  const isFormData = requestInit?.body instanceof FormData;
+  const skipDefaultHeaders = requestInit?.skipDefaultHeaders || isFormData;
+  
+  // Build headers conditionally
+  const headers: HeadersInit = skipDefaultHeaders
+    ? {
+        // Don't set Content-Type for FormData
+        Accept: "application/json",
+        ...requestInit?.headers,
+      }
+    : {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...requestInit?.headers,
+      };
+  
+  console.log('skipDefaultHeaders', skipDefaultHeaders);
+  console.log('isFormData', isFormData);
+  console.log('headers', headers);
+  
   // Merge default options with provided options
   const init: RequestInit = {
     method: requestInit?.method ?? "GET",
-    headers: {
-      "Content-Type": "application/json",
-      ...requestInit?.headers,
-    } as HeadersInit,
+    headers,
     signal: controller.signal,
     ...requestInit,
     // Only set default cache/revalidate if not provided
@@ -56,6 +68,7 @@ export default async function apiFetcher<T>(
   console.log("init", init);
   try {
     const response = await fetch(url, init);
+    console.log('response', response)
     console.log(
       `Fetch Response status:${response.status} statusText:${response.statusText} Ok:${response.ok}`,
     );
@@ -71,6 +84,7 @@ export default async function apiFetcher<T>(
     // Handle response based on status and content type
     return await handleResponse<T>(response);
   } catch (error) {
+    console.log('error', error)
     clearTimeout(timeoutId);
 
     // Retry logic for timeout and network errors
@@ -109,6 +123,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
   const isJsonResponse =
     contentType && contentType.includes("application/json");
   console.log("isJsonResponse", isJsonResponse);
+  console.log("response", response);
   // Handle successful responses
   if (response.ok) {
     // Handle no-content responses

@@ -1,0 +1,42 @@
+{
+  "pageTitle": "اكتشف المواهب المحترفة",
+  "pageDescription": "ابحث وتواصل مع العمال المهرة والمطورين والمصممين والمحترفين في مختلف المجالات",
+  "filters": {
+    "searchLabel": "بحث",
+    "searchPlaceholder": "مطور React، مصمم، إلخ.",
+    "searchHint": "ابحث بالاسم أو المسمى الوظيفي أو الملخص",
+    "skillsLabel": "المهارات",
+    "skillsPlaceholder": "React, TypeScript, Node.js",
+    "skillsHint": "مفصولة بفواصل (تطابق جزئي)",
+    "locationLabel": "الموقع",
+    "locationPlaceholder": "بيروت، دمشق، عن بُعد",
+    "jobLevelLabel": "المستوى الوظيفي",
+    "jobLevelPlaceholder": "اختر المستوى الوظيفي",
+    "experienceLabel": "سنوات الخبرة",
+    "years": "سنوات",
+    "atsScoreLabel": "درجة ATS",
+    "atsScoreHint": "درجة توافق نظام تتبع المتقدمين",
+    "activelySeeking": "يبحث بنشاط عن فرص",
+    "applyButton": "تطبيق الفلاتر",
+    "resetButton": "إعادة تعيين الكل"
+  },
+  "card": {
+    "yearsExperience": "سنوات خبرة",
+    "more": "المزيد",
+    "moreSkills": "مهارات أخرى",
+    "activelySeeking": "يبحث بنشاط",
+    "salary": {
+      "notSpecified": "غير محدد",
+      "from": "من ${amount}",
+      "to": "حتى ${amount}"
+    }
+  },
+  "resultsCount": "عرض {count} من {total} موهبة",
+  "noResults": {
+    "title": "لم يتم العثور على مواهب",
+    "description": "حاول تعديل الفلاتر لرؤية المزيد من النتائج"
+  },
+  "errors": {
+    "fetchFailed": "فشل تحميل المواهب"
+  }
+}

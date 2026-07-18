@@ -39,3 +39,7 @@ export async function getJobDetailTranslations() {
 export async function getProfileTranslations() {
   return await getTranslations("profile");
 }
+
+export async function getCandidatesTranslations() {
+  return await getTranslations("candidates");
+}

@@ -35,7 +35,7 @@ export async function refreshAccessToken(): Promise<IRefreshToken | null> {
       
       // Get current session to get the access token
       const session = await getServerSession(authOptions);
-      
+      console.log('session', session)
       if (!session?.accessToken) {
         console.error("[Token Manager] No access token found in session");
         return null;
@@ -43,7 +43,9 @@ export async function refreshAccessToken(): Promise<IRefreshToken | null> {
 
       console.log("[Token Manager] Calling refresh endpoint: /auth/refresh");
       
-      // Use apiFetcher with authorization header
+      // Use apiFetcher (NOT authFetcher) to avoid circular dependency
+      // The refresh endpoint uses the current access token to get a new one
+      // We don't want retry logic here because if refresh fails, we can't retry
       const data = await apiFetcher<IRefreshToken>(`/auth/refresh`, {
         method: Methods.POST,
         headers: {

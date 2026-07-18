@@ -1,5 +1,17 @@
 # Technology Stack
 
+## Documentation Structure
+
+For detailed implementation guides, see:
+- **[UI Patterns](./ui-patterns.md)** - Reusable components, dialogs, styling patterns
+- **[Translations](./translations.md)** - i18n implementation, RTL support, translation patterns
+- **[Forms & Validation](./forms-validation.md)** - react-hook-form, Zod validation, form patterns
+- **[API Patterns](./api-patterns.md)** - Repository pattern, server actions, error handling
+- **[Hooks & State](./hooks-state.md)** - Custom hooks, state management, React patterns
+- **[Structure](./structure.md)** - Project organization, file structure
+- **[Product Overview](./product.md)** - Business context, user flows
+- **[Employer Feature](./employer-feature.md)** - Employer-specific functionality
+
 ## Framework & Runtime
 
 - **Next.js 16.0.10** - React framework with App Router

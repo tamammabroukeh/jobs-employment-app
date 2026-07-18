@@ -8,7 +8,7 @@ interface JobCardProps {
   id: string;
   displayId: string;
   companyName: string;
-  companyLogo: string;
+  companyLogo: string | null;
   title: string;
   createdAt: string;
   roles: string[];

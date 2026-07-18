@@ -65,7 +65,8 @@
     "postedOn": "Posted on",
     "experience": "Experience",
     "location": "Location",
-    "applyNow": "Apply Now"
+    "applyNow": "Apply Now",
+    "noJobs": "No jobs available at the moment"
   },
   "footer": {
     "copyright": "© 2024 JobsPortal. All rights reserved.",

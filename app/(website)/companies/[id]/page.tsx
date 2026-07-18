@@ -42,15 +42,11 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
   // Fetch company data from API
   let company: ICompany | null = null;
   let error: string | null = null;
-
+  
   try {
     const result = await companiesRepository.getCompanyById(id);
-    console.log('result', result)
     if (result) {
-      // Use API data directly, just add empty arrays for reviews and jobs
-      company = {
-        ...result,
-      };
+      company = result;
     } else {
       error = 'Failed to fetch company details';
     }
@@ -81,23 +77,26 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
     );
   }
 
+  // Map company jobs to the format expected by CompanyJobs component
+  const mappedJobs = company.jobs.map((job) => ({
+    id: job.id,
+    displayId: job.job_id,
+    companyName: company.name,
+    companyLogo: company.logo || '/default-company-logo.png',
+    title: job.title,
+    createdAt: job.created_at,
+    roles: job.roles,
+    types: [job.job_type],
+    levels: [job.job_level],
+    experience: `${job.experience_years} years`,
+    location: job.city,
+  }));
+
   const tabItems = [
     {
       key: 'overview',
       label: t('detail.tabs.overview'),
-      children: (
-        <CompanyOverview
-          description={company.description}
-          founded={company.founded}
-          employeeCount={company.employee_count}
-          location={company.location}
-          website={company.website}
-          socialMedia={company.social_media}
-          industry={company.industry}
-          companySize={company.company_size}
-          openPositions={company.open_positions}
-        />
-      ),
+      children: <CompanyOverview company={company} />,
     },
     {
       key: 'reviews',
@@ -110,11 +109,11 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
           wouldRecommend={company.would_recommend}
           ceoPerformance={company.ceo_performance}
           categoryRatings={{
-            compensation: company.category_ratings?.compensation || 0,
-            culture: company.category_ratings?.culture || 0,
-            workLife: company.category_ratings?.work_life || 0,
-            diversity: company.category_ratings?.diversity || 0,
-            management: company.category_ratings?.management || 0,
+            compensation: company.category_ratings.compensation,
+            culture: company.category_ratings.culture,
+            workLife: company.category_ratings.work_life,
+            diversity: company.category_ratings.diversity,
+            management: company.category_ratings.management,
           }}
           reviews={company.reviews}
         />
@@ -123,7 +122,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
     {
       key: 'jobs',
       label: t('detail.tabs.jobs'),
-      children: <CompanyJobs jobs={company.jobs} />,
+      children: <CompanyJobs jobs={mappedJobs} />,
     },
     {
       key: 'directApply',

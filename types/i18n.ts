@@ -9,6 +9,9 @@ export type Messages = {
   companies: typeof import("../messages/en/companies.json")
   jobDetail: typeof import("../messages/en/job-detail.json")
   profile: typeof import("../messages/en/profile.json")
+  talents: typeof import("../messages/en/talents.json")
+  candidates: typeof import("../messages/en/candidates.json")
+  employer: typeof import("../messages/en/employer.json")
 }
 
 export type IntlKeys =
@@ -22,6 +25,18 @@ export type IntlKeys =
   | `errors.unauthorized.${keyof Messages["errors"]["unauthorized"]}`
   | `session.${keyof Messages["session"]}`
   | `footer.${keyof Messages["footer"]}`
+  | `profile.documents.${keyof Messages["profile"]["documents"]}`
+  | `profile.documents.resume.${keyof Messages["profile"]["documents"]["resume"]}`
+  | `profile.documents.coverLetter.${keyof Messages["profile"]["documents"]["coverLetter"]}`
+  | `profile.documents.aiAnalysis.${keyof Messages["profile"]["documents"]["aiAnalysis"]}`
+  | `talents.${keyof Messages["talents"]}`
+  | `talents.filters.${keyof Messages["talents"]["filters"]}`
+  | `talents.card.${keyof Messages["talents"]["card"]}`
+  | `talents.card.salary.${keyof Messages["talents"]["card"]["salary"]}`
+  | `talents.noResults.${keyof Messages["talents"]["noResults"]}`
+  | `talents.errors.${keyof Messages["talents"]["errors"]}`
+  | `candidates.${keyof Messages["candidates"]}`
+  | `employer.${keyof Messages["employer"]}`
   | "errors.noPermission"
   | "errors.noPermissionAction"
   | "errors.signInRequired"

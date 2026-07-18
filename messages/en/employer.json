@@ -11,15 +11,15 @@
         "title": "By Forsa",
         "description": "Applicants will be visible in your talent pool"
       },
-      "byEmail": {
-        "title": "By Email",
-        "description": "Applicants will send applications via email"
+      "byPhone": {
+        "title": "By Phone",
+        "description": "Applicants will contact you via phone"
       },
       "byWebsite": {
         "title": "Via Your Website",
         "description": "Redirect candidates to your own website or application"
       },
-      "communicationValue": "Email or Website URL"
+      "communicationValue": "Phone or Website URL"
     },
     "employeeSpec": {
       "title": "Specify the required employee specification",

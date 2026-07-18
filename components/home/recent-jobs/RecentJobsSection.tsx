@@ -3,130 +3,21 @@ import Link from 'next/link';
 import JobCard from './JobCard';
 import ROUTES from '@/constants/routes';
 import { getHomeTranslations } from '@/lib/get-translations';
-
-// Mock data - Replace with actual API call
-const mockJobs = [
-  {
-    id: '1',
-    displayId: 'JOB-001',
-    companyName: 'Google',
-    companyLogo: 'https://logo.clearbit.com/google.com',
-    title: 'Senior Frontend Developer',
-    createdAt: '2024-01-15',
-    roles: ['Frontend', 'React'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '2',
-    displayId: 'JOB-002',
-    companyName: 'Microsoft',
-    companyLogo: 'https://logo.clearbit.com/microsoft.com',
-    title: 'Backend Engineer',
-    createdAt: '2024-01-14',
-    roles: ['Backend', 'Node.js'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Seattle, WA',
-  },
-  {
-    id: '3',
-    displayId: 'JOB-003',
-    companyName: 'Apple',
-    companyLogo: 'https://logo.clearbit.com/apple.com',
-    title: 'iOS Developer',
-    createdAt: '2024-01-13',
-    roles: ['Mobile', 'iOS'],
-    types: ['Full-time', 'On-site'],
-    levels: ['Senior'],
-    experience: '4+ years',
-    location: 'Cupertino, CA',
-  },
-  {
-    id: '4',
-    displayId: 'JOB-004',
-    companyName: 'Amazon',
-    companyLogo: 'https://logo.clearbit.com/amazon.com',
-    title: 'DevOps Engineer',
-    createdAt: '2024-01-12',
-    roles: ['DevOps', 'AWS'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3+ years',
-    location: 'Austin, TX',
-  },
-  {
-    id: '5',
-    displayId: 'JOB-005',
-    companyName: 'Meta',
-    companyLogo: 'https://logo.clearbit.com/meta.com',
-    title: 'Full Stack Developer',
-    createdAt: '2024-01-11',
-    roles: ['Full Stack', 'React', 'Node.js'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'Menlo Park, CA',
-  },
-  {
-    id: '6',
-    displayId: 'JOB-006',
-    companyName: 'Netflix',
-    companyLogo: 'https://logo.clearbit.com/netflix.com',
-    title: 'Data Engineer',
-    createdAt: '2024-01-10',
-    roles: ['Data', 'Python'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Los Gatos, CA',
-  },
-  {
-    id: '7',
-    displayId: 'JOB-006',
-    companyName: 'Netflix',
-    companyLogo: 'https://logo.clearbit.com/netflix.com',
-    title: 'Data Engineer',
-    createdAt: '2024-01-10',
-    roles: ['Data', 'Python'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Los Gatos, CA',
-  },
-  {
-    id: '8',
-    displayId: 'JOB-006',
-    companyName: 'Netflix',
-    companyLogo: 'https://logo.clearbit.com/netflix.com',
-    title: 'Data Engineer',
-    createdAt: '2024-01-10',
-    roles: ['Data', 'Python'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Los Gatos, CA',
-  },
-  {
-    id: '9',
-    displayId: 'JOB-006',
-    companyName: 'Netflix',
-    companyLogo: 'https://logo.clearbit.com/netflix.com',
-    title: 'Data Engineer',
-    createdAt: '2024-01-10',
-    roles: ['Data', 'Python'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Los Gatos, CA',
-  },
-];
+import { Job, jobsRepository } from '@/apis/services/jobs';
 
 export default async function RecentJobsSection() {
   const t = await getHomeTranslations();
+  
+  // Fetch recent jobs from API (limit to 9 jobs for homepage)
+  let jobs:Job[] = [];
+  try {
+    const response = await jobsRepository.getJobs({ page: 1, per_page: 9 });
+    console.log('response', response)
+    jobs = response.data;
+  } catch (error) {
+    console.error('Failed to fetch jobs:', error);
+    // Show empty state or fallback UI if needed
+  }
 
   return (
     <section className="py-20 bg-background">
@@ -142,22 +33,30 @@ export default async function RecentJobsSection() {
         </div>
         {/* Jobs Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {mockJobs.map((job) => (
-            <JobCard
-              key={job.id}
-              id={job.id}
-              displayId={job.displayId}
-              companyName={job.companyName}
-              companyLogo={job.companyLogo}
-              title={job.title}
-              createdAt={job.createdAt}
-              roles={job.roles}
-              types={job.types}
-              levels={job.levels}
-              experience={job.experience}
-              location={job.location}
-            />
-          ))}
+          {jobs.length > 0 ? (
+            jobs.map((job) => (
+              <JobCard
+                key={job.id}
+                id={job.id}
+                displayId={job.job_id}
+                companyName={job.company_name}
+                companyLogo={job.company_logo}
+                title={job.title}
+                createdAt={job.created_at}
+                roles={job.roles}
+                types={job.job_type ? [job.job_type] : []}
+                levels={job.job_level ? [job.job_level] : []}
+                experience={job.experience_years ? `${job.experience_years}+ years` : 'fresh'}
+                location={job.city}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <Typography variant="p" className="text-muted-foreground">
+                {t('recentJobs.noJobs')}
+              </Typography>
+            </div>
+          )}
         </div>
 
         {/* View All Button */}

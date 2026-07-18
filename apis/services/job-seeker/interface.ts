@@ -1,12 +1,13 @@
 // Job Seeker Profile Interfaces
 
+import { TCommunicationMethods, TEducationlevel, TGender, TJobLevel, TJobType, TWorkMode } from "../jobs";
+
 export interface IJobSeekerProfile {
   id: string;
   user_id: string;
   updated_at: string;
   created_at: string;
   address: string;
-  email: string;
   city: string;
   current_job_status: string;
   current_job_title: string;
@@ -18,6 +19,7 @@ export interface IJobSeekerProfile {
   first_name: string;
   full_name: string;
   gender: string;
+  email: string;
   image: string;
   is_actively_seeking: boolean;
   job_level: string;
@@ -70,8 +72,16 @@ export interface IWorkExperience {
   description: string;
 }
 
+export interface IJobSeekerDocuments {
+  cv_url: string | null;
+  cv_analyzed_at: string | null;
+  resume_url: string | null;
+  default_cover_letter: string | null;
+}
+
 export interface IJobSeekerProfileResponse {
   profile: IJobSeekerProfile;
+  documents: IJobSeekerDocuments;
 }
 
 // Update Profile Request Interface
@@ -201,4 +211,187 @@ export interface IUpdateWorkExperienceResponse {
   status: boolean;
   message: string;
   profile: IJobSeekerProfile;
+}
+export type TJobTypes = 'full_time' | 'part_time' | 'contract' | 'freelance' | ''
+// Job Search Interfaces
+export interface JobSearchFilters {
+  keyword?: string;
+  location?: string;
+  job_type?: TJobTypes;
+  category?: string;
+  min_salary?: number;
+  page?: number;
+}
+
+export interface JobSearchResponse {
+  jobs: {
+    current_page: number;
+    data: Array<{
+      communication_method: TCommunicationMethods;
+      communication_value: string | null;
+      title: string;
+      portfolio_required: boolean;
+      cover_letter_required: boolean;
+      gender: TGender;
+      age_from: number | null;
+      age_to: number | null;
+      education_level: TEducationlevel;
+      job_level: TJobLevel;
+      experience_years: number;
+      vacancies: number;
+      job_type: TJobType;
+      work_mode: TWorkMode;
+      city: string;
+      address: string;
+      salary_from: number | string;
+      salary_to: number | string;
+      currency: string;
+      display_salary: boolean;
+      incentives: string | null;
+      description: string;
+      requirements: string;
+      questions: Array<{ question: string; required: boolean }>;
+      category: string;
+      expires_at: string;
+      roles: string[];
+      languages: string[];
+      tags: string[];
+      job_id: string;
+      employer_id: string;
+      company_profile_id: string;
+      company_name: string;
+      company_logo: string | null;
+      is_active: boolean;
+      updated_at: string;
+      created_at: string;
+      id: string;
+      // Legacy fields
+      experience_level?: string;
+      experience_required?: string;
+      location?: string;
+      salary_range?: string;
+    }>;
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+      url: string | null;
+      label: string;
+      page: number | null;
+      active: boolean;
+    }>;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  };
+}
+
+// Matched Jobs Interfaces
+export interface MatchedJobsFilters {
+  min_score?: number;
+  page?: number;
+}
+
+export interface MatchedJob {
+  title: string;
+  description: string;
+  requirements: string;
+  company_name: string;
+  company_logo?: string | null;
+  job_type: string;
+  work_mode: string;
+  experience_level: string;
+  experience_required: string;
+  location: string;
+  category?: string;
+  salary_range: string;
+  tags: string[];
+  roles: string[];
+  job_id: string;
+  employer_id: string;
+  is_active: boolean;
+  updated_at: string;
+  created_at: string;
+  id: string;
+  match_score: number;
+}
+
+export interface MatchedJobsResponse {
+  data: MatchedJob[];
+  current_page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  next_page: number | null;
+  prev_page: number | null;
+}
+
+// Resume Upload Interfaces
+export interface IAIAnalysisProfile {
+  user_id: string;
+  updated_at: string;
+  created_at: string;
+  ai_analyzed_at: string;
+  ai_education_history: Array<{
+    institution: string;
+    degree: string;
+    year: string;
+  }>;
+  ai_email: string;
+  ai_full_name: string;
+  ai_languages: string[];
+  ai_location: string;
+  ai_overall_evaluation: string;
+  ai_phone: string;
+  ai_projects: any[];
+  ai_skills: string[];
+  ai_social_links: any[];
+  ai_summary: string;
+  ai_work_history: Array<{
+    company: string | null;
+    role: string;
+    duration: string | null;
+    description: string;
+  }>;
+  analysis_completed_at: string;
+  analysis_error: string | null;
+  analysis_started_at: string;
+  analysis_status: 'pending' | 'processing' | 'completed' | 'failed';
+  ats_score: number;
+  cv_file_path: string;
+  cv_public_id: string;
+  resume: string;
+  resume_public_id: string;
+  id: string;
+}
+
+export interface IUploadResumeResponse {
+  message: string;
+  resume_url: string;
+  analysis_status: 'pending' | 'processing' | 'completed' | 'failed';
+  profile?: IAIAnalysisProfile;
+}
+
+// Delete Resume Response
+export interface IDeleteResumeResponse {
+  message: string;
+}
+
+// Update Cover Letter Interfaces
+export interface IUpdateCoverLetterRequest {
+  cover_letter: string;
+}
+
+export interface IUpdateCoverLetterResponse {
+  message: string;
+  cover_letter: string;
+}
+
+// Delete Cover Letter Response
+export interface IDeleteCoverLetterResponse {
+  message: string;
 }

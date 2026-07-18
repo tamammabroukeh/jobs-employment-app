@@ -23,11 +23,13 @@ export default function JobCardDetails({
           {experienceLabel}: {experience}
         </Typography>
       </Flex>
-      
-      <Flex justify="start">
-        <i className="fa-solid fa-location-dot text-sm" />
-        <Typography variant="small">{location}</Typography>
-      </Flex>
+
+      {location && (
+        <Flex justify="start">
+          <i className="fa-solid fa-location-dot text-sm" />
+          <Typography variant="small">{location}</Typography>
+        </Flex>
+      )}
 
       <Flex justify="start">
         <i className="fa-solid fa-calendar text-sm" />

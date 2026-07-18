@@ -1,10 +1,8 @@
-'use client';
 
 import JobCardHeader from "@/components/home/recent-jobs/JobCardHeader";
 import JobCardBadges from "@/components/home/recent-jobs/JobCardBadges";
 import JobCardDetails from "@/components/home/recent-jobs/JobCardDetails";
 import JobCardFooter from "@/components/home/recent-jobs/JobCardFooter";
-import { useJobsTranslations } from "@/hooks/use-translations";
 
 interface JobCardClientProps {
   id: string;
@@ -18,6 +16,9 @@ interface JobCardClientProps {
   levels: string[];
   experience: string;
   location: string;
+  experienceLabel: string;
+  postedOnLabel: string;
+  applyNowLabel: string;
 }
 
 export default function JobCardClient({
@@ -32,8 +33,10 @@ export default function JobCardClient({
   experience,
   location,
   displayId,
+  experienceLabel,
+  postedOnLabel,
+  applyNowLabel,
 }: JobCardClientProps) {
-  const t = useJobsTranslations();
 
   return (
     <div className="auth-card p-6 hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
@@ -55,13 +58,13 @@ export default function JobCardClient({
           experience={experience}
           location={location}
           createdAt={createdAt}
-          experienceLabel={t("cardLabels.experience")}
-          postedOnLabel={t("cardLabels.postedOn")}
+          experienceLabel={experienceLabel}
+          postedOnLabel={postedOnLabel}
         />
       </div>
 
       {/* Footer: Apply Button */}
-      <JobCardFooter jobId={id} applyNowLabel={t("cardLabels.applyNow")} />
+      <JobCardFooter jobId={id} applyNowLabel={applyNowLabel} />
     </div>
   );
 }

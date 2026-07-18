@@ -5,15 +5,25 @@
   },
   "filters": {
     "searchPlaceholder": "Search by job title, company, or keywords...",
+    "locationPlaceholder": "Location (city, country)",
     "jobType": "Job Type",
-    "selectJobType": "Select job types",
+    "selectJobType": "Select job type",
+    "selectCategory": "Select category",
     "city": "City",
     "selectCity": "Select cities",
     "jobRole": "Job Role",
     "selectJobRole": "Select job roles",
     "jobLevel": "Job Level",
     "selectJobLevel": "Select job levels",
+    "minSalary": "Minimum Salary",
     "clearAll": "Clear All Filters"
+  },
+  "matchedJobs": {
+    "title": "Matched Jobs For You",
+    "description": "Jobs ranked by match score based on your skills, location, experience, and preferences",
+    "minScoreLabel": "Minimum Match Score",
+    "noMatchesFound": "No Matched Jobs Found",
+    "noMatchesDescription": "We couldn't find any jobs matching your profile. Update your profile to improve matches."
   },
   "cardLabels": {
     "experience": "Experience",

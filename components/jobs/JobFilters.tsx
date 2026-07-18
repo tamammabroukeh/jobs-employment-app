@@ -5,112 +5,103 @@ import { useForm, Controller } from 'react-hook-form';
 import { ReusableSelect, ReusableInput } from '@/components/Reusable-Components';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useTypedTranslations } from '@/hooks/use-translations';
+import { TJobTypes } from '@/apis/services/job-seeker/interface';
+import { useSearchParams } from '@/hooks/useSearchParams';
 
 export interface JobFiltersState {
   search: string;
-  types: string[];
-  cities: string[];
-  roles: string[];
-  levels: string[];
+  jobType: TJobTypes;
+  location: string;
+  category: string;
+  minSalary?: number;
 }
 
 interface JobFiltersProps {
   onFiltersChange: (filters: JobFiltersState) => void;
 }
 
-// Filter options - Replace with API data
+// Filter options matching API requirements
 const JOB_TYPES = [
-  { title: 'Full-time', value: 'Full-time' },
-  { title: 'Part-time', value: 'Part-time' },
-  { title: 'Contract', value: 'Contract' },
-  { title: 'Remote', value: 'Remote' },
-  { title: 'Hybrid', value: 'Hybrid' },
-  { title: 'On-site', value: 'On-site' },
+  { title: 'Full Time', value: 'full_time' },
+  { title: 'Part Time', value: 'part_time' },
+  { title: 'Contract', value: 'contract' },
+  { title: 'Freelance', value: 'freelance' },
 ];
 
-const CITIES = [
-  { title: 'San Francisco, CA', value: 'San Francisco, CA' },
-  { title: 'Seattle, WA', value: 'Seattle, WA' },
-  { title: 'New York, NY', value: 'New York, NY' },
-  { title: 'Austin, TX', value: 'Austin, TX' },
-  { title: 'Los Angeles, CA', value: 'Los Angeles, CA' },
-  { title: 'Boston, MA', value: 'Boston, MA' },
-  { title: 'Chicago, IL', value: 'Chicago, IL' },
-  { title: 'Denver, CO', value: 'Denver, CO' },
-];
-
-const JOB_ROLES = [
-  { title: 'Frontend', value: 'Frontend' },
-  { title: 'Backend', value: 'Backend' },
-  { title: 'Full Stack', value: 'Full Stack' },
-  { title: 'Mobile', value: 'Mobile' },
-  { title: 'DevOps', value: 'DevOps' },
-  { title: 'Data', value: 'Data' },
+const CATEGORIES = [
+  { title: 'Engineering', value: 'Engineering' },
   { title: 'Design', value: 'Design' },
-  { title: 'Product', value: 'Product' },
   { title: 'Marketing', value: 'Marketing' },
+  { title: 'Sales', value: 'Sales' },
+  { title: 'Product', value: 'Product' },
+  { title: 'Data', value: 'Data' },
+  { title: 'Customer Service', value: 'Customer Service' },
+  { title: 'HR', value: 'HR' },
 ];
 
-const JOB_LEVELS = [
-  { title: 'Entry-level', value: 'Entry-level' },
-  { title: 'Junior', value: 'Junior' },
-  { title: 'Mid-level', value: 'Mid-level' },
-  { title: 'Senior', value: 'Senior' },
-  { title: 'Lead', value: 'Lead' },
-  { title: 'Manager', value: 'Manager' },
-  { title: 'Director', value: 'Director' },
+const SALARY_RANGES = [
+  { title: 'Any Salary', value: '' },
+  { title: '$1,000+', value: '1000' },
+  { title: '$2,000+', value: '2000' },
+  { title: '$3,000+', value: '3000' },
+  { title: '$4,000+', value: '4000' },
+  { title: '$5,000+', value: '5000' },
+  { title: '$10,000+', value: '10000' },
 ];
 
 export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
   const t = useTypedTranslations('jobs');
-  
+    const { getParam, deleteParam } = useSearchParams()
+    const searchParam = getParam("search")
   const { control, watch, reset } = useForm<JobFiltersState>({
     defaultValues: {
-      search: '',
-      types: [],
-      cities: [],
-      roles: [],
-      levels: [],
+      search: searchParam ?? '',
+      jobType: '',
+      location: '',
+      category: '',
+      minSalary: undefined,
     },
   });
 
   // Watch all form values
   const searchValue = watch('search');
-  const typesValue = watch('types');
-  const citiesValue = watch('cities');
-  const rolesValue = watch('roles');
-  const levelsValue = watch('levels');
+  const jobTypeValue = watch('jobType');
+  const locationValue = watch('location');
+  const categoryValue = watch('category');
+  const minSalaryValue = watch('minSalary');
 
   // Debounce search input
   const debouncedSearch = useDebounce(searchValue, 500);
+  const debouncedLocation = useDebounce(locationValue, 500);
 
   // Trigger callback when filters change
   useEffect(() => {
     onFiltersChange({
       search: debouncedSearch,
-      types: typesValue,
-      cities: citiesValue,
-      roles: rolesValue,
-      levels: levelsValue,
+      jobType: jobTypeValue,
+      location: debouncedLocation,
+      category: categoryValue,
+      minSalary: minSalaryValue,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearch, typesValue, citiesValue, rolesValue, levelsValue]);
+  }, [debouncedSearch, jobTypeValue, debouncedLocation, categoryValue, minSalaryValue]);
 
   const handleClearFilters = () => {
     reset({
       search: '',
-      types: [],
-      cities: [],
-      roles: [],
-      levels: [],
+      jobType: '',
+      location: '',
+      category: '',
+      minSalary: undefined,
     });
+    deleteParam("search")
   };
 
   return (
     <div className="bg-card border border-border rounded-lg p-6 mb-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
         {/* Search Input */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-2">
           <Controller
             name="search"
             control={control}
@@ -126,101 +117,83 @@ export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
           />
         </div>
 
-        {/* Job Types Filter */}
+        {/* Location Input */}
+        <div>
+          <Controller
+            name="location"
+            control={control}
+            render={({ field }) => (
+              <ReusableInput
+                placeholder={t('filters.locationPlaceholder')}
+                value={field.value}
+                onChange={field.onChange}
+                prefix={<i className="fa-solid fa-location-dot text-muted-foreground" />}
+                size="large"
+              />
+            )}
+          />
+        </div>
+
+        {/* Job Type Filter */}
         <Controller
-          name="types"
+          name="jobType"
           control={control}
           render={({ field }) => (
             <ReusableSelect
-              label={t('filters.jobType')}
               placeholder={t('filters.selectJobType')}
               selectValues={JOB_TYPES}
               value={field.value}
-              onValueChange={(value) => {
-                field.onChange(Array.isArray(value) ? value : [value]);
-              }}
-              mode="multiple"
+              onValueChange={field.onChange}
               allowClear
               showSearch
-              maxTagCount="responsive"
             />
           )}
         />
 
-        {/* Cities Filter */}
+        {/* Category Filter */}
         <Controller
-          name="cities"
+          name="category"
           control={control}
           render={({ field }) => (
             <ReusableSelect
-              label={t('filters.city')}
-              placeholder={t('filters.selectCity')}
-              selectValues={CITIES}
+              placeholder={t('filters.selectCategory')}
+              selectValues={CATEGORIES}
               value={field.value}
-              onValueChange={(value) => {
-                field.onChange(Array.isArray(value) ? value : [value]);
-              }}
-              mode="multiple"
+              onValueChange={field.onChange}
               allowClear
               showSearch
-              maxTagCount="responsive"
             />
           )}
         />
 
-        {/* Job Roles Filter */}
+        {/* Min Salary Filter */}
         <Controller
-          name="roles"
+          name="minSalary"
           control={control}
           render={({ field }) => (
             <ReusableSelect
-              label={t('filters.jobRole')}
-              placeholder={t('filters.selectJobRole')}
-              selectValues={JOB_ROLES}
-              value={field.value}
+              placeholder={t('filters.minSalary')}
+              selectValues={SALARY_RANGES}
+              value={field.value ? String(field.value) : ''}
               onValueChange={(value) => {
-                field.onChange(Array.isArray(value) ? value : [value]);
+                field.onChange(value ? Number(value) : undefined);
               }}
-              mode="multiple"
               allowClear
-              showSearch
-              maxTagCount="responsive"
             />
           )}
         />
+      </div>
 
-        {/* Job Levels Filter */}
-        <Controller
-          name="levels"
-          control={control}
-          render={({ field }) => (
-            <ReusableSelect
-              label={t('filters.jobLevel')}
-              placeholder={t('filters.selectJobLevel')}
-              selectValues={JOB_LEVELS}
-              value={field.value}
-              onValueChange={(value) => {
-                field.onChange(Array.isArray(value) ? value : [value]);
-              }}
-              mode="multiple"
-              allowClear
-              showSearch
-              maxTagCount="responsive"
-            />
-          )}
-        />
-
-        {/* Clear Filters Button */}
-        <div className="flex items-end">
-          <button
-            type="button"
-            onClick={handleClearFilters}
-            className="w-full h-10 px-4 text-sm font-medium text-muted-foreground hover:text-foreground border border-border rounded-lg hover:bg-accent transition-colors"
-          >
-            <i className="fa-solid fa-filter-circle-xmark mr-2" />
-            {t('filters.clearAll')}
-          </button>
-        </div>
+      {/* Clear Filters Button */}
+      <div className="mt-4 flex justify-end">
+        <button
+          type="button"
+          onClick={handleClearFilters}
+          className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground border border-border rounded-lg hover:bg-accent transition-colors"
+        >
+          <i className="fa-solid fa-filter-circle-xmark mr-2" />
+          {t('filters.clearAll')}
+        </button>
       </div>
     </div>
   );

@@ -9,3 +9,4 @@ export { default as ExperienceSection } from './ExperienceSection';
 export { default as ExperienceDialog } from './ExperienceDialog';
 export { default as SkillsSection } from './SkillsSection';
 export { default as SkillsDialog } from './SkillsDialog';
+export { default as DocumentsSection } from './DocumentsSection';

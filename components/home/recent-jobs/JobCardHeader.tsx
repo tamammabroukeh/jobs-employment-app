@@ -3,7 +3,7 @@ import { Typography, ReusableBadge } from "@/components/Reusable-Components";
 
 interface JobCardHeaderProps {
   companyName: string;
-  companyLogo: string;
+  companyLogo: string | null;
   title: string;
   displayId: string;
 }
@@ -16,14 +16,16 @@ export default function JobCardHeader({
 }: JobCardHeaderProps) {
   return (
     <div className="flex items-start gap-4 mb-4">
-      <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-muted shrink-0">
-        <Image
-          src={companyLogo}
-          alt={companyName}
-          width={64}
-          height={64}
-          className="object-contain"
-        />
+      <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-background shrink-0">
+        {companyLogo && (
+          <Image
+            src={companyLogo}
+            alt={companyName}
+            width={64}
+            height={64}
+            className="object-contain"
+          />
+        )}
       </div>
       <div className="flex-1 min-w-0">
         <Typography

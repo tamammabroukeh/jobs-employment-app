@@ -3,6 +3,7 @@ export * from "./actions";
 
 import { authFetcher } from '@/apis/authInstace';
 import { Methods } from '@/constants/methods';
+import { buildQueryString } from '@/apis/utils/queryBuilder';
 import type {
   CreateJobRequest,
   CreateJobResponse,
@@ -13,6 +14,9 @@ import type {
   CompanyProfile,
   UpdateCompanyRequest,
   CompanyProfileResponse,
+  CandidatesResponse,
+  CandidatesQueryParams,
+  CandidateDetailResponse,
 } from './interface';
 
 /**
@@ -37,10 +41,14 @@ export const employerRepository = {
    * @param id - Job ID
    * @returns Promise with job data
    */
-  getJob: (id: string): Promise<{ success: boolean; data: { job: Job } }> =>
-    authFetcher<{ success: boolean; data: { job: Job } }>(`/employer/jobs/${id}`, {
+  getJob: (id: string): Promise<Job> =>
+    authFetcher<Job>(`/jobs/${id}`, {
       method: Methods.GET,
       cache: "no-store",
+      next:{
+        tags: ['job-by-id'],
+        revalidate:3600
+      }
     }),
 
   /**
@@ -99,5 +107,34 @@ export const employerRepository = {
     authFetcher<CompanyProfile>('/employer/company', {
       method: Methods.PUT,
       body: JSON.stringify(data),
+    }),
+
+  /**
+   * Get candidates/seekers
+   * @param params - Query parameters for filtering and pagination
+   * @returns Promise with candidates response
+   */
+  getCandidates: (params: CandidatesQueryParams = {}): Promise<CandidatesResponse> => {
+    const queryString = buildQueryString(params);
+    const endpoint = queryString ? `/employer/seekers?${queryString}` : '/employer/seekers';
+    return authFetcher<CandidatesResponse>(endpoint, {
+      method: Methods.GET,
+      cache: "no-store",
+    });
+  },
+
+  /**
+   * Get candidate detail by user ID
+   * @param userId - User ID of the candidate
+   * @returns Promise with candidate detail response
+   */
+  getCandidateDetail: (userId: string): Promise<CandidateDetailResponse> =>
+    authFetcher<CandidateDetailResponse>(`/employer/seekers/${userId}`, {
+      method: Methods.GET,
+      cache: "no-store",
+      next: {
+        tags: ['candidate-detail'],
+        revalidate: 3600
+      }
     }),
 };

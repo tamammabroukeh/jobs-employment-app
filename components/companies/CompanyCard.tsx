@@ -8,7 +8,7 @@ import { useCompaniesTranslations } from '@/hooks/use-translations';
 interface CompanyCardProps {
   id: string;
   name: string;
-  logo: string;
+  logo: string | null;
   rating: number;
   reviewsCount: number;
   openJobs: number;
@@ -34,14 +34,14 @@ export default function CompanyCard({
     <div className="auth-card p-6 hover:shadow-xl transition-all duration-300 group h-full flex flex-col">
       {/* Company Header */}
       <div className="flex items-start gap-4 mb-4">
-        <div className="w-20 h-20 relative rounded-lg overflow-hidden bg-muted shrink-0">
-          <Image
+        <div className="w-20 h-20 relative rounded-lg overflow-hidden bg-background shrink-0">
+          {logo && <Image
             src={logo}
             alt={name}
             width={80}
             height={80}
             className="object-contain"
-          />
+          />}
         </div>
         <div className="flex-1 min-w-0">
           <Typography variant="h3" className="text-foreground group-hover:text-primary transition-colors mb-1">
