@@ -9,11 +9,13 @@ export default async function EditForsaPage({
 }: {
   params: { id: string };
 }) {
+  const { id } = await params;
+  console.log('id', id)
   const session = await getServerSession(authOptions);
 
   // Check if user is authenticated and is an employer
   if (!session?.user) {
-    redirect('/auth/login?callbackUrl=/forsa/' + params.id);
+    redirect('/auth/login?callbackUrl=/forsa/' + id);
   }
 
   if (session.user.role !== 'employer') {
@@ -22,16 +24,18 @@ export default async function EditForsaPage({
 
   let job;
   try {
-    const response = await employerRepository.getJob(params.id);
-    job = response.data.job;
+    console.log('id', id)
+    const response = await employerRepository.getJob(id);
+    console.log('response', response)
+    job = response;
   } catch (error) {
     console.error('Error fetching job:', error);
-    redirect('/manage-jobs');
+    // redirect('/manage-jobs');
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <ForsaForm mode="edit" initialData={job} jobId={params.id} />
+      <ForsaForm mode="edit" initialData={job} jobId={id} />
     </div>
   );
 }

@@ -1,0 +1,42 @@
+{
+  "pageTitle": "Discover Talented Professionals",
+  "pageDescription": "Search and connect with skilled workers, developers, designers, and professionals across various fields",
+  "filters": {
+    "searchLabel": "Search",
+    "searchPlaceholder": "React Developer, Designer, etc.",
+    "searchHint": "Search by name, title, or summary",
+    "skillsLabel": "Skills",
+    "skillsPlaceholder": "React, TypeScript, Node.js",
+    "skillsHint": "Comma-separated (partial match)",
+    "locationLabel": "Location",
+    "locationPlaceholder": "Beirut, Damascus, Remote",
+    "jobLevelLabel": "Job Level",
+    "jobLevelPlaceholder": "Select job level",
+    "experienceLabel": "Years of Experience",
+    "years": "years",
+    "atsScoreLabel": "ATS Score",
+    "atsScoreHint": "Applicant Tracking System compatibility score",
+    "activelySeeking": "Actively seeking opportunities",
+    "applyButton": "Apply Filters",
+    "resetButton": "Reset All"
+  },
+  "card": {
+    "yearsExperience": "years experience",
+    "more": "more",
+    "moreSkills": "more skills",
+    "activelySeeking": "Actively Seeking",
+    "salary": {
+      "notSpecified": "Not specified",
+      "from": "From ${amount}",
+      "to": "Up to ${amount}"
+    }
+  },
+  "resultsCount": "Showing {count} of {total} talents",
+  "noResults": {
+    "title": "No Talents Found",
+    "description": "Try adjusting your filters to see more results"
+  },
+  "errors": {
+    "fetchFailed": "Failed to load talents"
+  }
+}

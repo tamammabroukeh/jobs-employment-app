@@ -34,8 +34,8 @@ const forsaSchema = z.object({
   work_mode: z.string().min(1, 'Work mode is required'),
   city: z.string().min(2, 'City is required'),
   address: z.string().min(5, 'Address is required'),
-  salary_from: z.string().min(1, 'Minimum salary is required'),
-  salary_to: z.string().min(1, 'Maximum salary is required'),
+  salary_from: z.number().min(0, 'Minimum salary must be positive'),
+  salary_to: z.number().min(0, 'Maximum salary must be positive'),
   currency: z.string().min(1, 'Currency is required'),
   display_salary: z.boolean(),
   incentives: z.string().optional(),
@@ -93,7 +93,7 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
           incentives: initialData.incentives,
           description: initialData.description,
           requirements: initialData.requirements,
-          questions: initialData.questions.map(q => `${q.question}|${q.required}`).join('\n'),
+          questions: initialData.questions.map(q => `${q.question}|${q.required ? 'true' : 'false'}`).join('\n'),
           tags: initialData.tags.join(', '),
           category: initialData.category,
           expires_at: initialData.expires_at,
@@ -147,7 +147,7 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
         questions: data.questions
           ? data.questions.split('\n').filter(Boolean).map((line) => {
               const [question, required] = line.split('|');
-              return { question: question.trim(), required: required?.trim() || 'false' };
+              return { question: question.trim(), required: required?.trim() === 'true' };
             })
           : [],
         tags: data.tags.split(',').map((tag) => tag.trim()).filter(Boolean),
@@ -164,6 +164,7 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
         }
       } else if (mode === 'edit' && jobId) {
         const result = await updateJobAction({ ...payload, id: jobId });
+        console.log('result', result)
         if (result?.data) {
           toast.success(t('messages.updateSuccess'));
           router.push(ROUTES.EMPLOYER.MANAGE_JOBS);
@@ -203,19 +204,19 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <button
                   type="button"
-                  onClick={() => field.onChange('by_email')}
+                  onClick={() => field.onChange('by_phone')}
                   className={`p-6 border-2 rounded-lg text-center transition-all ${
-                    field.value === 'by_email'
+                    field.value === 'by_phone'
                       ? 'border-primary bg-primary/5'
                       : 'border-border hover:border-primary/50'
                   }`}
                 >
-                  <i className="fa-solid fa-envelope text-4xl text-primary mb-3" />
+                  <i className="fa-solid fa-phone text-4xl text-primary mb-3" />
                   <Typography variant="h4" className="text-foreground mb-2">
-                    {t('cvReceive.byEmail.title')}
+                    {t('cvReceive.byPhone.title')}
                   </Typography>
                   <Typography variant="small" className="text-muted-foreground">
-                    {t('cvReceive.byEmail.description')}
+                    {t('cvReceive.byPhone.description')}
                   </Typography>
                 </button>
 
@@ -764,6 +765,9 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
                 render={({ field }) => (
                   <ReusableInput
                     {...field}
+                    type="number"
+                    value={field.value?.toString() || ''}
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
                     placeholder={t('placeholders.salaryFrom')}
                     hasError={!!errors.salary_from}
                     size="large"
@@ -790,6 +794,9 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
                 render={({ field }) => (
                   <ReusableInput
                     {...field}
+                    type="number"
+                    value={field.value?.toString() || ''}
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : 0)}
                     placeholder={t('placeholders.salaryTo')}
                     hasError={!!errors.salary_to}
                     size="large"

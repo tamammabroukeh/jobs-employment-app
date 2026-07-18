@@ -18,7 +18,7 @@ import { FetchError } from "./types/error";
  */
 export async function authFetcher<T>(
   path: string,
-  requestInit?: RequestInit,
+  requestInit?: RequestInit & { skipDefaultHeaders?: boolean },
   isRetry: boolean = false,
 ): Promise<T> {
   const session = await getServerSession(authOptions);
@@ -30,18 +30,31 @@ export async function authFetcher<T>(
   console.log("[Auth Fetcher] Has token?", !!token);
   console.log("[Auth Fetcher] Is retry?", isRetry);
 
-  // if (!isAuthorized) {
-  //   throw new Error("Unauthorized: No valid session token found");
-  // }
+  if (!isAuthorized) {
+    throw new Error("Unauthorized: No valid session token found");
+  }
 
+  // For FormData uploads, don't set Content-Type (let fetch set it with boundary)
+  const skipDefaultHeaders = requestInit?.skipDefaultHeaders;
+  
   // Add authorization header with the token
-  const authHeaders: HeadersInit = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    ...(requestInit?.headers || {}),
-  };
-
+  const authHeaders: HeadersInit = skipDefaultHeaders
+    ? {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        ...(requestInit?.headers || {}),
+      }
+    : {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...(requestInit?.headers || {}),
+      };
+  
+  console.log('[Auth Fetcher] Skip default headers?', skipDefaultHeaders);
+  console.log('[Auth Fetcher] Body type:', requestInit?.body?.constructor?.name);
+  console.log('[Auth Fetcher] Headers:', authHeaders);
+  
   try {
     // Call the base fetcher with auth headers
     return await apiFetcher<T>(path, {
@@ -64,10 +77,18 @@ export async function authFetcher<T>(
         );
 
         // Update the authorization header with the new token
-        const newAuthHeaders: HeadersInit = {
-          Authorization: `Bearer ${newTokenData.access_token}`,
-          ...(requestInit?.headers || {}),
-        };
+        const newAuthHeaders: HeadersInit = skipDefaultHeaders
+          ? {
+              Authorization: `Bearer ${newTokenData.access_token}`,
+              Accept: "application/json",
+              ...(requestInit?.headers || {}),
+            }
+          : {
+              Authorization: `Bearer ${newTokenData.access_token}`,
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              ...(requestInit?.headers || {}),
+            };
 
         // Retry the request with the new token
         return await apiFetcher<T>(path, {

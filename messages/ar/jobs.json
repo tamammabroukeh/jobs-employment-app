@@ -5,15 +5,25 @@
   },
   "filters": {
     "searchPlaceholder": "ابحث بالمسمى الوظيفي أو الشركة أو الكلمات المفتاحية...",
+    "locationPlaceholder": "الموقع (المدينة، البلد)",
     "jobType": "نوع الوظيفة",
-    "selectJobType": "اختر أنواع الوظائف",
+    "selectJobType": "اختر نوع الوظيفة",
+    "selectCategory": "اختر الفئة",
     "city": "المدينة",
     "selectCity": "اختر المدن",
     "jobRole": "دور الوظيفة",
     "selectJobRole": "اختر أدوار الوظائف",
     "jobLevel": "مستوى الوظيفة",
     "selectJobLevel": "اختر مستويات الوظائف",
+    "minSalary": "الحد الأدنى للراتب",
     "clearAll": "مسح جميع الفلاتر"
+  },
+  "matchedJobs": {
+    "title": "الوظائف المناسبة لك",
+    "description": "وظائف مرتبة حسب درجة التطابق بناءً على مهاراتك وموقعك وخبرتك وتفضيلاتك",
+    "minScoreLabel": "الحد الأدنى لدرجة التطابق",
+    "noMatchesFound": "لم يتم العثور على وظائف مطابقة",
+    "noMatchesDescription": "لم نتمكن من العثور على أي وظائف تطابق ملفك الشخصي. قم بتحديث ملفك الشخصي لتحسين التطابقات."
   },
   "cardLabels": {
     "experience": "الخبرة",

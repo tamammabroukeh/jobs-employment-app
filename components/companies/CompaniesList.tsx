@@ -9,14 +9,30 @@ interface CompaniesListProps {
 }
 
 // Helper function to format company size
-function formatCompanySize(companySize: string, sizeRange: { min: number; max?: number; isPlus: boolean }): string {
-  if (sizeRange.isPlus) {
-    return `${sizeRange.min}+ employees`;
-  }
-  if (sizeRange.max) {
-    return `${sizeRange.min}-${sizeRange.max} employees`;
-  }
-  return companySize;
+function formatCompanySize(companySize: string): string {
+  const sizeMap: Record<string, string> = {
+    'less_than_10': '1-10 employees',
+    '10-50': '10-50 employees',
+    '51-200': '51-200 employees',
+    '201-500': '201-500 employees',
+    '501-1000': '501-1,000 employees',
+    '1001-5000': '1,001-5,000 employees',
+    '5001-10000': '5,001-10,000 employees',
+    '10000+': '10,000+ employees',
+    '100-500': '100-500 employees',
+    '1000-5000': '1,000-5,000 employees',
+    '5000-10000': '5,000-10,000 employees',
+  };
+
+  return sizeMap[companySize] || companySize;
+}
+
+// Helper function to format location
+function formatLocation(city: string | null, country: string | null): string {
+  if (city && country) return `${city}, ${country}`;
+  if (city) return city;
+  if (country) return country;
+  return 'Location not specified';
 }
 
 export default function CompaniesList({ companies }: CompaniesListProps) {
@@ -40,16 +56,16 @@ export default function CompaniesList({ companies }: CompaniesListProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {companies.map((company) => (
         <CompanyCard
-          key={company.id}
-          id={company.id}
+          key={company._id}
+          id={company._id}
           name={company.name}
           logo={company.logo}
-          rating={company.rating}
-          reviewsCount={company.review_count}
+          rating={company.rating || 0}
+          reviewsCount={company.review_count || 0}
           openJobs={company.open_positions}
-          location={company.location}
-          companySize={formatCompanySize(company.company_size, company.company_size_range)}
-          description={company.description}
+          location={formatLocation(company.city, company.country)}
+          companySize={formatCompanySize(company.company_size)}
+          description={company.description || 'No description available'}
         />
       ))}
     </div>

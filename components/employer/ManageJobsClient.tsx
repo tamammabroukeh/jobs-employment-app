@@ -3,9 +3,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Modal } from 'antd';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 import { Typography, ReusableButton } from '@/components/Reusable-Components';
 import ROUTES from '@/constants/routes';
 import type { Job } from '@/apis/services/employer';
+import { deleteJobAction } from '@/apis/services/employer/actions';
 
 interface ManageJobsClientProps {
   initialJobs: Job[];
@@ -14,10 +18,15 @@ interface ManageJobsClientProps {
 export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'current' | 'archived'>('current');
+  const [jobs, setJobs] = useState<Job[]>(initialJobs);
 
-  const filteredJobs = initialJobs?.filter((job) =>
+  const filteredJobs = jobs?.filter((job) =>
     job?.title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDeleteSuccess = (jobId: string) => {
+    setJobs(prevJobs => prevJobs.filter(job => job.id !== jobId));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -79,7 +88,7 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
       {filteredJobs.length === 0 ? (
         <EmptyState />
       ) : (
-        <JobsList jobs={filteredJobs} />
+        <JobsList jobs={filteredJobs} onDeleteSuccess={handleDeleteSuccess} />
       )}
     </div>
   );
@@ -109,17 +118,49 @@ function EmptyState() {
   );
 }
 
-function JobsList({ jobs }: { jobs: Job[] }) {
+function JobsList({ jobs, onDeleteSuccess }: { jobs: Job[]; onDeleteSuccess: (jobId: string) => void }) {
   return (
     <div className="space-y-4">
       {jobs?.map((job) => (
-        <JobCard key={job.id} job={job} />
+        <JobCard key={job.id} job={job} onDeleteSuccess={onDeleteSuccess} />
       ))}
     </div>
   );
 }
 
-function JobCard({ job }: { job: Job }) {
+function JobCard({ job, onDeleteSuccess }: { job: Job; onDeleteSuccess: (jobId: string) => void }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const router = useRouter();
+
+  const handleDelete = () => {
+    Modal.confirm({
+      title: 'Delete Job Post',
+      content: `Are you sure you want to delete "${job.title}"? This action cannot be undone.`,
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+      onOk: async () => {
+        setIsDeleting(true);
+        try {
+          const result = await deleteJobAction({ id: job.id });
+          
+          if (result?.data) {
+            toast.success('Job deleted successfully!');
+            onDeleteSuccess(job.id);
+            router.refresh();
+          } else {
+            toast.error('Failed to delete job');
+          }
+        } catch (error) {
+          console.error('Error deleting job:', error);
+          toast.error('Failed to delete job');
+        } finally {
+          setIsDeleting(false);
+        }
+      },
+    });
+  };
+
   return (
     <div className="auth-card p-6 hover:shadow-lg transition-all duration-300">
       <div className="flex items-start gap-4">
@@ -160,6 +201,15 @@ function JobCard({ job }: { job: Job }) {
                   Edit
                 </ReusableButton>
               </Link>
+              <ReusableButton
+                variant="default"
+                className="text-sm text-red-500 hover:text-red-600"
+                onClick={handleDelete}
+                disabled={isDeleting}
+              >
+                <i className="fa-solid fa-trash mr-2" />
+                {isDeleting ? 'Deleting...' : 'Delete'}
+              </ReusableButton>
             </div>
           </div>
 

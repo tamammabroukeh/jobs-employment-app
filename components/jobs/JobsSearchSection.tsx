@@ -1,220 +1,87 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import JobFilters, { JobFiltersState } from './JobFilters';
 import JobsList from './JobsList';
+import { jobSeekerRepository } from '@/apis/services/job-seeker';
+import { JobSearchFilters } from '@/apis/services/job-seeker/interface';
+import { Typography } from '@/components/Reusable-Components';
+import { Job } from '@/apis/services/jobs';
+import { useSearchParams } from '@/hooks/useSearchParams';
 
-// Mock data - Replace with actual API call
-const mockJobs = [
-  {
-    id: '1',
-    displayId: 'JOB-001',
-    companyName: 'Google',
-    companyLogo: 'https://logo.clearbit.com/google.com',
-    title: 'Senior Frontend Developer',
-    createdAt: '2024-01-15',
-    roles: ['Frontend', 'React'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '2',
-    displayId: 'JOB-002',
-    companyName: 'Microsoft',
-    companyLogo: 'https://logo.clearbit.com/microsoft.com',
-    title: 'Backend Engineer',
-    createdAt: '2024-01-14',
-    roles: ['Backend', 'Node.js'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Seattle, WA',
-  },
-  {
-    id: '3',
-    displayId: 'JOB-003',
-    companyName: 'Apple',
-    companyLogo: 'https://logo.clearbit.com/apple.com',
-    title: 'iOS Developer',
-    createdAt: '2024-01-13',
-    roles: ['Mobile', 'iOS'],
-    types: ['Full-time', 'On-site'],
-    levels: ['Senior'],
-    experience: '4+ years',
-    location: 'Cupertino, CA',
-  },
-  {
-    id: '4',
-    displayId: 'JOB-004',
-    companyName: 'Amazon',
-    companyLogo: 'https://logo.clearbit.com/amazon.com',
-    title: 'DevOps Engineer',
-    createdAt: '2024-01-12',
-    roles: ['DevOps', 'AWS'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3+ years',
-    location: 'Austin, TX',
-  },
-  {
-    id: '5',
-    displayId: 'JOB-005',
-    companyName: 'Meta',
-    companyLogo: 'https://logo.clearbit.com/meta.com',
-    title: 'Full Stack Developer',
-    createdAt: '2024-01-11',
-    roles: ['Full Stack', 'React', 'Node.js'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'Menlo Park, CA',
-  },
-  {
-    id: '6',
-    displayId: 'JOB-006',
-    companyName: 'Netflix',
-    companyLogo: 'https://logo.clearbit.com/netflix.com',
-    title: 'Data Engineer',
-    createdAt: '2024-01-10',
-    roles: ['Data', 'Python'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Los Gatos, CA',
-  },
-  {
-    id: '7',
-    displayId: 'JOB-007',
-    companyName: 'Tesla',
-    companyLogo: 'https://logo.clearbit.com/tesla.com',
-    title: 'Software Engineer',
-    createdAt: '2024-01-09',
-    roles: ['Backend', 'Python'],
-    types: ['Full-time', 'On-site'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'Austin, TX',
-  },
-  {
-    id: '8',
-    displayId: 'JOB-008',
-    companyName: 'Spotify',
-    companyLogo: 'https://logo.clearbit.com/spotify.com',
-    title: 'Frontend Developer',
-    createdAt: '2024-01-08',
-    roles: ['Frontend', 'React'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Junior'],
-    experience: '2-3 years',
-    location: 'New York, NY',
-  },
-  {
-    id: '9',
-    displayId: 'JOB-009',
-    companyName: 'Adobe',
-    companyLogo: 'https://logo.clearbit.com/adobe.com',
-    title: 'UI/UX Designer',
-    createdAt: '2024-01-07',
-    roles: ['Design', 'UI/UX'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '10',
-    displayId: 'JOB-010',
-    companyName: 'Salesforce',
-    companyLogo: 'https://logo.clearbit.com/salesforce.com',
-    title: 'Product Manager',
-    createdAt: '2024-01-06',
-    roles: ['Product', 'Management'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '11',
-    displayId: 'JOB-011',
-    companyName: 'IBM',
-    companyLogo: 'https://logo.clearbit.com/ibm.com',
-    title: 'Cloud Architect',
-    createdAt: '2024-01-05',
-    roles: ['DevOps', 'Cloud'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Lead'],
-    experience: '7+ years',
-    location: 'Boston, MA',
-  },
-  {
-    id: '12',
-    displayId: 'JOB-012',
-    companyName: 'Oracle',
-    companyLogo: 'https://logo.clearbit.com/oracle.com',
-    title: 'Database Administrator',
-    createdAt: '2024-01-04',
-    roles: ['Data', 'Database'],
-    types: ['Full-time', 'On-site'],
-    levels: ['Mid-level'],
-    experience: '4-6 years',
-    location: 'Austin, TX',
-  },
-  {
-    id: '13',
-    displayId: 'JOB-013',
-    companyName: 'Uber',
-    companyLogo: 'https://logo.clearbit.com/uber.com',
-    title: 'Mobile Developer',
-    createdAt: '2024-01-03',
-    roles: ['Mobile', 'React Native'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Senior'],
-    experience: '5+ years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '14',
-    displayId: 'JOB-014',
-    companyName: 'Airbnb',
-    companyLogo: 'https://logo.clearbit.com/airbnb.com',
-    title: 'Full Stack Engineer',
-    createdAt: '2024-01-02',
-    roles: ['Full Stack', 'JavaScript'],
-    types: ['Full-time', 'Remote'],
-    levels: ['Mid-level'],
-    experience: '3-5 years',
-    location: 'San Francisco, CA',
-  },
-  {
-    id: '15',
-    displayId: 'JOB-015',
-    companyName: 'LinkedIn',
-    companyLogo: 'https://logo.clearbit.com/linkedin.com',
-    title: 'Marketing Manager',
-    createdAt: '2024-01-01',
-    roles: ['Marketing', 'Management'],
-    types: ['Full-time', 'Hybrid'],
-    levels: ['Manager'],
-    experience: '6+ years',
-    location: 'Seattle, WA',
-  },
-];
 
 export default function JobsSearchSection() {
+  const { getParam } = useSearchParams()
+  const searchParam = getParam("search")
   const [filters, setFilters] = useState<JobFiltersState>({
-    search: '',
-    types: [],
-    cities: [],
-    roles: [],
-    levels: [],
+    search: searchParam ?? '',
+    jobType: '',
+    location: '',
+    category: '',
+    minSalary: undefined,
   });
+
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    total: 0,
+    perPage: 15,
+  });
+
+  const fetchJobs = useCallback(async (searchFilters: JobFiltersState, page: number = 1) => {
+    setLoading(true);
+    try {
+      // Map frontend filters to API filters
+      const apiFilters: JobSearchFilters = {};
+      
+      if (searchFilters.search) apiFilters.keyword = searchFilters.search;
+      if (searchFilters.location) apiFilters.location = searchFilters.location;
+      if (searchFilters.jobType) apiFilters.job_type = searchFilters.jobType;
+      if (searchFilters.category) apiFilters.category = searchFilters.category;
+      if (searchFilters.minSalary) apiFilters.min_salary = searchFilters.minSalary;
+      apiFilters.page = page;
+
+      const response = await jobSeekerRepository.searchJobs(apiFilters);
+      console.log('response', response)
+
+      setJobs(response.jobs.data);
+      setPagination({
+        currentPage: response.jobs.current_page,
+        totalPages: response.jobs.last_page,
+        total: response.jobs.total,
+        perPage: response.jobs.per_page,
+      });
+      
+    } catch (error) {
+      console.error('Failed to fetch jobs:', error);
+      setJobs([]);
+      setPagination({
+        currentPage: 1,
+        totalPages: 1,
+        total: 0,
+        perPage: 15,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Initial fetch - only once on mount
+  useEffect(() => {
+    fetchJobs(filters, 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once
 
   const handleFiltersChange = useCallback((newFilters: JobFiltersState) => {
     setFilters(newFilters);
-  }, []);
+    fetchJobs(newFilters, 1);
+  }, [fetchJobs]);
+
+  const handlePageChange = useCallback((page: number) => {
+    fetchJobs(filters, page);
+  }, [filters, fetchJobs]);
 
   return (
     <section className="py-12 bg-background">
@@ -222,8 +89,24 @@ export default function JobsSearchSection() {
         {/* Filters */}
         <JobFilters onFiltersChange={handleFiltersChange} />
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-12">
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <Typography variant="p" className="mt-4 text-muted-foreground">
+              Loading jobs...
+            </Typography>
+          </div>
+        )}
+
         {/* Jobs List */}
-        <JobsList jobs={mockJobs} filters={filters} />
+        {!loading && (
+          <JobsList 
+            jobs={jobs} 
+            pagination={pagination}
+            onPageChange={handlePageChange}
+          />
+        )}
       </div>
     </section>
   );

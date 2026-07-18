@@ -54,8 +54,6 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
       total_pages: 0,
       next_page: null,
       prev_page: null,
-      next_page_url: null,
-      prev_page_url: null,
     };
   }
 
@@ -103,13 +101,11 @@ export default async function CompaniesPage({ searchParams }: CompaniesPageProps
           <CompaniesList companies={companiesData.data} />
 
           {/* Pagination */}
-          {!error && companiesData.total > pageSize && (
             <ReusablePagination
               currentPage={currentPage}
               totalItems={companiesData.total}
               pageSize={pageSize}
             />
-          )}
         </div>
       </section>
     </main>

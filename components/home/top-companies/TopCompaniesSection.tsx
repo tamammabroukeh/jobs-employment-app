@@ -19,16 +19,15 @@ export default async function TopCompaniesSection({
   try {
     const response = await companiesRepository.getTopCompanies();
     companies = response.data.map((company) => ({
-      id: company.id,
+      id: company._id,
       name: company.name,
-      logo: company.logo,
+      logo: company.logo || 'https://via.placeholder.com/150',
     }));
   } catch (error) {
     console.error("Failed to fetch top companies:", error);
     // Fallback to empty array if API fails
     companies = [];
   }
-
   return (
     <section className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

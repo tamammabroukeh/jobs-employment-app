@@ -17,6 +17,7 @@ const ROUTES = {
     LIST:"/jobs",
     DETAIL:"/jobs/:id",
     getDetail: (id: string) => `/jobs/${id}`,
+    MATCHED: "/matched-jobs",
   },
   COMPANIES:{
     LIST:"/companies",
@@ -29,6 +30,11 @@ const ROUTES = {
     DETAIL:"/profile/:id",
     EDIT:"/profile/edit/:id",
     getDetail: (id: string) => `/profile/${id}`,
+  },
+  TALENTS:{
+    LIST:"/talents",
+    DETAIL:"/talents/:id",
+    getDetail: (id: string) => `/talents/${id}`,
   },
   DASHBOARD:{
     ROOT:"/dashboard",
@@ -46,6 +52,7 @@ const ROUTES = {
     EDIT_JOB: "/forsa/:id",
     getEditJob: (id: string) => `/forsa/${id}`,
     PROFILE: "/employer-profile",
+    CANDIDATES: "/candidates",
   }
 };
 
@@ -65,8 +72,22 @@ export const NAVBAR_LINKS = [
     roles: ["employee"],
   },
   {
+    label: "Matched Jobs",
+    href: ROUTES.JOB.MATCHED,
+    showInNavbar: true,
+    authRequired: true, // Protected - only visible when logged in
+    roles: ["employee"], // Only for job seekers
+  },
+  {
     label: "Companies",
     href: ROUTES.COMPANIES.LIST,
+    showInNavbar: true,
+    authRequired: false, // Public - always visible
+    roles: ["employee"],
+  },
+  {
+    label: "Talents",
+    href: ROUTES.TALENTS.LIST,
     showInNavbar: true,
     authRequired: false, // Public - always visible
     roles: ["employee"],
@@ -81,6 +102,13 @@ export const NAVBAR_LINKS = [
   {
     label: "Manage Jobs",
     href: ROUTES.EMPLOYER.MANAGE_JOBS,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employer"], // Only for employers
+  },
+  {
+    label: "Candidates",
+    href: ROUTES.EMPLOYER.CANDIDATES,
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers

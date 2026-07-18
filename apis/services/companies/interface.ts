@@ -1,7 +1,5 @@
 // Company/Employer Interfaces
 
-import { Job } from "../jobs/interfaces";
-
 export interface ICompanySocialMedia {
   linkedin?: string;
   twitter?: string;
@@ -23,31 +21,52 @@ export interface ICategoryRatings {
   management: number;
 }
 
-export interface ICompany {
+export interface ICompanyJob {
   id: string;
-  employer_id: string;
+  job_id: string;
+  title: string;
+  city: string;
+  job_type: string;
+  work_mode: string;
+  job_level: string;
+  experience_years: number;
+  roles: string[];
+  tags: string[];
+  created_at: string;
+}
+
+export interface ICompany {
+  _id: string; // MongoDB ID
   name: string;
-  logo: string;
-  cover_image: string;
+  slug: string;
+  logo: string | null;
+  cover_image: string | null;
   description: string;
-  location: string;
-  company_size: string;
-  employee_count: string;
   industry: string;
-  website: string;
-  founded: string;
-  social_media: ICompanySocialMedia;
+  company_size: string;
+  city: string;
+  country: string;
+  email: string;
   rating: number;
   review_count: number;
   would_recommend: number;
   ceo_performance: number;
-  category_ratings: ICategoryRatings;
-  reviews: any[]; // You can define a proper review interface if needed
-  jobs: Job[]
-  open_positions: number;
-  company_size_range: ICompanySizeRange;
   created_at: string;
   updated_at: string;
+  open_positions: number;
+  jobs: ICompanyJob[];
+  reviews: any[];
+  category_ratings: ICategoryRatings;
+  
+  // Optional fields (may not be in all responses)
+  id?: string;
+  employer_id?: string;
+  location?: string;
+  employee_count?: string;
+  website?: string;
+  founded?: string;
+  social_media?: ICompanySocialMedia;
+  company_size_range?: ICompanySizeRange;
 }
 
 export interface ICompaniesResponse {
@@ -58,8 +77,6 @@ export interface ICompaniesResponse {
   total_pages: number;
   next_page: number | null;
   prev_page: number | null;
-  next_page_url: string | null;
-  prev_page_url: string | null;
 }
 
 export interface ICompanyDetailResponse extends ICompany{}

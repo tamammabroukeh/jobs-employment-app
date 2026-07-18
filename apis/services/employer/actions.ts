@@ -28,8 +28,8 @@ const createJobSchema = z.object({
   work_mode: z.string().min(1, "Work mode is required"),
   city: z.string().min(2, "City is required"),
   address: z.string().min(5, "Address is required"),
-  salary_from: z.string().min(1, "Minimum salary is required"),
-  salary_to: z.string().min(1, "Maximum salary is required"),
+  salary_from: z.number().min(0, "Minimum salary must be positive"),
+  salary_to: z.number().min(0, "Maximum salary must be positive"),
   currency: z.string().min(1, "Currency is required"),
   display_salary: z.boolean(),
   incentives: z.string().optional(),
@@ -37,7 +37,7 @@ const createJobSchema = z.object({
   requirements: z.string().min(10, "Requirements must be at least 10 characters"),
   questions: z.array(z.object({
     question: z.string(),
-    required: z.string(),
+    required: z.boolean(),
   })).optional(),
   tags: z.array(z.string()).min(1, "At least one tag is required"),
   category: z.string().min(1, "Category is required"),
@@ -98,14 +98,13 @@ export const updateJobAction = actionClient
       const response = await employerRepository.updateJob(id, updateData as Partial<CreateJobRequest>);
       console.log('[Update Job Action] Response:', response);
 
-      if (!response.data) {
+      if (!response) {
         console.error('[Update Job Action] Update failed');
-        throw new Error(response.message || 'Failed to update job');
+        throw new Error('Failed to update job');
       }
 
       // Revalidate the manage jobs page
-      revalidatePath("/manage-jobs");
-      revalidatePath(`/forsa/${id}`);
+      revalidateTag('job-by-id', 'max');
 
       return {
         success: true,

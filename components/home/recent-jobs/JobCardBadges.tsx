@@ -7,10 +7,13 @@ interface JobCardBadgesProps {
 }
 
 export default function JobCardBadges({ roles, types, levels }: JobCardBadgesProps) {
+  console.log('roles', roles)
+  console.log('types', roles)
+  console.log('levels', levels)
   return (
     <div className="space-y-3">
       {/* Roles */}
-      {roles.length > 0 && (
+      {roles?.length > 0 && (
         <div className="flex flex-wrap gap-2">
           {roles.map((role, index) => (
             <ReusableBadge key={index} variant="primary">
@@ -22,14 +25,14 @@ export default function JobCardBadges({ roles, types, levels }: JobCardBadgesPro
 
       {/* Types & Levels */}
       <div className="flex flex-wrap gap-2">
-        {types.map((type, index) => (
+        {types?.length > 0 && types.map((type, index) => (
           <ReusableBadge key={index} variant="success">
-            {type}
+            {type.replace(/_/g, ' ')}
           </ReusableBadge>
         ))}
-        {levels.map((level, index) => (
+        {levels?.length > 0 && levels.map((level, index) => (
           <ReusableBadge key={index} variant="warning">
-            {level}
+            {level?.replace(/_/g, ' ')}
           </ReusableBadge>
         ))}
       </div>

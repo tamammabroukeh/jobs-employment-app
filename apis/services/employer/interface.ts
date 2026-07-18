@@ -1,7 +1,7 @@
 // Employer API Interfaces
 
 export interface CreateJobRequest {
-  communication_method: string; // 'by_forsa' | 'by_email' | 'by_website'
+  communication_method: string; // 'by_forsa' | 'by_phone' | 'by_website'
   communication_value: string | null;
   title: string;
   roles: string[];
@@ -10,17 +10,17 @@ export interface CreateJobRequest {
   gender: string; // 'no_preference' | 'male' | 'female'
   age_from: number | null;
   age_to: number | null;
-  education_level: string; // 'bachelor' | 'master' | 'phd' etc
-  job_level: string; // 'junior' | 'mid' | 'senior'
+  education_level: string; // 'high_school' | 'diploma' | 'bachelor' | 'master' | 'phd' | 'any'
+  job_level: string; // 'entry' | 'junior' | 'mid' | 'senior' | 'manager' | 'director'
   experience_years: number;
   languages: string[];
   vacancies: number;
-  job_type: string; // 'full_time' | 'part_time' | 'contract'
+  job_type: string; // 'full_time' | 'part_time' | 'contract' | 'freelance'
   work_mode: string; // 'on_site' | 'remote' | 'hybrid'
   city: string;
   address: string;
-  salary_from: string;
-  salary_to: string;
+  salary_from: number;
+  salary_to: number;
   currency: string;
   display_salary: boolean;
   incentives: string;
@@ -28,11 +28,11 @@ export interface CreateJobRequest {
   requirements: string;
   questions: Array<{
     question: string;
-    required: string; // 'true' | 'false'
+    required: boolean;
   }>;
   tags: string[];
   category: string;
-  expires_at: string; // Date string
+  expires_at: string; // Date string (ISO format)
 }
 
 export interface UpdateJobRequest extends Partial<CreateJobRequest> {
@@ -134,4 +134,121 @@ export interface CompanyProfileResponse {
   success: boolean;
   message?: string;
   data?: CompanyProfile;
+}
+
+// Candidate/Seeker Interfaces
+export interface CandidateSkill {
+  name: string;
+  level: 'beginner' | 'intermediate' | 'advanced' | 'expert';
+}
+
+export interface CandidateEducation {
+  certificate_type: string;
+  university: string;
+  faculty: string;
+  major: string;
+  major_name: string;
+  grade: string;
+  from_date: string;
+  awarded_date: string;
+}
+
+export interface CandidateWorkExperience {
+  job_title: string;
+  company_name: string;
+  job_roles: string[];
+  from_date: string;
+  to_date: string;
+  is_currently_working: boolean;
+  description: string;
+}
+
+export interface CandidateSocialLinks {
+  linkedin?: string;
+  github?: string;
+  portfolio?: string;
+  twitter?: string;
+}
+
+export interface Candidate {
+  id: string;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  email?: string;
+  phone: string;
+  date_of_birth: string;
+  gender: string;
+  marital_status: string;
+  nationality: string;
+  city: string;
+  address: string;
+  location: string;
+  image: string | null;
+  current_job_title: string;
+  current_job_status: string;
+  is_actively_seeking: boolean;
+  job_level: string;
+  years_of_experience: number;
+  education_level: string;
+  job_roles: string[];
+  job_types: string[];
+  work_cities: string[];
+  salary_range_from: number;
+  salary_range_to: number;
+  expected_salary: number;
+  experience_summary: string;
+  skills: CandidateSkill[];
+  education_history: CandidateEducation[];
+  work_experience: CandidateWorkExperience[];
+  social_links: CandidateSocialLinks;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PaginationLink {
+  url: string | null;
+  label: string;
+  page: number | null;
+  active: boolean;
+}
+
+export interface CandidatesPaginationData {
+  current_page: number;
+  data: Candidate[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: PaginationLink[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+}
+
+export interface CandidatesResponse {
+  seekers: CandidatesPaginationData;
+}
+
+export interface CandidatesQueryParams {
+  page?: number;
+  per_page?: number;
+  skills?: string; // Comma-separated list of required skills
+  min_ats_score?: number; // Minimum ATS score (e.g., 70)
+  max_ats_score?: number; // Maximum ATS score (e.g., 95)
+  location?: string; // Partial match on AI-detected location
+  keyword?: string; // Partial match on AI summary or current job title
+}
+
+// Candidate Detail Response
+export interface CandidateDetailResponse {
+  seeker: {
+    user_id: string;
+    name: string;
+    profile: Candidate;
+  };
 }

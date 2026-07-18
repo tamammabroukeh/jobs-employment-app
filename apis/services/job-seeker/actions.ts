@@ -3,7 +3,7 @@
 import { actionClient } from '@/lib/safe-action';
 import { ActionError } from '@/apis/types/error';
 import { jobSeekerRepository } from './index';
-import { IUpdateProfileRequest, IUpdatePersonalInfoRequest, IUpdateCareerInfoRequest, IUpdateSocialLinksRequest, IUpdateSkillsRequest, IUpdateEducationRequest, IUpdateWorkExperienceRequest } from './interface';
+import { IUpdatePersonalInfoRequest, IUpdateCareerInfoRequest, IUpdateSocialLinksRequest, IUpdateSkillsRequest, IUpdateEducationRequest } from './interface';
 import { z } from 'zod';
 import { revalidateTag } from 'next/cache';
 
@@ -396,60 +396,160 @@ export const updateWorkExperienceAction = actionClient
   });
 
 
-// Update Profile Schema
-const updateProfileSchema = z.object({
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  full_name: z.string().optional(),
-  image: z.string().optional(),
-  gender: z.string().optional(),
-  nationality: z.string().optional(),
-  city: z.string().optional(),
-  location: z.string().optional(),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  date_of_birth: z.string().optional(),
-  marital_status: z.string().optional(),
-  salary_range_from: z.number().optional(),
-  salary_range_to: z.number().optional(),
-  current_job_status: z.string().optional(),
-  years_of_experience: z.number().optional(),
-  education_level: z.string().optional(),
-  job_level: z.string().optional(),
-  job_types: z.array(z.string()).optional(),
-  job_roles: z.array(z.string()).optional(),
-  work_cities: z.array(z.string()).optional(),
-  current_job_title: z.string().optional(),
-  experience_summary: z.string().optional(),
-  expected_salary: z.number().optional(),
-  is_actively_seeking: z.boolean().optional(),
-  social_links: z.object({
-    linkedin: z.string().optional(),
-    github: z.string().optional(),
-    portfolio: z.string().optional(),
-    twitter: z.string().optional(),
-  }).optional(),
-  skills: z.array(z.object({
-    name: z.string(),
-    level: z.string(),
-  })).optional(),
-  education_history: z.array(z.object({
-    certificate_type: z.string(),
-    university: z.string(),
-    faculty: z.string(),
-    major: z.string(),
-    major_name: z.string(),
-    grade: z.string(),
-    from_date: z.string(),
-    awarded_date: z.string(),
-  })).optional(),
-  work_experience: z.array(z.object({
-    job_title: z.string(),
-    company_name: z.string(),
-    job_roles: z.array(z.string()),
-    from_date: z.string(),
-    to_date: z.string(),
-    is_currently_working: z.boolean(),
-    description: z.string(),
-  })).optional(),
+// Upload Resume Schema - expects the actual file
+const uploadResumeSchema = z.object({
+  file: z.instanceof(File),
 });
+
+// Update Cover Letter Schema
+const updateCoverLetterSchema = z.object({
+  cover_letter: z.string().max(2000, 'Cover letter must be less than 2000 characters'),
+});
+
+/**
+ * Upload Resume Action
+ * Uploads a resume file without triggering AI analysis
+ */
+export const uploadResumeAction = actionClient
+  .schema(uploadResumeSchema)
+  .action(async ({ parsedInput: { file } }) => {
+    try {
+      console.log('[Upload Resume Action] ========== STARTING RESUME UPLOAD ==========');
+      
+      if (!file) {
+        throw new ActionError('No file provided');
+      }
+
+      console.log('[Upload Resume Action] File name:', file.name);
+      console.log('[Upload Resume Action] File size:', file.size);
+      console.log('[Upload Resume Action] File type:', file.type);
+
+      // Validate file size (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        throw new ActionError('File size must be less than 5MB');
+      }
+
+      // Validate file type
+      const validTypes = [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ];
+      if (!validTypes.includes(file.type)) {
+        throw new ActionError('File must be PDF, DOC, or DOCX');
+      }
+
+      const response = await jobSeekerRepository.uploadResume(file);
+      console.log('[Upload Resume Action] Response:', response);
+
+      // Revalidate the profile cache to refetch with new resume URL
+      revalidateTag("job-seeker-profile", 'max');
+
+      return {
+        success: true,
+        message: response.message,
+        resume_url: response.resume_url,
+        analysis_status: response.analysis_status,
+        profile: response.profile,
+      };
+    } catch (error) {
+      console.error('[Upload Resume Action] ========== EXCEPTION ==========');
+      console.error('[Upload Resume Action] Error:', error);
+
+      if (error instanceof ActionError) throw error;
+      
+      const errorMessage = error instanceof Error ? error.message : 'Failed to upload resume';
+      throw new ActionError(errorMessage);
+    }
+  });
+
+/**
+ * Delete Resume Action
+ * Removes the stored resume file
+ */
+export const deleteResumeAction = actionClient
+  .schema(z.object({}))
+  .action(async () => {
+    try {
+      console.log('[Delete Resume Action] ========== STARTING RESUME DELETE ==========');
+
+      const response = await jobSeekerRepository.deleteResume();
+      console.log('[Delete Resume Action] Response:', response);
+
+      // Revalidate the profile cache
+      revalidateTag("job-seeker-profile", 'max');
+
+      return {
+        success: true,
+        message: response.message,
+      };
+    } catch (error) {
+      console.error('[Delete Resume Action] ========== EXCEPTION ==========');
+      console.error('[Delete Resume Action] Error:', error);
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to delete resume. Please try again.');
+    }
+  });
+
+/**
+ * Update Cover Letter Action
+ * Saves a default cover letter on the profile
+ */
+export const updateCoverLetterAction = actionClient
+  .schema(updateCoverLetterSchema)
+  .action(async ({ parsedInput: { cover_letter } }) => {
+    try {
+      console.log('[Update Cover Letter Action] ========== STARTING COVER LETTER UPDATE ==========');
+      console.log('[Update Cover Letter Action] Cover letter length:', cover_letter.length);
+
+      const response = await jobSeekerRepository.updateCoverLetter(cover_letter);
+      console.log('[Update Cover Letter Action] Response:', response);
+
+      // Revalidate the profile cache
+      revalidateTag("job-seeker-profile", 'max');
+
+      return {
+        success: true,
+        message: response.message,
+        cover_letter: response.cover_letter,
+      };
+    } catch (error) {
+      console.error('[Update Cover Letter Action] ========== EXCEPTION ==========');
+      console.error('[Update Cover Letter Action] Error:', error);
+
+      if (error instanceof ActionError) throw error;
+      
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update cover letter';
+      throw new ActionError(errorMessage);
+    }
+  });
+
+/**
+ * Delete Cover Letter Action
+ * Removes the saved default cover letter
+ */
+export const deleteCoverLetterAction = actionClient
+  .schema(z.object({}))
+  .action(async () => {
+    try {
+      console.log('[Delete Cover Letter Action] ========== STARTING COVER LETTER DELETE ==========');
+
+      const response = await jobSeekerRepository.deleteCoverLetter();
+      console.log('[Delete Cover Letter Action] Response:', response);
+
+      // Revalidate the profile cache
+      revalidateTag("job-seeker-profile", 'max');
+
+      return {
+        success: true,
+        message: response.message,
+      };
+    } catch (error) {
+      console.error('[Delete Cover Letter Action] ========== EXCEPTION ==========');
+      console.error('[Delete Cover Letter Action] Error:', error);
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to delete cover letter. Please try again.');
+    }
+  });

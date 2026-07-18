@@ -72,3 +72,11 @@ export function useCompaniesTranslations() {
 export function useJobDetailTranslations() {
   return useNextIntlTranslations("jobDetail")
 }
+
+export function useCandidatesTranslations() {
+  return useNextIntlTranslations("candidates")
+}
+
+export function useTalentsTranslations() {
+  return useNextIntlTranslations("talents")
+}
