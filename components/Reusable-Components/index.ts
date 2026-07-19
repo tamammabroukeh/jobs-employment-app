@@ -11,6 +11,7 @@ import Flex from './Reusable-Flex';
 import ReusableCarousel from './Reusable-Carousel';
 import ReusableBadge from './Reusable-Badge';
 import ReusablePagination from './Reusable-Pagination';
+import ReusableDropdown from './Reusable-Dropdown';
 import { Typography } from './typography';
 
-export { ReusableCard, ReusableTabs, ReusableSelect, Flex, ReusableForm, ReusableInput, ReusableButton, ReusableDialog, ReusableLink, ReusableServerLink, ReusableCarousel, ReusableBadge, ReusablePagination, Typography };
+export { ReusableCard, ReusableTabs, ReusableSelect, Flex, ReusableForm, ReusableInput, ReusableButton, ReusableDialog, ReusableLink, ReusableServerLink, ReusableCarousel, ReusableBadge, ReusablePagination, ReusableDropdown, Typography };

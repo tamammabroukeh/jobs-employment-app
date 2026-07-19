@@ -179,6 +179,64 @@ export const getCompanyProfileAction = async () => {
   }
 };
 
+// Activate Job Action
+export const activateJobAction = actionClient
+  .schema(z.object({ id: z.string().min(1, "Job ID is required") }))
+  .action(async ({ parsedInput }) => {
+    try {
+      console.log('[Activate Job Action] ========== STARTING JOB ACTIVATE ==========');
+      console.log('[Activate Job Action] Job ID:', parsedInput.id);
+
+      const response = await employerRepository.activateJob(parsedInput.id);
+      console.log('[Activate Job Action] Response:', response);
+
+      // Revalidate the manage jobs page
+      revalidatePath("/manage-jobs");
+
+      return {
+        success: true,
+        message: response.message || "Job activated successfully",
+      };
+    } catch (error) {
+      console.error('[Activate Job Action] ========== EXCEPTION ==========');
+      console.error('[Activate Job Action] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to activate job');
+      }
+      throw new Error('Failed to activate job. Please try again.');
+    }
+  });
+
+// Deactivate Job Action
+export const deactivateJobAction = actionClient
+  .schema(z.object({ id: z.string().min(1, "Job ID is required") }))
+  .action(async ({ parsedInput }) => {
+    try {
+      console.log('[Deactivate Job Action] ========== STARTING JOB DEACTIVATE ==========');
+      console.log('[Deactivate Job Action] Job ID:', parsedInput.id);
+
+      const response = await employerRepository.deactivateJob(parsedInput.id);
+      console.log('[Deactivate Job Action] Response:', response);
+
+      // Revalidate the manage jobs page
+      revalidatePath("/manage-jobs");
+
+      return {
+        success: true,
+        message: response.message || "Job deactivated successfully",
+      };
+    } catch (error) {
+      console.error('[Deactivate Job Action] ========== EXCEPTION ==========');
+      console.error('[Deactivate Job Action] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to deactivate job');
+      }
+      throw new Error('Failed to deactivate job. Please try again.');
+    }
+  });
+
 // Update Company Profile Action
 const updateCompanySchema = z.object({
   name: z.string().min(1, "Company name is required").max(150, "Company name must be at most 150 characters").optional(),
@@ -226,3 +284,48 @@ export const updateCompanyProfileAction = actionClient
       throw new Error('Failed to update company profile. Please try again.');
     }
   });
+
+// Update Application Status Action
+const updateApplicationStatusSchema = z.object({
+  id: z.string().min(1, "Application ID is required"),
+  status: z.enum(['pending', 'reviewed', 'accepted', 'rejected'], {
+    message: "Status must be one of: pending, reviewed, accepted, rejected"
+  }),
+  feedback: z.string().max(2000, "Feedback must be at most 2000 characters").optional(),
+});
+
+export const updateApplicationStatusAction = actionClient
+  .schema(updateApplicationStatusSchema)
+  .action(async ({ parsedInput }) => {
+    try {
+      console.log('[Update Application Status] ========== STARTING STATUS UPDATE ==========');
+      console.log('[Update Application Status] Data:', parsedInput);
+
+      const { id, status, feedback } = parsedInput;
+      const response = await employerRepository.updateApplicationStatus(id, status, feedback);
+      console.log('[Update Application Status] Response:', response);
+
+      if (!response) {
+        console.error('[Update Application Status] Update failed');
+        throw new Error('Failed to update application status');
+      }
+
+      // Revalidate applications data
+      revalidatePath("/manage-jobs");
+
+      return {
+        success: true,
+        message: response.message || "Application status updated successfully",
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('[Update Application Status] ========== EXCEPTION ==========');
+      console.error('[Update Application Status] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to update application status');
+      }
+      throw new Error('Failed to update application status. Please try again.');
+    }
+  });
+

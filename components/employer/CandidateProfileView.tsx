@@ -11,7 +11,7 @@ interface CandidateProfileViewProps {
 
 export default async function CandidateProfileView({ candidate }: CandidateProfileViewProps) {
   const t = await getCandidatesTranslations();
-
+  console.log('candidate', candidate)
   // Calculate age from date of birth
   const calculateAge = (dob: string): number => {
     const birthDate = new Date(dob);
@@ -160,7 +160,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                       {t('profile.education')}
                     </Typography>
                     <Typography variant="p" className="text-foreground capitalize">
-                      {candidate.education_level.replace('_', ' ')}
+                      {candidate?.education_level?.replace('_', ' ')}
                     </Typography>
                   </div>
                 </div>
@@ -178,7 +178,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                       {t('profile.currentStatus')}
                     </Typography>
                     <Typography variant="p" className="text-foreground capitalize">
-                      {candidate.current_job_status.replace('_', ' ')}
+                      {candidate?.current_job_status?.replace('_', ' ')}
                     </Typography>
                   </div>
 

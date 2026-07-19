@@ -151,7 +151,7 @@
     "title": "إدارة الوظائف",
     "tabs": {
       "current": "الوظائف الحالية",
-      "archived": "الوظائف المؤرشفة"
+      "applications": "طلبات التوظيف"
     },
     "search": {
       "placeholder": "البحث بالعنوان...",
@@ -164,6 +164,73 @@
     "card": {
       "edit": "تعديل",
       "openJobs": "وظائف مفتوحة"
+    },
+    "actions": {
+      "edit": "تعديل",
+      "delete": "حذف",
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "more": "المزيد من الإجراءات"
+    },
+    "confirmDelete": {
+      "title": "حذف الوظيفة",
+      "message": "هل أنت متأكد أنك تريد حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+      "confirm": "حذف",
+      "cancel": "إلغاء"
+    },
+    "confirmActivate": {
+      "title": "تفعيل الوظيفة",
+      "message": "هل أنت متأكد أنك تريد تفعيل \"{title}\"؟",
+      "confirm": "تفعيل",
+      "cancel": "إلغاء"
+    },
+    "confirmDeactivate": {
+      "title": "إلغاء تفعيل الوظيفة",
+      "message": "هل أنت متأكد أنك تريد إلغاء تفعيل \"{title}\"؟",
+      "confirm": "إلغاء التفعيل",
+      "cancel": "إلغاء"
+    },
+    "messages": {
+      "deleteSuccess": "تم حذف الوظيفة بنجاح!",
+      "deleteError": "فشل في حذف الوظيفة",
+      "activateSuccess": "تم تفعيل الوظيفة بنجاح!",
+      "activateError": "فشل في تفعيل الوظيفة",
+      "deactivateSuccess": "تم إلغاء تفعيل الوظيفة بنجاح!",
+      "deactivateError": "فشل في إلغاء تفعيل الوظيفة"
+    },
+    "applications": {
+      "selectJob": "اختر الوظيفة",
+      "applicationsCount": "طلبات",
+      "noJobs": "لا توجد وظائف منشورة بعد",
+      "noApplications": "لا توجد طلبات بعد",
+      "noApplicationsDesc": "عندما يتقدم المرشحون لهذه الوظيفة، ستظهر طلباتهم هنا.",
+      "fetchError": "فشل في تحميل الطلبات",
+      "education": "التعليم",
+      "lastWork": "آخر عمل",
+      "experience": "الخبرة",
+      "years": "سنوات",
+      "expectedSalary": "الراتب المتوقع",
+      "noticePeriod": "فترة الإشعار",
+      "appliedAt": "تاريخ التقديم",
+      "viewResume": "عرض السيرة الذاتية",
+      "coverLetter": "خطاب التقديم",
+      "feedback": "الملاحظات",
+      "updateStatus": "تحديث الحالة",
+      "updateStatusTitle": "تحديث حالة الطلب",
+      "updateStatusDesc": "قم بتغيير حالة هذا الطلب وتقديم ملاحظات اختيارية.",
+      "status": "الحالة",
+      "statusPending": "قيد الانتظار",
+      "statusReviewed": "تمت المراجعة",
+      "statusAccepted": "مقبول",
+      "statusRejected": "مرفوض",
+      "feedbackLabel": "الملاحظات",
+      "optional": "اختياري",
+      "feedbackPlaceholder": "أدخل ملاحظاتك هنا (بحد أقصى 2000 حرف)...",
+      "characters": "حرف",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "statusUpdateSuccess": "تم تحديث حالة الطلب بنجاح!",
+      "statusUpdateError": "فشل في تحديث حالة الطلب"
     }
   }
 }

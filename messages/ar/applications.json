@@ -1,0 +1,59 @@
+{
+  "title": "طلباتي",
+  "description": "تتبع جميع طلبات التوظيف الخاصة بك في مكان واحد",
+  "status": {
+    "pending": "قيد الانتظار",
+    "reviewing": "قيد المراجعة",
+    "accepted": "مقبول",
+    "rejected": "مرفوض"
+  },
+  "card": {
+    "appliedAt": "تاريخ التقديم",
+    "status": "الحالة",
+    "education": "التعليم",
+    "lastWork": "آخر عمل",
+    "experience": "سنوات الخبرة",
+    "expectedSalary": "الراتب المتوقع",
+    "noticePeriod": "فترة الإشعار",
+    "viewJob": "عرض الوظيفة",
+    "company": "الشركة",
+    "withdraw": "سحب الطلب"
+  },
+  "job": {
+    "title": "المسمى الوظيفي",
+    "company": "الشركة",
+    "location": "الموقع",
+    "type": "نوع الوظيفة",
+    "workMode": "نظام العمل",
+    "salary": "الراتب",
+    "expires": "تنتهي في"
+  },
+  "empty": {
+    "title": "لا توجد طلبات بعد",
+    "description": "لم تتقدم لأي وظائف بعد. ابدأ باستكشاف فرص العمل وقدم طلباتك.",
+    "action": "تصفح الوظائف"
+  },
+  "loading": "جاري تحميل الطلبات...",
+  "error": "فشل في تحميل الطلبات",
+  "pagination": {
+    "showing": "عرض {from} إلى {to} من أصل {total} طلب",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "filters": {
+    "all": "جميع الطلبات",
+    "pending": "قيد الانتظار",
+    "reviewing": "قيد المراجعة",
+    "accepted": "مقبول",
+    "rejected": "مرفوض"
+  },
+  "withdraw": {
+    "confirmTitle": "سحب الطلب",
+    "confirmMessage": "هل أنت متأكد أنك تريد سحب طلبك للوظيفة \"{jobTitle}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirm": "نعم، سحب الطلب",
+    "cancel": "إلغاء",
+    "success": "تم سحب الطلب بنجاح",
+    "error": "فشل في سحب الطلب",
+    "notAllowed": "لا يمكن سحب الطلبات المقبولة"
+  }
+}

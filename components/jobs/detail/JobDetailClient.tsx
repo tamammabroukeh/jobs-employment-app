@@ -6,35 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ApplyJobDialog from './ApplyJobDialog';
 import ROUTES from '@/constants/routes';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { useJobDetailTranslations } from '@/hooks/use-translations';
-
-interface Job {
-  id: string;
-  displayId: string;
-  title: string;
-  coverImage: string;
-  description: string;
-  roles: string[];
-  types: string[];
-  levels: string[];
-  experience: string;
-  location: string;
-  createdAt: string;
-  company: {
-    id: string;
-    name: string;
-    logo: string;
-    description: string;
-    location: string;
-    socialMedia: {
-      linkedin?: string;
-      twitter?: string;
-      facebook?: string;
-      instagram?: string;
-    };
-  };
-}
+import type { Job } from '@/apis/services/jobs/interfaces';
+import { useAuth } from '@/hooks/useAuth';
 
 interface JobDetailClientProps {
   job: Job;
@@ -43,7 +18,37 @@ interface JobDetailClientProps {
 export default function JobDetailClient({ job }: JobDetailClientProps) {
   const [applyDialogOpen, setApplyDialogOpen] = useState(false);
   const router = useRouter();
+  const { isAuthenticated } = useAuth()
   const t = useJobDetailTranslations();
+
+  // Format salary display
+  const formatSalary = () => {
+    if (!job.display_salary) return 'Not disclosed';
+    if (job.salary_from && job.salary_to) {
+      return `${job.currency} ${job.salary_from} - ${job.salary_to}`;
+    }
+    if (job.salary_from) {
+      return `From ${job.currency} ${job.salary_from}`;
+    }
+    if (job.salary_to) {
+      return `Up to ${job.currency} ${job.salary_to}`;
+    }
+    return 'Not disclosed';
+  };
+
+  // Format job type display
+  const formatJobType = (type: string) => {
+    return type.replace('_', ' ').split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  };
+
+  // Format work mode display
+  const formatWorkMode = (mode: string) => {
+    return mode.replace('_', ' ').split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  };
 
   const handleShare = async () => {
     const url = window.location.href;
@@ -51,7 +56,7 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
       try {
         await navigator.share({
           title: job.title,
-          text: `Check out this job: ${job.title} at ${job.company.name}`,
+          text: `Check out this job: ${job.title} at ${job.company_name}`,
           url: url,
         });
       } catch (error) {
@@ -68,24 +73,35 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
     router.push(`${ROUTES.JOB.LIST}?role=${encodeURIComponent(role)}`);
   };
 
+  const companyLogo = job.company?.logo || job.company_logo || `https://logo.clearbit.com/${job.company_name.toLowerCase().replace(' ', '')}.com`;
+
+  const handleApplyNow = () => {
+    if(isAuthenticated){
+      setApplyDialogOpen(true)
+    }
+    else {
+      redirect(ROUTES.AUTH.LOGIN)
+    }
+  }
   return (
     <main className="min-h-screen bg-background">
-      {/* Cover Image with Title and Actions */}
-      <div className="relative w-full h-80 md:h-96 bg-gradient-to-r from-primary/20 to-primary/5">
-        <Image src={job.coverImage} alt={job.title} fill className="object-cover" priority />
-
+      {/* Header with gradient background */}
+      <div className="relative w-full h-80 md:h-96 bg-linear-to-r from-primary/20 to-primary/5">
         {/* Overlay Content */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-end pb-8">
-            <Typography variant="h1" className="text-white mb-6">
+            <Typography variant="h1" className="text-white mb-2">
               {job.title}
+            </Typography>
+            <Typography variant="p" className="text-white/80 mb-6">
+              {job.company_name} • {job.city} • {formatJobType(job.job_type)} • {formatWorkMode(job.work_mode)}
             </Typography>
 
             <div className="flex flex-wrap gap-4">
               <ReusableButton
                 variant="primary"
                 size="large"
-                onClick={() => setApplyDialogOpen(true)}
+                onClick={handleApplyNow}
               >
                 <i className="fa-solid fa-paper-plane mr-2" />
                 {t('applyNow')}
@@ -119,7 +135,7 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                       {t('jobDetails.experience')}
                     </Typography>
                     <Typography variant="h5" className="text-foreground">
-                      {job.experience}
+                      {job.experience_years} {job.experience_years === 1 ? 'year' : 'years'}
                     </Typography>
                   </div>
                 </div>
@@ -132,20 +148,20 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                       {t('jobDetails.location')}
                     </Typography>
                     <Typography variant="h5" className="text-foreground">
-                      {job.location}
+                      {job.city}
                     </Typography>
                   </div>
                 </div>
 
-                {/* Posted Date */}
+                {/* Salary */}
                 <div className="flex items-center gap-3">
-                  <i className="fa-solid fa-calendar text-success text-xl" />
+                  <i className="fa-solid fa-money-bill text-success text-xl" />
                   <div>
                     <Typography variant="small" className="text-muted-foreground">
-                      {t('jobDetails.postedOn')}
+                      {t('jobDetails.salary')}
                     </Typography>
                     <Typography variant="h5" className="text-foreground">
-                      {job.createdAt}
+                      {formatSalary()}
                     </Typography>
                   </div>
                 </div>
@@ -155,40 +171,77 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                   <i className="fa-solid fa-hashtag text-info text-xl" />
                   <div>
                     <Typography variant="small" className="text-muted-foreground">
-                      Job ID
+                      {t('jobDetails.jobId')}
                     </Typography>
                     <Typography variant="h5" className="text-foreground">
-                      {job.displayId}
+                      {job.job_id}
+                    </Typography>
+                  </div>
+                </div>
+
+                {/* Vacancies */}
+                <div className="flex items-center gap-3">
+                  <i className="fa-solid fa-users text-primary text-xl" />
+                  <div>
+                    <Typography variant="small" className="text-muted-foreground">
+                      {t('jobDetails.vacancies')}
+                    </Typography>
+                    <Typography variant="h5" className="text-foreground">
+                      {job.vacancies} {job.vacancies === 1 ? 'position' : 'positions'}
+                    </Typography>
+                  </div>
+                </div>
+
+                {/* Expires */}
+                <div className="flex items-center gap-3">
+                  <i className="fa-solid fa-calendar text-danger text-xl" />
+                  <div>
+                    <Typography variant="small" className="text-muted-foreground">
+                      {t('jobDetails.expiresOn')}
+                    </Typography>
+                    <Typography variant="h5" className="text-foreground">
+                      {new Date(job.expires_at).toLocaleDateString()}
                     </Typography>
                   </div>
                 </div>
               </div>
 
-              {/* Job Types */}
+              {/* Job Type & Work Mode */}
               <div className="mt-6">
                 <Typography variant="small" className="text-muted-foreground mb-3">
                   {t('jobDetails.jobType')}
                 </Typography>
                 <div className="flex flex-wrap gap-2">
-                  {job.types.map((type) => (
-                    <ReusableBadge key={type} variant="info" size="md">
-                      {type}
-                    </ReusableBadge>
-                  ))}
+                  <ReusableBadge variant="info" size="md">
+                    {formatJobType(job.job_type)}
+                  </ReusableBadge>
+                  <ReusableBadge variant="info" size="md">
+                    {formatWorkMode(job.work_mode)}
+                  </ReusableBadge>
                 </div>
               </div>
 
-              {/* Job Levels */}
+              {/* Job Level */}
               <div className="mt-4">
                 <Typography variant="small" className="text-muted-foreground mb-3">
                   {t('jobDetails.jobLevel')}
                 </Typography>
                 <div className="flex flex-wrap gap-2">
-                  {job.levels.map((level) => (
-                    <ReusableBadge key={level} variant="success" size="md">
-                      {level}
-                    </ReusableBadge>
-                  ))}
+                  <ReusableBadge variant="success" size="md">
+                    {formatJobType(job.job_level)}
+                  </ReusableBadge>
+                </div>
+              </div>
+
+              {/* Category */}
+              <div className="mt-4">
+                <Typography variant="small" className="text-muted-foreground mb-3">
+                  {t('jobDetails.category')}
+                </Typography>
+                <div className="flex flex-wrap gap-2">
+                  <ReusableBadge variant="primary" size="md">
+                    {job.category}
+                  </ReusableBadge>
                 </div>
               </div>
             </div>
@@ -198,27 +251,73 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
               <Typography variant="h3" className="text-foreground mb-4">
                 {t('jobDescription.title')}
               </Typography>
-              <Typography variant="p" className="text-muted-foreground leading-relaxed mb-6">
+              <Typography variant="p" className="text-muted-foreground leading-relaxed mb-6 whitespace-pre-wrap">
                 {job.description}
               </Typography>
 
-              {/* Job Roles */}
-              <div>
-                <Typography variant="h5" className="text-foreground mb-3">
-                  {t('jobDescription.roles')}
-                </Typography>
-                <div className="flex flex-wrap gap-2">
-                  {job.roles.map((role) => (
-                    <button
-                      key={role}
-                      onClick={() => handleRoleClick(role)}
-                      className="px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium text-sm"
-                    >
-                      {role}
-                    </button>
-                  ))}
+              {/* Requirements */}
+              {job.requirements && (
+                <div className="mt-6">
+                  <Typography variant="h4" className="text-foreground mb-3">
+                    {t('jobDescription.requirements')}
+                  </Typography>
+                  <Typography variant="p" className="text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                    {job.requirements}
+                  </Typography>
                 </div>
-              </div>
+              )}
+
+              {/* Job Roles */}
+              {job.roles && job.roles.length > 0 && (
+                <div className="mt-6">
+                  <Typography variant="h5" className="text-foreground mb-3">
+                    {t('jobDescription.roles')}
+                  </Typography>
+                  <div className="flex flex-wrap gap-2">
+                    {job.roles.map((role) => (
+                      <button
+                        key={role}
+                        onClick={() => handleRoleClick(role)}
+                        className="px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium text-sm"
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tags */}
+              {job.tags && job.tags.length > 0 && (
+                <div className="mt-6">
+                  <Typography variant="h5" className="text-foreground mb-3">
+                    {t('jobDescription.tags')}
+                  </Typography>
+                  <div className="flex flex-wrap gap-2">
+                    {job.tags.map((tag) => (
+                      <ReusableBadge key={tag} variant="default" size="md">
+                        #{tag}
+                      </ReusableBadge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Languages */}
+              {job.languages && job.languages.length > 0 && (
+                <div className="mt-6">
+                  <Typography variant="h5" className="text-foreground mb-3">
+                    {t('jobDescription.languagesRequired')}
+                  </Typography>
+                  <div className="flex flex-wrap gap-2">
+                    {job.languages.map((lang) => (
+                      <ReusableBadge key={lang} variant="success" size="md">
+                        {lang}
+                      </ReusableBadge>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -230,48 +329,69 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
               </Typography>
 
               {/* Company Logo & Name */}
-              <Link href={ROUTES.COMPANIES.getDetail(job.company.id)} className="block mb-6">
-                <div className="flex items-center gap-4 group">
-                  <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-muted shrink-0">
-                    <Image
-                      src={job.company.logo}
-                      alt={job.company.name}
-                      fill
-                      className="object-contain p-2"
-                    />
+              {job.company ? (
+                <Link href={ROUTES.COMPANIES.getDetail(job.company._id)} className="block mb-6">
+                  <div className="flex items-center gap-4 group">
+                    <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-muted shrink-0">
+                      {companyLogo && (
+                        <Image
+                          src={companyLogo}
+                          alt={job.company_name}
+                          fill
+                          className="object-contain p-2"
+                        />
+                      )}
+                    </div>
+                    <Typography variant="h4" className="text-foreground group-hover:text-primary transition-colors">
+                      {job.company_name}
+                    </Typography>
                   </div>
-                  <Typography variant="h4" className="text-foreground group-hover:text-primary transition-colors">
-                    {job.company.name}
+                </Link>
+              ) : (
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-muted shrink-0">
+                    {companyLogo && (
+                      <Image
+                        src={companyLogo}
+                        alt={job.company_name}
+                        fill
+                        className="object-contain p-2"
+                      />
+                    )}
+                  </div>
+                  <Typography variant="h4" className="text-foreground">
+                    {job.company_name}
                   </Typography>
                 </div>
-              </Link>
+              )}
 
               {/* Company Description */}
-              <Typography variant="small" className="text-muted-foreground mb-6 line-clamp-4">
-                {job.company.description}
-              </Typography>
+              {job.company?.description && (
+                <Typography variant="small" className="text-muted-foreground mb-6 line-clamp-4">
+                  {job.company.description}
+                </Typography>
+              )}
 
               {/* Company Location */}
-              <div className="flex items-center gap-2 mb-6">
-                <i className="fa-solid fa-location-dot text-primary" />
-                <Typography variant="small" className="text-foreground">
-                  {job.company.location}
-                </Typography>
-              </div>
+              {job.company && (
+                <div className="flex items-center gap-2 mb-6">
+                  <i className="fa-solid fa-location-dot text-primary" />
+                  <Typography variant="small" className="text-foreground">
+                    {job.company.city}, {job.company.country}
+                  </Typography>
+                </div>
+              )}
 
               {/* Social Media */}
-              {(job.company.socialMedia.linkedin ||
-                job.company.socialMedia.twitter ||
-                job.company.socialMedia.facebook ||
-                job.company.socialMedia.instagram) && (
+              {job.company?.social_media && (
                 <div className="mb-6">
                   <Typography variant="small" className="text-muted-foreground mb-3">
                     {t('companyInfo.socialMedia')}
                   </Typography>
                   <div className="flex items-center gap-3">
-                    {job.company.socialMedia.linkedin && (
+                    {job.company.social_media.linkedin && (
                       <Link
-                        href={job.company.socialMedia.linkedin}
+                        href={job.company.social_media.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
@@ -279,9 +399,9 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                         <i className="fa-brands fa-linkedin text-primary" />
                       </Link>
                     )}
-                    {job.company.socialMedia.twitter && (
+                    {job.company.social_media.twitter && (
                       <Link
-                        href={job.company.socialMedia.twitter}
+                        href={job.company.social_media.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-info/10 hover:bg-info/20 flex items-center justify-center transition-colors"
@@ -289,9 +409,9 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                         <i className="fa-brands fa-twitter text-info" />
                       </Link>
                     )}
-                    {job.company.socialMedia.facebook && (
+                    {job.company.social_media.facebook && (
                       <Link
-                        href={job.company.socialMedia.facebook}
+                        href={job.company.social_media.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-primary/10 hover:bg-primary/20 flex items-center justify-center transition-colors"
@@ -299,14 +419,14 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
                         <i className="fa-brands fa-facebook text-primary" />
                       </Link>
                     )}
-                    {job.company.socialMedia.instagram && (
+                    {job.company.social_media.website && (
                       <Link
-                        href={job.company.socialMedia.instagram}
+                        href={job.company.social_media.website}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full bg-warning/10 hover:bg-warning/20 flex items-center justify-center transition-colors"
                       >
-                        <i className="fa-brands fa-instagram text-warning" />
+                        <i className="fa-solid fa-globe text-warning" />
                       </Link>
                     )}
                   </div>
@@ -314,12 +434,14 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
               )}
 
               {/* View Company Button */}
-              <Link href={ROUTES.COMPANIES.getDetail(job.company.id)} className="block">
-                <ReusableButton variant="primary" className="w-full">
-                  {t('companyInfo.viewCompany')}
-                  <i className="fa-solid fa-arrow-right ml-2" />
-                </ReusableButton>
-              </Link>
+              {job.company && (
+                <Link href={ROUTES.COMPANIES.getDetail(job.company._id)} className="block">
+                  <ReusableButton variant="primary" className="w-full">
+                    {t('companyInfo.viewCompany')}
+                    <i className="fa-solid fa-arrow-right ml-2" />
+                  </ReusableButton>
+                </Link>
+              )}
             </div>
           </div>
         </div>

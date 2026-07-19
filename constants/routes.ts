@@ -31,6 +31,12 @@ const ROUTES = {
     EDIT:"/profile/edit/:id",
     getDetail: (id: string) => `/profile/${id}`,
   },
+  APPLICATIONS: "/applications",
+  CANDIDATES: {
+    LIST: "/candidates",
+    DETAIL: "/candidates/:userId",
+    getDetail: (userId: string) => `/candidates/${userId}`,
+  },
   TALENTS:{
     LIST:"/talents",
     DETAIL:"/talents/:id",
@@ -57,13 +63,13 @@ const ROUTES = {
 };
 
 export const NAVBAR_LINKS = [
-  // {
-  //   label: "Home",
-  //   href: ROUTES.HOME,
-  //   showInNavbar: true,
-  //   authRequired: false, // Public - always visible
-  //   roles: [], // Empty means all roles can access
-  // },
+  {
+    label: "Home",
+    href: ROUTES.HOME,
+    showInNavbar: true,
+    authRequired: false, // Public - always visible
+    roles: ["employee"], // Empty means all roles can access
+  },
   {
     label: "Jobs",
     href: ROUTES.JOB.LIST,
@@ -97,6 +103,13 @@ export const NAVBAR_LINKS = [
     href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
     authRequired: true, // Protected - only visible when logged in
+    roles: ["employee"], // Only for job seekers
+  },
+  {
+    label: "Applications",
+    href: ROUTES.APPLICATIONS,
+    showInNavbar: true,
+    authRequired: true,
     roles: ["employee"], // Only for job seekers
   },
   {

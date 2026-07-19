@@ -553,3 +553,113 @@ export const deleteCoverLetterAction = actionClient
       throw new ActionError('Failed to delete cover letter. Please try again.');
     }
   });
+
+// Apply Job Schema
+const applyJobSchema = z.object({
+  job_post_id: z.string().min(1, 'Job ID is required'),
+  cover_letter: z.string().max(1000, 'Cover letter must not exceed 1000 characters').optional(),
+  resume: z.instanceof(File).refine(
+    (file) => file.size <= 5 * 1024 * 1024,
+    'File size must be less than 5MB'
+  ).refine(
+    (file) => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type),
+    'File must be PDF, DOC, or DOCX'
+  ).optional(),
+  education: z.string().max(255).optional(),
+  last_work: z.string().max(255).optional(),
+  years_of_experience: z.number().min(0).max(60).optional(),
+  why_join: z.string().max(2000).optional(),
+  what_to_add: z.string().max(2000).optional(),
+  positions_suited_for: z.array(z.string().max(100)).optional(),
+  notice_period: z.string().max(100).optional(),
+  expected_salary: z.string().max(100).optional(),
+});
+
+/**
+ * Apply for a job
+ * Server action for submitting job application
+ */
+export const applyForJobAction = actionClient
+  .schema(applyJobSchema)
+  .action(async ({ parsedInput }) => {
+    try {
+      const response = await jobSeekerRepository.applyForJob(parsedInput);
+      console.log('response', response)
+      return {
+        success: response.status,
+        message: response.message,
+        application_id: response.application_id,
+      };
+    } catch (error) {
+      console.error('Apply for job error:', error);
+      
+      if (error instanceof ActionError) throw error;
+      
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to submit application';
+      throw new ActionError(errorMessage);
+    }
+  });
+
+// Withdraw Application Schema
+const withdrawApplicationSchema = z.object({
+  id: z.string().min(1, 'Application ID is required'),
+});
+
+/**
+ * Withdraw a pending job application
+ * Only pending applications can be withdrawn; accepted ones cannot.
+ */
+export const withdrawApplicationAction = actionClient
+  .schema(withdrawApplicationSchema)
+  .action(async ({ parsedInput: { id } }) => {
+    try {
+      const response = await jobSeekerRepository.withdrawApplication(id);
+      revalidateTag('job-applications', 'max');
+      return {
+        success: true,
+        message: response.message,
+      };
+    } catch (error) {
+      console.error('[Withdraw Application Action] Error:', error);
+
+      if (error && typeof error === 'object' && 'info' in error) {
+        const errorInfo = error.info as Record<string, string>;
+        if (errorInfo?.message) {
+          throw new ActionError(errorInfo.message);
+        }
+      }
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to withdraw application. Please try again.');
+    }
+  });
+
+/**
+ * Get Resume AI Analysis Status
+ * Fetches the current analysis status and AI-extracted data from resume
+ */
+export const getResumeAnalysisStatusAction = actionClient
+  .schema(z.object({}))
+  .action(async () => {
+    try {
+      const response = await jobSeekerRepository.getResumeAnalysisStatus();
+      return {
+        success: true,
+        data: response,
+      };
+    } catch (error) {
+      console.error('[Get Resume Analysis Status Action] Error:', error);
+
+      if (error && typeof error === 'object' && 'info' in error) {
+        const errorInfo = error.info as Record<string, string>;
+        if (errorInfo?.message) {
+          throw new ActionError(errorInfo.message);
+        }
+      }
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to fetch resume analysis. Please try again.');
+    }
+  });

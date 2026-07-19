@@ -37,6 +37,22 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   --gradient-card: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+
+  /* Document Section Semantic Colors */
+  --doc-section-bg: #ffffff;
+  --doc-section-border: #e2e8f0;
+  --doc-section-text: #0f172a;
+  --doc-section-text-muted: #64748b;
+  --doc-icon-pdf: #ef4444;
+  --doc-icon-file: #2563eb;
+  --doc-analysis-bg: #eff6ff;
+  --doc-analysis-border: #dbeafe;
+  --doc-evaluation-bg: #fef3c7;
+  --doc-evaluation-border: #fde68a;
+  --doc-evaluation-text: #92400e;
+  --doc-evaluation-icon: #d97706;
+  --doc-work-history-border: #2563eb;
+  --doc-education-border: #22c55e;
 }
 
 :root.dark {
@@ -76,6 +92,22 @@
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #910a0a 0%, #7a0808 100%);
   --gradient-card: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+
+  /* Document Section Semantic Colors */
+  --doc-section-bg: #1e293b;
+  --doc-section-border: #334155;
+  --doc-section-text: #f1f5f9;
+  --doc-section-text-muted: #94a3b8;
+  --doc-icon-pdf: #f87171;
+  --doc-icon-file: #3b82f6;
+  --doc-analysis-bg: #1e3a8a;
+  --doc-analysis-border: #1e40af;
+  --doc-evaluation-bg: #78350f;
+  --doc-evaluation-border: #92400e;
+  --doc-evaluation-text: #fef3c7;
+  --doc-evaluation-icon: #fbbf24;
+  --doc-work-history-border: #3b82f6;
+  --doc-education-border: #4ade80;
 }
 
 @theme inline {
@@ -97,6 +129,20 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-doc-section-bg: var(--doc-section-bg);
+  --color-doc-section-border: var(--doc-section-border);
+  --color-doc-section-text: var(--doc-section-text);
+  --color-doc-section-text-muted: var(--doc-section-text-muted);
+  --color-doc-icon-pdf: var(--doc-icon-pdf);
+  --color-doc-icon-file: var(--doc-icon-file);
+  --color-doc-analysis-bg: var(--doc-analysis-bg);
+  --color-doc-analysis-border: var(--doc-analysis-border);
+  --color-doc-evaluation-bg: var(--doc-evaluation-bg);
+  --color-doc-evaluation-border: var(--doc-evaluation-border);
+  --color-doc-evaluation-text: var(--doc-evaluation-text);
+  --color-doc-evaluation-icon: var(--doc-evaluation-icon);
+  --color-doc-work-history-border: var(--doc-work-history-border);
+  --color-doc-education-border: var(--doc-education-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

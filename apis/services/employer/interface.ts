@@ -252,3 +252,71 @@ export interface CandidateDetailResponse {
     profile: Candidate;
   };
 }
+
+// Job Applications Interfaces
+export interface ApplicationUser {
+  name: string;
+  email: string;
+  roles: string[];
+  updated_at: string;
+  created_at: string;
+  id: string;
+}
+
+export interface JobApplication {
+  user_id: string;
+  job_post_id: string;
+  cover_letter: string | null;
+  resume: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
+  applied_at: string;
+  education: string;
+  last_work: string;
+  years_of_experience: number;
+  why_join: string | null;
+  what_to_add: string | null;
+  positions_suited_for: string | null;
+  notice_period: string;
+  expected_salary: string;
+  updated_at: string;
+  created_at: string;
+  id: string;
+  user: ApplicationUser;
+  applicant_name: string;
+  ats_score: number;
+  feedback?: string | null;
+}
+
+export interface ApplicationsPaginationData {
+  current_page: number;
+  data: JobApplication[];
+  first_page_url: string;
+  from: number;
+  last_page: number;
+  last_page_url: string;
+  links: PaginationLink[];
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number;
+  total: number;
+}
+
+export interface JobApplicationsResponse {
+  applications: ApplicationsPaginationData;
+}
+
+export interface UpdateApplicationStatusRequest {
+  id: string;
+  status: 'pending' | 'reviewed' | 'accepted' | 'rejected';
+  feedback?: string;
+}
+
+export interface UpdateApplicationStatusResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    application: JobApplication;
+  };
+}
