@@ -24,6 +24,7 @@ const ReusableDialog = ({
   return (
     <Modal
       open={isOpen}
+      maskClosable={false}
       onCancel={() => setIsOpen(false)}
       title={dialogHeader?.title}
       footer={dialogFooter}

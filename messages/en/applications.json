@@ -1,0 +1,59 @@
+{
+  "title": "My Applications",
+  "description": "Track all your job applications in one place",
+  "status": {
+    "pending": "Pending",
+    "reviewing": "Under Review",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "card": {
+    "appliedAt": "Applied",
+    "status": "Status",
+    "education": "Education",
+    "lastWork": "Last Work",
+    "experience": "Years of Experience",
+    "expectedSalary": "Expected Salary",
+    "noticePeriod": "Notice Period",
+    "viewJob": "View Job",
+    "company": "Company",
+    "withdraw": "Withdraw"
+  },
+  "job": {
+    "title": "Job Title",
+    "company": "Company",
+    "location": "Location",
+    "type": "Job Type",
+    "workMode": "Work Mode",
+    "salary": "Salary",
+    "expires": "Expires"
+  },
+  "empty": {
+    "title": "No Applications Yet",
+    "description": "You haven't applied to any jobs yet. Start exploring job opportunities and submit your applications.",
+    "action": "Browse Jobs"
+  },
+  "loading": "Loading applications...",
+  "error": "Failed to load applications",
+  "pagination": {
+    "showing": "Showing {from} to {to} of {total} applications",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "filters": {
+    "all": "All Applications",
+    "pending": "Pending",
+    "reviewing": "Under Review",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "withdraw": {
+    "confirmTitle": "Withdraw Application",
+    "confirmMessage": "Are you sure you want to withdraw your application for \"{jobTitle}\"? This action cannot be undone.",
+    "confirm": "Yes, Withdraw",
+    "cancel": "Cancel",
+    "success": "Application withdrawn successfully",
+    "error": "Failed to withdraw application",
+    "notAllowed": "Accepted applications cannot be withdrawn"
+  }
+}

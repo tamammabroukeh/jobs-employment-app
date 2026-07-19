@@ -1,17 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Card, Input, Progress, Tag } from "antd";
-import {
-  UploadOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  FileTextOutlined,
-  FilePdfOutlined,
-  CheckCircleOutlined,
-  TrophyOutlined,
-  InfoCircleOutlined,
-} from "@ant-design/icons";
+import { useState } from "react";
+import { Card, Input } from "antd";
 import { Typography, ReusableButton, ReusableDialog, Flex } from "@/components/Reusable-Components";
 import { IJobSeekerDocuments, IAIAnalysisProfile } from "@/apis/services/job-seeker/interface";
 import {
@@ -19,9 +9,13 @@ import {
   deleteResumeAction,
   updateCoverLetterAction,
   deleteCoverLetterAction,
+  getResumeAnalysisStatusAction,
 } from "@/apis/services/job-seeker/actions";
 import { toast } from "sonner";
 import { useProfileTranslations } from "@/hooks/use-profile";
+import ResumeCard from "./documents/ResumeCard";
+import CoverLetterCard from "./documents/CoverLetterCard";
+import AIAnalysisDialog from "./documents/AIAnalysisDialog";
 
 const { TextArea } = Input;
 
@@ -40,7 +34,7 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
   const [isDeleteCoverLetterDialogOpen, setIsDeleteCoverLetterDialogOpen] = useState(false);
   const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
   const [analysisData, setAnalysisData] = useState<IAIAnalysisProfile | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
   // Handle resume file selection
   const handleResumeChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,9 +61,7 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
     setIsUploadingResume(true);
 
     try {
-      // Send file directly to server action
       const result = await uploadResumeAction({ file });
-      console.log('result', result)
       if (result?.data?.success) {
         toast.success(result.data.message || t("documents.resume.uploadSuccess"));
         setDocuments((prev) => ({
@@ -77,7 +69,7 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
           resume_url: result.data?.resume_url || null,
           cv_url: result.data?.resume_url || null,
         }));
-        
+
         // Show AI analysis if available
         if (result.data.profile && result.data.analysis_status === 'completed') {
           setAnalysisData(result.data.profile);
@@ -91,16 +83,7 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
       toast.error(t("documents.resume.uploadError"));
     } finally {
       setIsUploadingResume(false);
-      // Reset file input
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     }
-  };
-
-  // Handle resume delete - open confirmation dialog
-  const handleDeleteResumeClick = () => {
-    setIsDeleteResumeDialogOpen(true);
   };
 
   // Confirm resume delete
@@ -161,11 +144,6 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
     }
   };
 
-  // Handle cover letter delete - open confirmation dialog
-  const handleDeleteCoverLetterClick = () => {
-    setIsDeleteCoverLetterDialogOpen(true);
-  };
-
   // Confirm cover letter delete
   const handleConfirmDeleteCoverLetter = async () => {
     try {
@@ -194,154 +172,56 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
     setIsCoverLetterModalOpen(true);
   };
 
+  // Fetch and show AI analysis
+  const handleViewAnalysis = async () => {
+    setIsLoadingAnalysis(true);
+    try {
+      const result = await getResumeAnalysisStatusAction({});
+      if (result?.data?.success && result.data.data.profile) {
+        setAnalysisData(result.data.data.profile);
+        setIsAnalysisModalOpen(true);
+      } else {
+        toast.error(t("documents.aiAnalysis.notAvailable"));
+      }
+    } catch (error) {
+      console.error("Fetch analysis error:", error);
+      toast.error(t("documents.aiAnalysis.fetchError"));
+    } finally {
+      setIsLoadingAnalysis(false);
+    }
+  };
+
   return (
     <Card className="shadow-sm">
       <div className="flex justify-between items-center mb-6">
-        <Typography variant="h2" className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+        <Typography variant="h2" className="text-xl font-semibold text-foreground">
           {t("documents.title")}
         </Typography>
+        {(documents.resume_url || documents.cv_url) && (
+          <ReusableButton
+            btnText={t("documents.aiAnalysis.viewAnalysis")}
+            onClick={handleViewAnalysis}
+            variant="default"
+            isLoading={isLoadingAnalysis}
+          />
+        )}
       </div>
 
       <div className="space-y-6">
         {/* Resume Section */}
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-3 flex-1">
-              <FilePdfOutlined className="text-2xl text-red-500 dark:text-red-400 mt-1" />
-              <div className="flex-1">
-                <Typography variant="h3" className="text-base font-medium mb-1 text-gray-900 dark:text-gray-100">
-                  {t("documents.resume.title")}
-                </Typography>
-                {documents.resume_url || documents.cv_url ? (
-                  <>
-                    <Typography variant="text" className="text-gray-600 dark:text-gray-400 mb-2">
-                      {t("documents.resume.uploaded")}
-                    </Typography>
-                    <a
-                      href={documents.resume_url || documents.cv_url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
-                    >
-                      {t("documents.resume.viewResume")}
-                    </a>
-                  </>
-                ) : (
-                  <Typography variant="text" className="text-gray-600 dark:text-gray-400">
-                    {t("documents.resume.uploadPrompt")}
-                  </Typography>
-                )}
-              </div>
-            </div>
-
-            <div className="flex gap-2">
-              {documents.resume_url || documents.cv_url ? (
-                <>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    onChange={handleResumeChange}
-                    className="hidden"
-                    disabled={isUploadingResume}
-                  />
-                  <ReusableButton
-                    variant="text"
-                    icon={<EditOutlined />}
-                    onClick={() => fileInputRef.current?.click()}
-                    isLoading={isUploadingResume}
-                  >
-                    {t("documents.resume.update")}
-                  </ReusableButton>
-                  <ReusableButton
-                    variant="text"
-                    danger
-                    icon={<DeleteOutlined />}
-                    onClick={handleDeleteResumeClick}
-                  >
-                    {t("documents.resume.delete")}
-                  </ReusableButton>
-                </>
-              ) : (
-                <>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    onChange={handleResumeChange}
-                    className="hidden"
-                    disabled={isUploadingResume}
-                  />
-                  <ReusableButton
-                    variant="primary"
-                    icon={<UploadOutlined />}
-                    onClick={() => fileInputRef.current?.click()}
-                    isLoading={isUploadingResume}
-                  >
-                    {t("documents.resume.upload")}
-                  </ReusableButton>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+        <ResumeCard
+          resumeUrl={documents.resume_url || documents.cv_url}
+          isUploading={isUploadingResume}
+          onFileChange={handleResumeChange}
+          onDeleteClick={() => setIsDeleteResumeDialogOpen(true)}
+        />
 
         {/* Cover Letter Section */}
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
-          <div className="flex items-start justify-between">
-            <div className="flex items-start gap-3 flex-1">
-              <FileTextOutlined className="text-2xl text-blue-500 dark:text-blue-400 mt-1" />
-              <div className="flex-1">
-                <Typography variant="h3" className="text-base font-medium mb-1 text-gray-900 dark:text-gray-100">
-                  {t("documents.coverLetter.title")}
-                </Typography>
-                {documents.default_cover_letter ? (
-                  <>
-                    <Typography variant="text" className="text-gray-600 dark:text-gray-400 mb-2">
-                      {t("documents.coverLetter.saved")}
-                    </Typography>
-                    <Typography variant="text" className="text-gray-500 dark:text-gray-500 text-sm line-clamp-2">
-                      {documents.default_cover_letter}
-                    </Typography>
-                  </>
-                ) : (
-                  <Typography variant="text" className="text-gray-600 dark:text-gray-400">
-                    {t("documents.coverLetter.uploadPrompt")}
-                  </Typography>
-                )}
-              </div>
-            </div>
-
-            <div className="flex gap-2">
-              {documents.default_cover_letter ? (
-                <>
-                  <ReusableButton
-                    variant="text"
-                    icon={<EditOutlined />}
-                    onClick={handleEditCoverLetter}
-                  >
-                    {t("documents.coverLetter.edit")}
-                  </ReusableButton>
-                  <ReusableButton
-                    variant="primary"
-                    icon={<DeleteOutlined />}
-                    onClick={handleDeleteCoverLetterClick}
-                  >
-                    {t("documents.coverLetter.delete")}
-                  </ReusableButton>
-                </>
-              ) : (
-                <ReusableButton
-                  variant="primary"
-                  icon={<EditOutlined />}
-                  onClick={handleEditCoverLetter}
-                >
-                  {t("documents.coverLetter.add")}
-                </ReusableButton>
-              )}
-            </div>
-          </div>
-        </div>
+        <CoverLetterCard
+          coverLetter={documents.default_cover_letter}
+          onEditClick={handleEditCoverLetter}
+          onDeleteClick={() => setIsDeleteCoverLetterDialogOpen(true)}
+        />
       </div>
 
       {/* Cover Letter Dialog */}
@@ -428,223 +308,10 @@ export default function DocumentsSection({ documents: initialDocuments }: Docume
       />
 
       {/* AI Analysis Results Dialog */}
-      <ReusableDialog
+      <AIAnalysisDialog
         isOpen={isAnalysisModalOpen}
-        setIsOpen={setIsAnalysisModalOpen}
-        contentClassName="w-[800px]"
-        dialogHeader={{
-          title: (
-            <div className="flex items-center gap-2">
-              <TrophyOutlined className="text-yellow-500 dark:text-yellow-400" />
-              <span>{t("documents.aiAnalysis.title")}</span>
-            </div>
-          ) as unknown as string,
-        }}
-        dialogBody={
-          analysisData ? (
-            <div className="py-4 space-y-6">
-              {/* ATS Score */}
-              <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-4 rounded-lg border border-blue-100 dark:border-blue-800">
-                <div className="flex items-center justify-between mb-3">
-                  <Typography variant="h3" className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.atsScore")}
-                  </Typography>
-                  <Tag 
-                    color={
-                      analysisData.ats_score >= 80 ? 'green' : 
-                      analysisData.ats_score >= 60 ? 'orange' : 'red'
-                    }
-                    className="text-lg px-3 py-1"
-                  >
-                    {analysisData.ats_score}/100
-                  </Tag>
-                </div>
-                <Progress 
-                  percent={analysisData.ats_score} 
-                  strokeColor={{
-                    '0%': analysisData.ats_score >= 80 ? '#52c41a' : analysisData.ats_score >= 60 ? '#faad14' : '#ff4d4f',
-                    '100%': analysisData.ats_score >= 80 ? '#73d13d' : analysisData.ats_score >= 60 ? '#ffc53d' : '#ff7a45',
-                  }}
-                  status="active"
-                />
-                <Typography variant="text" className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                  {analysisData.ats_score >= 80 ? t("documents.aiAnalysis.atsExcellent") :
-                   analysisData.ats_score >= 60 ? t("documents.aiAnalysis.atsGood") :
-                   t("documents.aiAnalysis.atsPoor")}
-                </Typography>
-              </div>
-
-              {/* Extracted Information */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Typography variant="h4" className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                    {t("documents.aiAnalysis.fullName")}
-                  </Typography>
-                  <Typography variant="text" className="text-gray-900 dark:text-gray-100">
-                    {analysisData.ai_full_name || t("documents.aiAnalysis.notDetected")}
-                  </Typography>
-                </div>
-                
-                <div>
-                  <Typography variant="h4" className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                    {t("documents.aiAnalysis.email")}
-                  </Typography>
-                  <Typography variant="text" className="text-gray-900 dark:text-gray-100">
-                    {analysisData.ai_email || t("documents.aiAnalysis.notDetected")}
-                  </Typography>
-                </div>
-                
-                <div>
-                  <Typography variant="h4" className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                    {t("documents.aiAnalysis.phone")}
-                  </Typography>
-                  <Typography variant="text" className="text-gray-900 dark:text-gray-100">
-                    {analysisData.ai_phone || t("documents.aiAnalysis.notDetected")}
-                  </Typography>
-                </div>
-                
-                <div>
-                  <Typography variant="h4" className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
-                    {t("documents.aiAnalysis.location")}
-                  </Typography>
-                  <Typography variant="text" className="text-gray-900 dark:text-gray-100">
-                    {analysisData.ai_location || t("documents.aiAnalysis.notDetected")}
-                  </Typography>
-                </div>
-              </div>
-
-              {/* Skills */}
-              {analysisData.ai_skills && analysisData.ai_skills.length > 0 && (
-                <div>
-                  <Typography variant="h3" className="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.detectedSkills")} ({analysisData.ai_skills.length})
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    {analysisData.ai_skills.map((skill, index) => (
-                      <Tag key={index} color="blue">{skill}</Tag>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Languages */}
-              {analysisData.ai_languages && analysisData.ai_languages.length > 0 && (
-                <div>
-                  <Typography variant="h3" className="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.languages")}
-                  </Typography>
-                  <div className="flex flex-wrap gap-2">
-                    {analysisData.ai_languages.map((lang, index) => (
-                      <Tag key={index} color="green">{lang}</Tag>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Professional Summary */}
-              {analysisData.ai_summary && (
-                <div>
-                  <Typography variant="h3" className="text-base font-semibold mb-2 text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.professionalSummary")}
-                  </Typography>
-                  <Typography variant="text" className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {analysisData.ai_summary}
-                  </Typography>
-                </div>
-              )}
-
-              {/* Work History */}
-              {analysisData.ai_work_history && analysisData.ai_work_history.length > 0 && (
-                <div>
-                  <Typography variant="h3" className="text-base font-semibold mb-3 text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.workHistory")}
-                  </Typography>
-                  <div className="space-y-3">
-                    {analysisData.ai_work_history.map((work, index) => (
-                      <div key={index} className="border-l-2 border-blue-500 dark:border-blue-400 pl-4">
-                        <Typography variant="h4" className="font-semibold text-gray-900 dark:text-gray-100">
-                          {work.role}
-                        </Typography>
-                        {work.company && (
-                          <Typography variant="text" className="text-gray-600 dark:text-gray-400 text-sm">
-                            {work.company}
-                          </Typography>
-                        )}
-                        {work.duration && (
-                          <Typography variant="text" className="text-gray-500 dark:text-gray-500 text-sm">
-                            {work.duration}
-                          </Typography>
-                        )}
-                        <Typography variant="text" className="text-gray-700 dark:text-gray-300 text-sm mt-1">
-                          {work.description}
-                        </Typography>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Education History */}
-              {analysisData.ai_education_history && analysisData.ai_education_history.length > 0 && (
-                <div>
-                  <Typography variant="h3" className="text-base font-semibold mb-3 text-gray-900 dark:text-gray-100">
-                    {t("documents.aiAnalysis.education")}
-                  </Typography>
-                  <div className="space-y-2">
-                    {analysisData.ai_education_history.map((edu, index) => (
-                      <div key={index} className="border-l-2 border-green-500 dark:border-green-400 pl-4">
-                        <Typography variant="h4" className="font-semibold text-gray-900 dark:text-gray-100">
-                          {edu.degree}
-                        </Typography>
-                        <Typography variant="text" className="text-gray-600 dark:text-gray-400 text-sm">
-                          {edu.institution}
-                        </Typography>
-                        <Typography variant="text" className="text-gray-500 dark:text-gray-500 text-sm">
-                          {edu.year}
-                        </Typography>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Overall Evaluation */}
-              {analysisData.ai_overall_evaluation && (
-                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                  <div className="flex items-start gap-2">
-                    <InfoCircleOutlined className="text-yellow-600 dark:text-yellow-500 mt-1" />
-                    <div>
-                      <Typography variant="h3" className="text-base font-semibold mb-2 text-yellow-900 dark:text-yellow-200">
-                        {t("documents.aiAnalysis.aiEvaluation")}
-                      </Typography>
-                      <Typography variant="text" className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                        {analysisData.ai_overall_evaluation}
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Analysis Info */}
-              <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <CheckCircleOutlined className="text-green-500 dark:text-green-400" />
-                <span>
-                  {t("documents.aiAnalysis.analysisCompleted")} {new Date(analysisData.analysis_completed_at).toLocaleDateString()} {t("documents.aiAnalysis.at")}{' '}
-                  {new Date(analysisData.analysis_completed_at).toLocaleTimeString()}
-                </span>
-              </div>
-            </div>
-          ) : null
-        }
-        dialogFooter={
-          <Flex classes="gap-2 justify-end">
-            <ReusableButton
-              btnText={t("documents.aiAnalysis.close")}
-              onClick={() => setIsAnalysisModalOpen(false)}
-              variant="primary"
-            />
-          </Flex>
-        }
+        onClose={() => setIsAnalysisModalOpen(false)}
+        analysisData={analysisData}
       />
     </Card>
   );

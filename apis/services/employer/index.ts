@@ -17,6 +17,8 @@ import type {
   CandidatesResponse,
   CandidatesQueryParams,
   CandidateDetailResponse,
+  JobApplicationsResponse,
+  UpdateApplicationStatusResponse,
 } from './interface';
 
 /**
@@ -136,5 +138,51 @@ export const employerRepository = {
         tags: ['candidate-detail'],
         revalidate: 3600
       }
+    }),
+
+  /**
+   * Activate a job post
+   * @param id - Job ID
+   * @returns Promise with activation response
+   */
+  activateJob: (id: string): Promise<{ message: string }> =>
+    authFetcher<{ message: string }>(`/employer/jobs/${id}/activate`, {
+      method: Methods.POST,
+    }),
+
+  /**
+   * Deactivate a job post
+   * @param id - Job ID
+   * @returns Promise with deactivation response
+   */
+  deactivateJob: (id: string): Promise<{ message: string }> =>
+    authFetcher<{ message: string }>(`/employer/jobs/${id}/deactivate`, {
+      method: Methods.POST,
+    }),
+
+  /**
+   * Get job applications for a specific job
+   * @param jobId - Job ID
+   * @param page - Page number (default: 1)
+   * @param per_page - Items per page (default: 15)
+   * @returns Promise with job applications response
+   */
+  getJobApplications: (jobId: string, page: number = 1, per_page: number = 15): Promise<JobApplicationsResponse> =>
+    authFetcher<JobApplicationsResponse>(`/employer/jobs/${jobId}/applications?page=${page}&per_page=${per_page}`, {
+      method: Methods.GET,
+      cache: "no-store",
+    }),
+
+  /**
+   * Update application status
+   * @param id - Application ID
+   * @param status - New status
+   * @param feedback - Optional feedback message
+   * @returns Promise with update response
+   */
+  updateApplicationStatus: (id: string, status: string, feedback?: string): Promise<UpdateApplicationStatusResponse> =>
+    authFetcher<UpdateApplicationStatusResponse>(`/employer/applications/${id}/status`, {
+      method: Methods.PUT,
+      body: JSON.stringify({ status, feedback }),
     }),
 };

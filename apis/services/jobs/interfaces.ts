@@ -12,6 +12,25 @@ export type TJobLevel = 'junior' | 'mid' | 'senior' | 'lead' | 'manager'
 export type TJobType = 'junior' | 'mid' | 'senior' | 'lead' | 'manager'
 export type TWorkMode = 'junior' | 'mid' | 'senior' | 'lead' | 'manager'
 /**
+ * Company Profile Interface
+ */
+export interface CompanyProfile {
+  _id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+  description: string;
+  city: string;
+  country: string;
+  social_media: {
+    linkedin?: string;
+    twitter?: string;
+    facebook?: string;
+    website?: string;
+  } | null;
+}
+
+/**
  * Job Interface (API Response)
  */
 export interface Job {
@@ -50,6 +69,7 @@ export interface Job {
   company_profile_id: string;
   company_name: string;
   company_logo: string | null;
+  company?: CompanyProfile; // Company details (populated in single job response)
   is_active: boolean;
   updated_at: string;
   created_at: string;

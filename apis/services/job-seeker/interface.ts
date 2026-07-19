@@ -395,3 +395,126 @@ export interface IUpdateCoverLetterResponse {
 export interface IDeleteCoverLetterResponse {
   message: string;
 }
+
+/**
+ * Apply Job Request Interface
+ */
+export interface IApplyJobRequest {
+  job_post_id: string;
+  cover_letter?: string;
+  resume?: File;
+  education?: string;
+  last_work?: string;
+  years_of_experience?: number;
+  why_join?: string;
+  what_to_add?: string;
+  positions_suited_for?: string[];
+  notice_period?: string;
+  expected_salary?: string;
+}
+
+/**
+ * Apply Job Response Interface
+ */
+export interface IApplyJobResponse {
+  status: boolean;
+  message: string;
+  application_id?: string;
+}
+
+/**
+ * Job Application Interface
+ */
+export interface IJobApplication {
+  id: string;
+  user_id: string;
+  job_post_id: string;
+  cover_letter: string | null;
+  resume: string;
+  status: 'pending' | 'reviewing' | 'accepted' | 'rejected';
+  applied_at: string;
+  education: string;
+  last_work: string;
+  years_of_experience: number;
+  why_join: string | null;
+  what_to_add: string | null;
+  positions_suited_for: string | null;
+  notice_period: string;
+  expected_salary: string;
+  updated_at: string;
+  created_at: string;
+  job_post: {
+    communication_method: TCommunicationMethods;
+    communication_value: string | null;
+    title: string;
+    portfolio_required: boolean;
+    cover_letter_required: boolean;
+    gender: TGender;
+    age_from: number | null;
+    age_to: number | null;
+    education_level: TEducationlevel;
+    job_level: TJobLevel;
+    experience_years: number;
+    vacancies: number;
+    job_type: TJobType;
+    work_mode: TWorkMode;
+    city: string;
+    address: string;
+    salary_from: number;
+    salary_to: number;
+    currency: string;
+    display_salary: boolean;
+    incentives: string | null;
+    description: string;
+    requirements: string;
+    questions: Array<{ question: string; required: boolean }>;
+    category: string;
+    expires_at: string;
+    roles: string[];
+    languages: string[];
+    tags: string[];
+    job_id: string;
+    employer_id: string;
+    company_profile_id: string;
+    company_name: string;
+    company_logo: string | null;
+    is_active: boolean;
+    updated_at: string;
+    created_at: string;
+    id: string;
+  };
+}
+
+/**
+ * Job Applications Query Params
+ */
+export interface IApplicationsQueryParams {
+  per_page?: number; // max 100, default 15
+  page?: number;
+}
+
+/**
+ * Job Applications Response Interface
+ */
+export interface IJobApplicationsResponse {
+  applications: {
+    current_page: number;
+    data: IJobApplication[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+      url: string | null;
+      label: string;
+      page: number | null;
+      active: boolean;
+    }>;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  };
+}

@@ -80,3 +80,7 @@ export function useCandidatesTranslations() {
 export function useTalentsTranslations() {
   return useNextIntlTranslations("talents")
 }
+
+export function useApplicationsTranslations() {
+  return useNextIntlTranslations("applications")
+}

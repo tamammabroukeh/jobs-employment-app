@@ -30,7 +30,7 @@ export default function TalentsClient() {
     try {
       setLoading(true);
       const response = await searchRepository.searchTalents(params);
-      
+      console.log('response', response)
       setTalents(response.data);
       setPagination({
         currentPage: response.current_page,

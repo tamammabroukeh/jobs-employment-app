@@ -1,12 +1,12 @@
 export * from "./interface";
 
-import { authFetcher } from '@/apis/authInstace';
 import { Methods } from '@/constants/methods';
 import { buildQueryString } from '@/apis/utils/queryBuilder';
 import type {
   TalentSearchFilters,
   TalentSearchResponse,
 } from './interface';
+import apiFetcher from "@/apis/api.instance";
 
 /**
  * Search API Repository
@@ -21,7 +21,7 @@ export const searchRepository = {
   searchTalents: (filters: TalentSearchFilters = {}): Promise<TalentSearchResponse> => {
     const queryString = buildQueryString(filters);
     const endpoint = queryString ? `/search/users?${queryString}` : '/search/users';
-    return authFetcher<TalentSearchResponse>(endpoint, {
+    return apiFetcher<TalentSearchResponse>(endpoint, {
       method: Methods.GET,
       cache: "no-store",
     });

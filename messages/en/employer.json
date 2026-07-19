@@ -151,7 +151,7 @@
     "title": "Manage Jobs",
     "tabs": {
       "current": "Current Jobs",
-      "archived": "Archived Jobs"
+      "applications": "Applications"
     },
     "search": {
       "placeholder": "Search by title...",
@@ -164,6 +164,73 @@
     "card": {
       "edit": "Edit",
       "openJobs": "open jobs"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "more": "More actions"
+    },
+    "confirmDelete": {
+      "title": "Delete Job Post",
+      "message": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "confirmActivate": {
+      "title": "Activate Job Post",
+      "message": "Are you sure you want to activate \"{title}\"?",
+      "confirm": "Activate",
+      "cancel": "Cancel"
+    },
+    "confirmDeactivate": {
+      "title": "Deactivate Job Post",
+      "message": "Are you sure you want to deactivate \"{title}\"?",
+      "confirm": "Deactivate",
+      "cancel": "Cancel"
+    },
+    "messages": {
+      "deleteSuccess": "Job deleted successfully!",
+      "deleteError": "Failed to delete job",
+      "activateSuccess": "Job activated successfully!",
+      "activateError": "Failed to activate job",
+      "deactivateSuccess": "Job deactivated successfully!",
+      "deactivateError": "Failed to deactivate job"
+    },
+    "applications": {
+      "selectJob": "Select Job Post",
+      "applicationsCount": "applications",
+      "noJobs": "No jobs posted yet",
+      "noApplications": "No applications yet",
+      "noApplicationsDesc": "When candidates apply to this job, their applications will appear here.",
+      "fetchError": "Failed to load applications",
+      "education": "Education",
+      "lastWork": "Last Work",
+      "experience": "Experience",
+      "years": "years",
+      "expectedSalary": "Expected Salary",
+      "noticePeriod": "Notice Period",
+      "appliedAt": "Applied At",
+      "viewResume": "View Resume",
+      "coverLetter": "Cover Letter",
+      "feedback": "Feedback",
+      "updateStatus": "Update Status",
+      "updateStatusTitle": "Update Application Status",
+      "updateStatusDesc": "Change the status of this application and optionally provide feedback.",
+      "status": "Status",
+      "statusPending": "Pending",
+      "statusReviewed": "Reviewed",
+      "statusAccepted": "Accepted",
+      "statusRejected": "Rejected",
+      "feedbackLabel": "Feedback",
+      "optional": "Optional",
+      "feedbackPlaceholder": "Enter your feedback here (max 2000 characters)...",
+      "characters": "characters",
+      "cancel": "Cancel",
+      "save": "Save",
+      "statusUpdateSuccess": "Application status updated successfully!",
+      "statusUpdateError": "Failed to update application status"
     }
   }
 }

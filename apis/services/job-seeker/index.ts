@@ -21,7 +21,11 @@ import {
   IUploadResumeResponse,
   IDeleteResumeResponse,
   IUpdateCoverLetterResponse,
-  IDeleteCoverLetterResponse
+  IDeleteCoverLetterResponse,
+  IApplyJobRequest,
+  IApplyJobResponse,
+  IJobApplicationsResponse,
+  IAIAnalysisProfile
 } from './interface';
 
 /**
@@ -187,7 +191,7 @@ export const jobSeekerRepository = {
       method: Methods.POST,
       body: formData,
       skipDefaultHeaders: true, // This will prevent Content-Type from being set
-    } as any); // Type assertion needed due to extended RequestInit
+    }); // Type assertion needed due to extended RequestInit
   },
 
   /**
@@ -219,6 +223,96 @@ export const jobSeekerRepository = {
   deleteCoverLetter: (): Promise<IDeleteCoverLetterResponse> => {
     return authFetcher<IDeleteCoverLetterResponse>('/job-seeker/cover-letter', {
       method: Methods.DELETE,
+    });
+  },
+
+  /**
+   * Apply for a job
+   * @param data - Job application data
+   * @returns Promise with application response
+   */
+  applyForJob: async (data: IApplyJobRequest): Promise<IApplyJobResponse> => {
+    const formData = new FormData();
+    
+    // Add job_post_id (required)
+    formData.append('job_post_id', data.job_post_id);
+    
+    // Add optional fields
+    if (data.cover_letter) formData.append('cover_letter', data.cover_letter);
+    if (data.resume) formData.append('resume', data.resume);
+    if (data.education) formData.append('education', data.education);
+    if (data.last_work) formData.append('last_work', data.last_work);
+    if (data.years_of_experience !== undefined) formData.append('years_of_experience', String(data.years_of_experience));
+    if (data.why_join) formData.append('why_join', data.why_join);
+    if (data.what_to_add) formData.append('what_to_add', data.what_to_add);
+    if (data.positions_suited_for) {
+      data.positions_suited_for.forEach(position => {
+        formData.append('positions_suited_for[]', position);
+      });
+    }
+    if (data.notice_period) formData.append('notice_period', data.notice_period);
+    if (data.expected_salary) formData.append('expected_salary', data.expected_salary);
+    
+    return authFetcher<IApplyJobResponse>('/job-seeker/apply', {
+      method: Methods.POST,
+      body: formData,
+      skipDefaultHeaders: true,
+    });
+  },
+
+  /**
+   * Get job applications
+   * @param params - Query parameters for pagination
+   * @returns Promise with paginated applications response
+   */
+  getApplications: async (params?: { per_page?: number; page?: number }): Promise<IJobApplicationsResponse> => {
+    const queryParams = new URLSearchParams();
+    
+    if (params) {
+      if (params.per_page !== undefined) queryParams.append('per_page', String(params.per_page));
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+    }
+    
+    const queryString = queryParams.toString();
+    const url = queryString ? `/job-seeker/applications?${queryString}` : '/job-seeker/applications';
+    
+    return authFetcher<IJobApplicationsResponse>(url, {
+      method: Methods.GET,
+      cache: 'no-store',
+      next: {
+        tags: ['job-applications'],
+        revalidate: 60,
+      },
+    });
+  },
+
+  /**
+   * Withdraw a pending job application
+   * @param id - Application ID to withdraw
+   * @returns Promise with withdraw response
+   */
+  withdrawApplication: async (id: string): Promise<{ message: string }> => {
+    return authFetcher<{ message: string }>(`/job-seeker/applications/${id}/withdraw`, {
+      method: Methods.DELETE,
+    });
+  },
+
+  /**
+   * Get resume AI analysis status
+   * @returns Promise with analysis status and profile data
+   */
+  getResumeAnalysisStatus: async (): Promise<{
+    analysis_status: 'pending' | 'processing' | 'completed' | 'failed';
+    analysis_error: string | null;
+    analysis_started_at: string;
+    analysis_completed_at: string | null;
+    resume_url: string;
+    has_ai_data: boolean;
+    profile: IAIAnalysisProfile | null;
+  }> => {
+    return authFetcher(`/job-seeker/resume/analysis-status`, {
+      method: Methods.GET,
+      cache: 'no-store',
     });
   },
 };

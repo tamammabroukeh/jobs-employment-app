@@ -11,7 +11,7 @@ interface IReusableTabs {
   styleForTabList?: string;
   styleForTabTrigger?: string;
   tabContentValues?: { value: string; children: React.ReactNode }[];
-  tabTriggerValues?: { value: string; title: string }[];
+  tabTriggerValues?: { value: string; title: string | React.ReactNode }[];
   value?: string;
 }
 
