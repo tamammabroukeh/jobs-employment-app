@@ -104,35 +104,39 @@ export default function UserInfoSection({
       return;
     }
 
-    // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    // Validate file size (max 2MB)
+    const maxSize = 2 * 1024 * 1024; // 2MB
     if (file.size > maxSize) {
-      toast.error('Image size should be less than 5MB');
+      toast.error('Image size should be less than 2MB');
       return;
     }
 
     setIsUploadingImage(true);
 
     try {
-      // Compress and convert image
-      const compressedBase64 = await compressImage(file);
-      
-      // Update the preview immediately
-      setProfileImage(compressedBase64);
+      // Create preview URL for immediate feedback
+      const previewUrl = URL.createObjectURL(file);
+      setProfileImage(previewUrl);
 
-      // Send to API
+      // Send File directly to API
       const result = await updatePersonalInfoAction({
-        image: compressedBase64,
+        image: file,
       });
 
       if (result.data?.success) {
         toast.success('Profile image updated successfully');
+        // Update with the actual image URL from server
+        if (result.data.profile?.image) {
+          setProfileImage(result.data.profile.image);
+        }
       } else if (result.serverError) {
         toast.error(result.serverError);
         // Revert to original image on error
         setProfileImage(profile.image);
       }
       
+      // Clean up preview URL
+      URL.revokeObjectURL(previewUrl);
       setIsUploadingImage(false);
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -145,69 +149,6 @@ export default function UserInfoSection({
     if (event.target) {
       event.target.value = '';
     }
-  };
-
-  // Compress image before upload
-  const compressImage = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      
-      reader.onload = (e) => {
-        const img = new Image();
-        
-        img.onload = () => {
-          // Create canvas
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          
-          if (!ctx) {
-            reject(new Error('Failed to get canvas context'));
-            return;
-          }
-
-          // Calculate new dimensions (max 800x800 while maintaining aspect ratio)
-          const MAX_WIDTH = 800;
-          const MAX_HEIGHT = 800;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-
-          // Set canvas dimensions
-          canvas.width = width;
-          canvas.height = height;
-
-          // Draw image on canvas
-          ctx.drawImage(img, 0, 0, width, height);
-
-          // Convert to base64 with compression
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8); // 0.8 quality
-          resolve(compressedBase64);
-        };
-
-        img.onerror = () => {
-          reject(new Error('Failed to load image'));
-        };
-
-        img.src = e.target?.result as string;
-      };
-
-      reader.onerror = () => {
-        reject(new Error('Failed to read file'));
-      };
-
-      reader.readAsDataURL(file);
-    });
   };
 
   const handleAvatarClick = () => {

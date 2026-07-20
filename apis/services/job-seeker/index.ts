@@ -52,6 +52,34 @@ export const jobSeekerRepository = {
    * @returns Promise with updated profile response
    */
   updatePersonalInfo: (data: IUpdatePersonalInfoRequest): Promise<IUpdatePersonalInfoResponse> => {
+    // If image file is present, use FormData
+    if (data.image instanceof File) {
+      const formData = new FormData();
+      
+      // Add image file
+      formData.append('image', data.image);
+      
+      // Add other fields
+      if (data.first_name) formData.append('first_name', data.first_name);
+      if (data.last_name) formData.append('last_name', data.last_name);
+      if (data.full_name) formData.append('full_name', data.full_name);
+      if (data.gender) formData.append('gender', data.gender);
+      if (data.nationality) formData.append('nationality', data.nationality);
+      if (data.city) formData.append('city', data.city);
+      if (data.location) formData.append('location', data.location);
+      if (data.address) formData.append('address', data.address);
+      if (data.phone) formData.append('phone', data.phone);
+      if (data.date_of_birth) formData.append('date_of_birth', data.date_of_birth);
+      if (data.marital_status) formData.append('marital_status', data.marital_status);
+      
+      return authFetcher<IUpdatePersonalInfoResponse>('/job-seeker/profile/personal-info', {
+        method: Methods.PUT,
+        body: formData,
+        skipDefaultHeaders: true,
+      });
+    }
+    
+    // For non-file updates, use JSON
     return authFetcher<IUpdatePersonalInfoResponse>('/job-seeker/profile/personal-info', {
       method: Methods.PUT,
       body: JSON.stringify(data),

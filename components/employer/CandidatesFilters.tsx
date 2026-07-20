@@ -10,12 +10,12 @@ interface CandidatesFiltersProps {
   currentFilters: CandidatesQueryParams;
 }
 
-const ALPHABET_LETTERS = [
-  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-  'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش',
-  'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
-];
+// const ALPHABET_LETTERS = [
+//   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+//   'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+//   'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز', 'س', 'ش',
+//   'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك', 'ل', 'م', 'ن', 'ه', 'و', 'ي'
+// ];
 
 const POPULAR_SKILLS = [
   'React', 'JavaScript', 'TypeScript', 'Node.js', 'Python', 'Java',
@@ -35,7 +35,7 @@ export default function CandidatesFilters({
     max_ats_score: currentFilters.max_ats_score || 100,
   });
 
-  const [selectedLetter, setSelectedLetter] = useState<string>('');
+  // const [selectedLetter, setSelectedLetter] = useState<string>('');
   const [skillsArray, setSkillsArray] = useState<string[]>(
     currentFilters.skills ? currentFilters.skills.split(',') : []
   );
@@ -45,12 +45,12 @@ export default function CandidatesFilters({
     setLocalFilters(updatedFilters);
   };
 
-  const handleLetterClick = (letter: string) => {
-    setSelectedLetter(letter);
-    const updatedKeyword = letter;
-    setLocalFilters((prev) => ({ ...prev, keyword: updatedKeyword }));
-    onFilterChange({ keyword: updatedKeyword });
-  };
+  // const handleLetterClick = (letter: string) => {
+  //   setSelectedLetter(letter);
+  //   const updatedKeyword = letter;
+  //   setLocalFilters((prev) => ({ ...prev, keyword: updatedKeyword }));
+  //   onFilterChange({ keyword: updatedKeyword });
+  // };
 
   const handleSkillsChange = (values: string[]) => {
     setSkillsArray(values);
@@ -81,7 +81,7 @@ export default function CandidatesFilters({
       max_ats_score: 100,
     };
     setLocalFilters(resetFilters);
-    setSelectedLetter('');
+    // setSelectedLetter('');
     setSkillsArray([]);
     onFilterChange(resetFilters);
   };
@@ -90,7 +90,7 @@ export default function CandidatesFilters({
     <div className="auth-card p-6 sticky top-20">
       <div className="space-y-6">
         {/* Alphabet Filter */}
-        <div>
+        {/* <div>
           <Typography variant="h5" className="text-foreground mb-3 font-medium">
             Quick Search by Name
           </Typography>
@@ -109,7 +109,7 @@ export default function CandidatesFilters({
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Keyword Search */}
         <div>
