@@ -129,7 +129,7 @@ export interface IUpdatePersonalInfoRequest {
   first_name?: string;
   last_name?: string;
   full_name?: string;
-  image?: string;
+  image?: File; // JPEG/PNG/WEBP profile photo, max 2MB
   gender?: string;
   nationality?: string;
   city?: string;

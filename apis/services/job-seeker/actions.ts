@@ -12,7 +12,16 @@ const updatePersonalInfoSchema = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   full_name: z.string().optional(),
-  image: z.string().optional(),
+  image: z.instanceof(File)
+    .refine(
+      (file) => file.size <= 2 * 1024 * 1024,
+      'Image size must be less than 2MB'
+    )
+    .refine(
+      (file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(file.type),
+      'Image must be JPEG, PNG, or WEBP'
+    )
+    .optional(),
   gender: z.string().optional(),
   nationality: z.string().optional(),
   city: z.string().optional(),

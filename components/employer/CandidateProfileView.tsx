@@ -92,7 +92,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                 </Typography>
 
                 <div className="space-y-3 text-sm">
-                  <div>
+                  <div className='flex items-center justify-between'>
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.age')}
                     </Typography>
@@ -101,7 +101,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                     </Typography>
                   </div>
 
-                  <div>
+                  <div className='flex items-center justify-between'>
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.nationality')}
                     </Typography>
@@ -110,7 +110,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                     </Typography>
                   </div>
 
-                  <div>
+                  <div className='flex items-center justify-between'>
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.gender')}
                     </Typography>
@@ -119,7 +119,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                     </Typography>
                   </div>
 
-                  <div>
+                  <div className='flex items-center justify-between'>
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.maritalStatus')}
                     </Typography>
@@ -137,7 +137,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                 </Typography>
 
                 <div className="space-y-3 text-sm">
-                  <div>
+                  <div className="flex items-center justify-between">
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.experience')}
                     </Typography>
@@ -146,7 +146,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                     </Typography>
                   </div>
 
-                  <div>
+                  <div className="flex items-center justify-between">
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.jobLevel')}
                     </Typography>
@@ -155,7 +155,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                     </Typography>
                   </div>
 
-                  <div>
+                  <div className="flex items-center justify-between">
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.education')}
                     </Typography>
@@ -173,12 +173,12 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                 </Typography>
 
                 <div className="space-y-3 text-sm">
-                  <div>
+                  <div className="flex items-center justify-between">
                     <Typography variant="p" className="text-muted-foreground">
                       {t('profile.currentStatus')}
                     </Typography>
                     <Typography variant="p" className="text-foreground capitalize">
-                      {candidate?.current_job_status?.replace('_', ' ')}
+                      {candidate?.current_job_status?.replaceAll('_', ' ')}
                     </Typography>
                   </div>
 
