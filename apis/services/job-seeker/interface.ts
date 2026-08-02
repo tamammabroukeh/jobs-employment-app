@@ -518,3 +518,102 @@ export interface IJobApplicationsResponse {
     total: number;
   };
 }
+
+/**
+ * Received Offer Interface
+ */
+export interface IReceivedOffer {
+  id: string;
+  employer_id: string;
+  job_seeker_id: string;
+  job_post_id: string;
+  message: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+  updated_at: string;
+  employer: {
+    id: string;
+    name: string;
+    email: string;
+    roles: string[];
+    is_employer: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+  job_post: {
+    id: string;
+    communication_method: TCommunicationMethods;
+    communication_value: string | null;
+    title: string;
+    portfolio_required: boolean;
+    cover_letter_required: boolean;
+    gender: TGender;
+    age_from: number | null;
+    age_to: number | null;
+    education_level: TEducationlevel;
+    job_level: TJobLevel;
+    experience_years: number;
+    vacancies: number;
+    job_type: TJobType;
+    work_mode: TWorkMode;
+    city: string;
+    address: string;
+    salary_from: number;
+    salary_to: number;
+    currency: string;
+    display_salary: boolean;
+    incentives: string | null;
+    description: string;
+    requirements: string;
+    questions: Array<{ question: string; required: boolean }>;
+    category: string;
+    expires_at: string;
+    roles: string[];
+    languages: string[];
+    tags: string[];
+    job_id: string;
+    employer_id: string;
+    company_profile_id: string;
+    company_name: string;
+    company_logo: string | null;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+  job_post_title: string;
+  employer_company_name: string;
+}
+
+/**
+ * Received Offers Query Params
+ */
+export interface IOffersQueryParams {
+  per_page?: number; // max 100, default 15
+  page?: number;
+}
+
+/**
+ * Received Offers Response Interface
+ */
+export interface IReceivedOffersResponse {
+  offers: {
+    current_page: number;
+    data: IReceivedOffer[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+      url: string | null;
+      label: string;
+      page: number | null;
+      active: boolean;
+    }>;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  };
+}

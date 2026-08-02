@@ -54,6 +54,7 @@ export type FooterKeys = NamespaceKeys<'footer'>
 export type JobsKeys = NamespaceKeys<'jobs'>
 export type ProfileKeys = NamespaceKeys<'profile'>
 export type ApplicationsKeys = NamespaceKeys<'applications'>
+export type OffersKeys = NamespaceKeys<'offers'>
 
 // Helper type for translation function with values
 export type TranslationValues = Record<string, string | number | boolean | Date>

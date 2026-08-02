@@ -672,3 +672,87 @@ export const getResumeAnalysisStatusAction = actionClient
       throw new ActionError('Failed to fetch resume analysis. Please try again.');
     }
   });
+
+// Accept Offer Schema
+const acceptOfferSchema = z.object({
+  id: z.string().min(1, 'Offer ID is required'),
+});
+
+/**
+ * Accept Job Offer Action
+ * Accepts a received job offer from employer
+ */
+export const acceptOfferAction = actionClient
+  .schema(acceptOfferSchema)
+  .action(async ({ parsedInput: { id } }) => {
+    try {
+      console.log('[Accept Offer Action] ========== ACCEPTING OFFER ==========');
+      console.log('[Accept Offer Action] Offer ID:', id);
+
+      const response = await jobSeekerRepository.acceptOffer(id);
+      console.log('[Accept Offer Action] Response:', response);
+
+      // Revalidate the offers cache
+      revalidateTag('received-offers', 'max');
+
+      return {
+        success: true,
+        message: response.message,
+      };
+    } catch (error) {
+      console.error('[Accept Offer Action] ========== EXCEPTION ==========');
+      console.error('[Accept Offer Action] Error:', error);
+
+      if (error && typeof error === 'object' && 'info' in error) {
+        const errorInfo = error.info as Record<string, string>;
+        if (errorInfo?.message) {
+          throw new ActionError(errorInfo.message);
+        }
+      }
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to accept offer. Please try again.');
+    }
+  });
+
+// Decline Offer Schema
+const declineOfferSchema = z.object({
+  id: z.string().min(1, 'Offer ID is required'),
+});
+
+/**
+ * Decline Job Offer Action
+ * Declines a received job offer from employer
+ */
+export const declineOfferAction = actionClient
+  .schema(declineOfferSchema)
+  .action(async ({ parsedInput: { id } }) => {
+    try {
+      console.log('[Decline Offer Action] ========== DECLINING OFFER ==========');
+      console.log('[Decline Offer Action] Offer ID:', id);
+
+      const response = await jobSeekerRepository.declineOffer(id);
+      console.log('[Decline Offer Action] Response:', response);
+
+      // Revalidate the offers cache
+      revalidateTag('received-offers', 'max');
+
+      return {
+        success: true,
+        message: response.message,
+      };
+    } catch (error) {
+      console.error('[Decline Offer Action] ========== EXCEPTION ==========');
+      console.error('[Decline Offer Action] Error:', error);
+
+      if (error && typeof error === 'object' && 'info' in error) {
+        const errorInfo = error.info as Record<string, string>;
+        if (errorInfo?.message) {
+          throw new ActionError(errorInfo.message);
+        }
+      }
+
+      if (error instanceof ActionError) throw error;
+      throw new ActionError('Failed to decline offer. Please try again.');
+    }
+  });

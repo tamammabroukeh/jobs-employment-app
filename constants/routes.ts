@@ -19,6 +19,7 @@ const ROUTES = {
     getDetail: (id: string) => `/jobs/${id}`,
     MATCHED: "/matched-jobs",
   },
+  OFFERS: "/offers",
   COMPANIES:{
     LIST:"/companies",
     DETAIL:"/companies/:id",
@@ -108,6 +109,13 @@ export const NAVBAR_LINKS = [
   {
     label: "Applications",
     href: ROUTES.APPLICATIONS,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employee"], // Only for job seekers
+  },
+  {
+    label: "Offers",
+    href: ROUTES.OFFERS,
     showInNavbar: true,
     authRequired: true,
     roles: ["employee"], // Only for job seekers

@@ -1,0 +1,52 @@
+{
+  "title": "Received Offers",
+  "description": "Direct job offers from employers",
+  "emptyState": {
+    "title": "No Offers Yet",
+    "description": "You haven't received any job offers yet. Keep your profile updated to attract employers.",
+    "action": "Update Profile"
+  },
+  "card": {
+    "from": "From",
+    "company": "Company",
+    "position": "Position",
+    "status": "Status",
+    "message": "Message",
+    "receivedAt": "Received",
+    "viewJob": "View Job Details",
+    "accept": "Accept Offer",
+    "reject": "Reject Offer"
+  },
+  "confirmAccept": {
+    "title": "Accept Job Offer?",
+    "description": "Are you sure you want to accept this job offer? This action will notify the employer of your acceptance.",
+    "confirm": "Yes, Accept",
+    "cancel": "Cancel"
+  },
+  "confirmDecline": {
+    "title": "Decline Job Offer?",
+    "description": "Are you sure you want to decline this job offer? This action cannot be undone.",
+    "confirm": "Yes, Decline",
+    "cancel": "Cancel"
+  },
+  "messages": {
+    "acceptSuccess": "Offer accepted successfully",
+    "acceptError": "Failed to accept offer",
+    "declineSuccess": "Offer declined successfully",
+    "declineError": "Failed to decline offer"
+  },
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "filters": {
+    "all": "All Offers",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "rejected": "Rejected"
+  },
+  "loading": "Loading offers...",
+  "error": "Failed to load offers",
+  "noResults": "No offers found"
+}

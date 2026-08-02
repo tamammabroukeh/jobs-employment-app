@@ -329,3 +329,44 @@ export const updateApplicationStatusAction = actionClient
     }
   });
 
+// Send Offer Action
+const sendOfferSchema = z.object({
+  job_seeker_id: z.string().min(1, "Job seeker ID is required"),
+  job_post_id: z.string().min(1, "Job post ID is required"),
+  message: z.string()
+    .min(10, "Message must be at least 10 characters")
+    .max(1000, "Message must be at most 1000 characters"),
+});
+
+export const sendOfferAction = actionClient
+  .schema(sendOfferSchema)
+  .action(async ({ parsedInput }) => {
+    try {
+      console.log('[Send Offer] ========== STARTING SEND OFFER ==========');
+      console.log('[Send Offer] Data:', parsedInput);
+
+      const { job_seeker_id, job_post_id, message } = parsedInput;
+      const response = await employerRepository.sendOffer(job_seeker_id, job_post_id, message);
+      console.log('[Send Offer] Response:', response);
+
+      if (!response) {
+        console.error('[Send Offer] Send failed');
+        throw new Error('Failed to send offer');
+      }
+
+      return {
+        success: true,
+        message: response.message || "Offer sent successfully",
+        data: response.data,
+      };
+    } catch (error) {
+      console.error('[Send Offer] ========== EXCEPTION ==========');
+      console.error('[Send Offer] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to send offer');
+      }
+      throw new Error('Failed to send offer. Please try again.');
+    }
+  });
+

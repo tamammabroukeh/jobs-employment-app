@@ -84,3 +84,7 @@ export function useTalentsTranslations() {
 export function useApplicationsTranslations() {
   return useNextIntlTranslations("applications")
 }
+
+export function useOffersTranslations() {
+  return useNextIntlTranslations("offers")
+}

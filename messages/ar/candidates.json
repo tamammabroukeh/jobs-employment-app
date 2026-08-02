@@ -18,6 +18,7 @@
     "backToCandidates": "العودة إلى المرشحين",
     "lastUpdated": "آخر تحديث",
     "buyThisCV": "شراء هذه السيرة الذاتية",
+    "sendOffer": "إرسال عرض مباشر",
     "personalInfo": "المعلومات الشخصية",
     "age": "العمر",
     "years": "سنوات",
@@ -50,5 +51,21 @@
     "noReferences": "لم يتم إضافة أي مراجع بعد",
     "notFound": "المرشح غير موجود",
     "notFoundDescription": "الملف الشخصي للمرشح غير موجود أو تم إزالته"
+  },
+  "sendOfferDialog": {
+    "title": "إرسال عرض مباشر",
+    "description": "إرسال عرض عمل مخصص لهذا المرشح",
+    "selectJob": "اختر الوظيفة",
+    "selectJobPlaceholder": "اختر وظيفة من قائمة الوظائف النشطة",
+    "messageLabel": "رسالة مخصصة",
+    "messagePlaceholder": "اكتب رسالة مخصصة للمرشح توضح لماذا سيكون مناسباً لهذا الدور...",
+    "messageHelper": "الحد الأقصى 1000 حرف",
+    "cancel": "إلغاء",
+    "send": "إرسال العرض",
+    "successMessage": "تم إرسال العرض بنجاح!",
+    "errorMessage": "فشل إرسال العرض. يرجى المحاولة مرة أخرى.",
+    "loadingJobs": "جارِ تحميل الوظائف...",
+    "noActiveJobs": "ليس لديك أي وظائف نشطة",
+    "createJobFirst": "يرجى إنشاء وظيفة أولاً قبل إرسال العروض"
   }
 }

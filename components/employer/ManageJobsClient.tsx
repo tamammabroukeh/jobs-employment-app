@@ -124,15 +124,6 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
               value: item.key,
               title: item.label,
             }))}
-            //         tabTriggerValues={tabItems.map((item) => ({
-            //   value: item.key,
-            //   title: item.label,
-            // }))}
-            // tabContentValues={tabItems.map((item) => ({
-            //   value: item.key,
-            //   children: item.children,
-            // }))}
-        // className="manage-jobs-tabs"
       />
     </div>
   );
@@ -235,7 +226,7 @@ function ApplicationsTab({ jobs }: { jobs: Job[] }) {
         </div>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             {applications.map((application) => (
               <ApplicationCard
                 key={application.id}
@@ -584,7 +575,7 @@ function JobsList({
   onStatusChange: (jobId: string, isActive: boolean) => void;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-2 gap-4">
       {jobs?.map((job) => (
         <JobCard 
           key={job.id} 

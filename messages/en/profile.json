@@ -48,7 +48,8 @@
       "linkedin": "LinkedIn",
       "github": "GitHub",
       "portfolio": "Portfolio",
-      "twitter": "Twitter"
+      "twitter": "Twitter",
+      "edit" : "Edit Social Links"
     }
   },
   "education": {

@@ -13,6 +13,7 @@ export type Messages = {
   candidates: typeof import("../messages/en/candidates.json")
   employer: typeof import("../messages/en/employer.json")
   applications: typeof import("../messages/en/applications.json")
+  offers: typeof import("../messages/en/offers.json")
 }
 
 export type IntlKeys =
@@ -45,6 +46,11 @@ export type IntlKeys =
   | `applications.empty.${keyof Messages["applications"]["empty"]}`
   | `applications.pagination.${keyof Messages["applications"]["pagination"]}`
   | `applications.filters.${keyof Messages["applications"]["filters"]}`
+  | `offers.${keyof Messages["offers"]}`
+  | `offers.card.${keyof Messages["offers"]["card"]}`
+  | `offers.status.${keyof Messages["offers"]["status"]}`
+  | `offers.emptyState.${keyof Messages["offers"]["emptyState"]}`
+  | `offers.filters.${keyof Messages["offers"]["filters"]}`
   | "errors.noPermission"
   | "errors.noPermissionAction"
   | "errors.signInRequired"

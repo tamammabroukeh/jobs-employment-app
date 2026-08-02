@@ -169,22 +169,120 @@ export interface CandidateSocialLinks {
   portfolio?: string;
   twitter?: string;
 }
+/*
 
+{
+    "user_id": "6a1225d9f1b2e5b53c015442",
+    "name": "testuserEMPLOYEE",
+    "image": "https://example.com/photo.jpg",
+    "city": "Beirut",
+    "current_job_status": "open_to_work",
+    "current_job_title": "Backend Web Developer",
+    "education_history": [
+        {
+            "certificate_type": "bachelor",
+            "university": "Damascus University",
+            "faculty": "Faculty of Information Technology Engineering",
+            "major": "software_engineering",
+            "major_name": "Software Engineering",
+            "grade": "good",
+            "from_date": "2017-09-15",
+            "awarded_date": "2022-07-20"
+        }
+    ],
+    "education_level": "bachelor",
+    "expected_salary": 1200,
+    "experience_summary": "Passionate backend developer with 3 years of experience building scalable web applications using PHP, Laravel, and MongoDB.",
+    "is_actively_seeking": true,
+    "job_level": "mid",
+    "job_roles": [
+        "backend",
+        "fullstack",
+        "frontend"
+    ],
+    "job_types": [
+        "full-time",
+        "remote"
+    ],
+    "salary_range_from": 800,
+    "salary_range_to": 1500,
+    "skills": [
+        {
+            "name": "Laravel",
+            "level": "expert"
+        },
+        {
+            "name": "MongoDB",
+            "level": "intermediate"
+        },
+        {
+            "name": "Front",
+            "level": "advanced"
+        },
+        {
+            "name": "backend",
+            "level": "beginner"
+        },
+        {
+            "name": "full stack",
+            "level": "intermediate"
+        }
+    ],
+    "social_links": {
+        "linkedin": "https://linkedin.com/in/janesmith",
+        "github": "https://github.com/janesmith",
+        "portfolio": "https://janesmith.dev",
+        "twitter": "https://janesmith.dev"
+    },
+    "work_cities": [
+        "damascus",
+        "remote"
+    ],
+    "work_experience": [
+        {
+            "job_title": "backend Developer",
+            "company_name": "Acme Corp",
+            "job_roles": [
+                "React",
+                "TypeScript"
+            ],
+            "from_date": "2020-01",
+            "to_date": "2023-06",
+            "is_currently_working": false,
+            "description": "Eius et animi quos velit et."
+        },
+        {
+            "job_title": "Frontend Developer",
+            "company_name": "Acme Corp",
+            "job_roles": [
+                "React",
+                "TypeScript"
+            ],
+            "from_date": "2020-01",
+            "to_date": "2023-06",
+            "is_currently_working": false,
+            "description": "Eius et animi quos velit et."
+        }
+    ],
+    "years_of_experience": 3
+}
+
+*/
 export interface Candidate {
-  id: string;
+  id: string; //
   user_id: string;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  email?: string;
-  phone: string;
-  date_of_birth: string;
-  gender: string;
-  marital_status: string;
-  nationality: string;
+  first_name: string; //
+  last_name: string; //
+  full_name: string; //
+  email?: string; //
+  phone: string; // 
+  date_of_birth: string; //
+  gender: string; //
+  marital_status: string; //
+  nationality: string; //
   city: string;
-  address: string;
-  location: string;
+  address: string; //
+  location: string; //
   image: string | null;
   current_job_title: string;
   current_job_status: string;
@@ -245,12 +343,7 @@ export interface CandidatesQueryParams {
 }
 
 // Candidate Detail Response
-export interface CandidateDetailResponse {
-  seeker: {
-    user_id: string;
-    name: string;
-    profile: Candidate;
-  };
+export interface CandidateDetailResponse extends Candidate {
 }
 
 // Job Applications Interfaces
@@ -318,5 +411,27 @@ export interface UpdateApplicationStatusResponse {
   message: string;
   data?: {
     application: JobApplication;
+  };
+}
+
+// Send Offer Interfaces
+export interface SendOfferRequest {
+  job_seeker_id: string;
+  job_post_id: string;
+  message: string;
+}
+
+export interface SendOfferResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    offer: {
+      id: string;
+      job_seeker_id: string;
+      job_post_id: string;
+      message: string;
+      status: string;
+      created_at: string;
+    };
   };
 }
