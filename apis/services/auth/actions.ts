@@ -12,7 +12,7 @@ import { deleteCookie } from '@/apis/cookie';
 // Register Action - Returns auth data for session creation
 export const registerAction = actionClient.schema(registerSchema).action(async ({ parsedInput: data }) => {
   try {
-    console.log("[Register Action] Starting registration for:", data.email);
+    console.log("[Register Action] Starting registration for:", data);
     
     const registerData: IRegisterRequest = {
       name: data.username,
