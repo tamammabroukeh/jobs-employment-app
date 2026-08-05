@@ -1,65 +1,67 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
-import { Select } from 'antd';
-import { 
-  Typography, 
-  ReusableButton, 
-  ReusableDialog, 
-  ReusableDropdown, 
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { Select } from "antd";
+import {
+  Typography,
+  ReusableButton,
+  ReusableDialog,
+  ReusableDropdown,
   Flex,
   ReusableTabs,
-  ReusablePagination 
-} from '@/components/Reusable-Components';
-import type { IDropdownMenuItem } from '@/components/Reusable-Components/Reusable-Dropdown';
-import ROUTES from '@/constants/routes';
-import type { Job, JobApplication } from '@/apis/services/employer';
-import { 
-  deleteJobAction, 
-  activateJobAction, 
+  ReusablePagination,
+} from "@/components/Reusable-Components";
+import type { IDropdownMenuItem } from "@/components/Reusable-Components/Reusable-Dropdown";
+import ROUTES from "@/constants/routes";
+import type { Job, JobApplication } from "@/apis/services/employer";
+import {
+  deleteJobAction,
+  activateJobAction,
   deactivateJobAction,
-  updateApplicationStatusAction
-} from '@/apis/services/employer/actions';
-import { employerRepository } from '@/apis/services/employer';
-import { useEmployerTranslations } from '@/hooks/use-employer';
+  updateApplicationStatusAction,
+} from "@/apis/services/employer/actions";
+import { employerRepository } from "@/apis/services/employer";
+import { useEmployerTranslations } from "@/hooks/use-employer";
 
 interface ManageJobsClientProps {
   initialJobs: Job[];
 }
 
-export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps) {
+export default function ManageJobsClient({
+  initialJobs,
+}: ManageJobsClientProps) {
   const t = useEmployerTranslations();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('current');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("current");
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
 
   const filteredJobs = jobs?.filter((job) =>
-    job?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    job?.title?.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleDeleteSuccess = (jobId: string) => {
-    setJobs(prevJobs => prevJobs.filter(job => job.id !== jobId));
+    setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
   };
 
   const handleStatusChange = (jobId: string, isActive: boolean) => {
-    setJobs(prevJobs =>
-      prevJobs.map(job =>
-        job.id === jobId ? { ...job, is_active: isActive } : job
-      )
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === jobId ? { ...job, is_active: isActive } : job,
+      ),
     );
   };
 
   const tabItems = [
     {
-      key: 'current',
+      key: "current",
       label: (
         <span className="flex items-center gap-2">
           <i className="fa-solid fa-briefcase" />
-          {t('manageJobs.tabs.current')}
+          {t("manageJobs.tabs.current")}
         </span>
       ),
       children: (
@@ -70,7 +72,7 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
               <i className="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
-                placeholder={t('manageJobs.search.placeholder')}
+                placeholder={t("manageJobs.search.placeholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground"
@@ -82,8 +84,8 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
           {filteredJobs.length === 0 ? (
             <EmptyState />
           ) : (
-            <JobsList 
-              jobs={filteredJobs} 
+            <JobsList
+              jobs={filteredJobs}
               onDeleteSuccess={handleDeleteSuccess}
               onStatusChange={handleStatusChange}
             />
@@ -92,11 +94,11 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
       ),
     },
     {
-      key: 'applications',
+      key: "applications",
       label: (
         <span className="flex items-center gap-2">
           <i className="fa-solid fa-file-circle-check" />
-          {t('manageJobs.tabs.applications')}
+          {t("manageJobs.tabs.applications")}
         </span>
       ),
       children: <ApplicationsTab jobs={jobs} />,
@@ -106,33 +108,28 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 flex justify-between items-start">
         <Typography variant="h1" className="text-foreground mb-2">
-          {t('manageJobs.title')}
+          {t("manageJobs.title")}
         </Typography>
+        <Link href={ROUTES.EMPLOYER.CREATE_JOB}>
+          <ReusableButton variant="primary" className="">
+            {t("manageJobs.empty.button")}
+          </ReusableButton>
+        </Link>
       </div>
-
       {/* Tabs */}
       <ReusableTabs
         value={activeTab}
         onValueChange={setActiveTab}
         tabContentValues={tabItems.map((item) => ({
-          value:item.key,
-          children: item.children
+          value: item.key,
+          children: item.children,
         }))}
         tabTriggerValues={tabItems.map((item) => ({
-              value: item.key,
-              title: item.label,
-            }))}
-            //         tabTriggerValues={tabItems.map((item) => ({
-            //   value: item.key,
-            //   title: item.label,
-            // }))}
-            // tabContentValues={tabItems.map((item) => ({
-            //   value: item.key,
-            //   children: item.children,
-            // }))}
-        // className="manage-jobs-tabs"
+          value: item.key,
+          title: item.label,
+        }))}
       />
     </div>
   );
@@ -141,7 +138,7 @@ export default function ManageJobsClient({ initialJobs }: ManageJobsClientProps)
 // Applications Tab Component
 function ApplicationsTab({ jobs }: { jobs: Job[] }) {
   const t = useEmployerTranslations();
-  const [selectedJobId, setSelectedJobId] = useState<string>(jobs[0]?.id || '');
+  const [selectedJobId, setSelectedJobId] = useState<string>(jobs[0]?.id || "");
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -158,13 +155,13 @@ function ApplicationsTab({ jobs }: { jobs: Job[] }) {
         const response = await employerRepository.getJobApplications(
           selectedJobId,
           currentPage,
-          perPage
+          perPage,
         );
         setApplications(response.applications.data);
         setTotalApplications(response.applications.total);
       } catch (error) {
-        console.error('Error fetching applications:', error);
-        toast.error(t('manageJobs.applications.fetchError'));
+        console.error("Error fetching applications:", error);
+        toast.error(t("manageJobs.applications.fetchError"));
         setApplications([]);
       } finally {
         setIsLoading(false);
@@ -188,11 +185,11 @@ function ApplicationsTab({ jobs }: { jobs: Job[] }) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <Typography variant="h3" className="text-foreground mb-2">
-          {t('manageJobs.applications.noJobs')}
+          {t("manageJobs.applications.noJobs")}
         </Typography>
         <Link href={ROUTES.EMPLOYER.CREATE_JOB}>
           <ReusableButton variant="primary" className="mt-4">
-            {t('manageJobs.empty.button')}
+            {t("manageJobs.empty.button")}
           </ReusableButton>
         </Link>
       </div>
@@ -204,15 +201,15 @@ function ApplicationsTab({ jobs }: { jobs: Job[] }) {
       {/* Job Selector */}
       <div className="auth-card p-6">
         <Typography variant="h3" className="text-foreground mb-4">
-          {t('manageJobs.applications.selectJob')}
+          {t("manageJobs.applications.selectJob")}
         </Typography>
         <Select
           value={selectedJobId}
           onChange={handleJobChange}
           className="w-full"
           size="large"
-          options={jobs.map(job => ({
-            label: `${job.title} (${job.application_count} ${t('manageJobs.applications.applicationsCount')})`,
+          options={jobs.map((job) => ({
+            label: `${job.title} (${job.application_count} ${t("manageJobs.applications.applicationsCount")})`,
             value: job.id,
           }))}
         />
@@ -227,24 +224,26 @@ function ApplicationsTab({ jobs }: { jobs: Job[] }) {
         <div className="auth-card p-12 text-center">
           <i className="fa-solid fa-inbox text-6xl text-muted-foreground mb-4" />
           <Typography variant="h3" className="text-foreground mb-2">
-            {t('manageJobs.applications.noApplications')}
+            {t("manageJobs.applications.noApplications")}
           </Typography>
           <Typography variant="p" className="text-muted-foreground">
-            {t('manageJobs.applications.noApplicationsDesc')}
+            {t("manageJobs.applications.noApplicationsDesc")}
           </Typography>
         </div>
       ) : (
         <>
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             {applications.map((application) => (
               <ApplicationCard
                 key={application.id}
                 application={application}
                 onStatusUpdate={(id, status) => {
-                  setApplications(prev =>
-                    prev.map(app =>
-                      app.id === id ? { ...app, status: status as JobApplication['status'] } : app
-                    )
+                  setApplications((prev) =>
+                    prev.map((app) =>
+                      app.id === id
+                        ? { ...app, status: status as JobApplication["status"] }
+                        : app,
+                    ),
                   );
                 }}
               />
@@ -278,8 +277,10 @@ function ApplicationCard({
   const t = useEmployerTranslations();
   const router = useRouter();
   const [isStatusDialogOpen, setIsStatusDialogOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<string>(application.status);
-  const [feedback, setFeedback] = useState<string>(application.feedback || '');
+  const [selectedStatus, setSelectedStatus] = useState<string>(
+    application.status,
+  );
+  const [feedback, setFeedback] = useState<string>(application.feedback || "");
   const [isUpdating, setIsUpdating] = useState(false);
 
   const handleStatusUpdate = async () => {
@@ -287,20 +288,24 @@ function ApplicationCard({
     try {
       const result = await updateApplicationStatusAction({
         id: application.id,
-        status: selectedStatus as 'pending' | 'reviewed' | 'accepted' | 'rejected',
+        status: selectedStatus as
+          | "pending"
+          | "reviewed"
+          | "accepted"
+          | "rejected",
         feedback: feedback || undefined,
       });
 
       if (result?.data?.success) {
-        toast.success(t('manageJobs.applications.statusUpdateSuccess'));
+        toast.success(t("manageJobs.applications.statusUpdateSuccess"));
         onStatusUpdate(application.id, selectedStatus);
         setIsStatusDialogOpen(false);
       } else {
-        toast.error(t('manageJobs.applications.statusUpdateError'));
+        toast.error(t("manageJobs.applications.statusUpdateError"));
       }
     } catch (error) {
-      console.error('Error updating status:', error);
-      toast.error(t('manageJobs.applications.statusUpdateError'));
+      console.error("Error updating status:", error);
+      toast.error(t("manageJobs.applications.statusUpdateError"));
     } finally {
       setIsUpdating(false);
     }
@@ -308,31 +313,31 @@ function ApplicationCard({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
-      case 'reviewed':
-        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
-      case 'accepted':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
-      case 'rejected':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
+      case "reviewed":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+      case "accepted":
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+      case "rejected":
+        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400";
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'fa-clock';
-      case 'reviewed':
-        return 'fa-eye';
-      case 'accepted':
-        return 'fa-check-circle';
-      case 'rejected':
-        return 'fa-times-circle';
+      case "pending":
+        return "fa-clock";
+      case "reviewed":
+        return "fa-eye";
+      case "accepted":
+        return "fa-check-circle";
+      case "rejected":
+        return "fa-times-circle";
       default:
-        return 'fa-circle';
+        return "fa-circle";
     }
   };
 
@@ -340,7 +345,9 @@ function ApplicationCard({
     <>
       <div
         className="auth-card p-6 hover:shadow-lg transition-all duration-300 cursor-pointer"
-        onClick={() => router.push(ROUTES.CANDIDATES.getDetail(application.user_id))}
+        onClick={() =>
+          router.push(ROUTES.CANDIDATES.getDetail(application.user_id))
+        }
       >
         <div className="flex items-start justify-between mb-4">
           <div>
@@ -356,7 +363,10 @@ function ApplicationCard({
             {/* ATS Score Badge */}
             <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
               <i className="fa-solid fa-chart-line text-primary text-sm" />
-              <Typography variant="small" className="text-primary font-semibold">
+              <Typography
+                variant="small"
+                className="text-primary font-semibold"
+              >
                 {application.ats_score}% Match
               </Typography>
             </div>
@@ -364,11 +374,12 @@ function ApplicationCard({
             {/* Status Badge */}
             <span
               className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                application.status
+                application.status,
               )}`}
             >
               <i className={`fa-solid ${getStatusIcon(application.status)}`} />
-              {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
+              {application.status.charAt(0).toUpperCase() +
+                application.status.slice(1)}
             </span>
           </div>
         </div>
@@ -377,7 +388,7 @@ function ApplicationCard({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.education')}
+              {t("manageJobs.applications.education")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {application.education}
@@ -386,7 +397,7 @@ function ApplicationCard({
 
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.lastWork')}
+              {t("manageJobs.applications.lastWork")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {application.last_work}
@@ -395,16 +406,17 @@ function ApplicationCard({
 
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.experience')}
+              {t("manageJobs.applications.experience")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
-              {application.years_of_experience} {t('manageJobs.applications.years')}
+              {application.years_of_experience}{" "}
+              {t("manageJobs.applications.years")}
             </Typography>
           </div>
 
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.expectedSalary')}
+              {t("manageJobs.applications.expectedSalary")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {application.expected_salary}
@@ -413,7 +425,7 @@ function ApplicationCard({
 
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.noticePeriod')}
+              {t("manageJobs.applications.noticePeriod")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {application.notice_period}
@@ -422,7 +434,7 @@ function ApplicationCard({
 
           <div>
             <Typography variant="small" className="text-muted-foreground mb-1">
-              {t('manageJobs.applications.appliedAt')}
+              {t("manageJobs.applications.appliedAt")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {new Date(application.applied_at).toLocaleDateString()}
@@ -441,7 +453,9 @@ function ApplicationCard({
               onClick={(e) => e.stopPropagation()}
             >
               <i className="fa-solid fa-file-pdf" />
-              <Typography variant="small">{t('manageJobs.applications.viewResume')}</Typography>
+              <Typography variant="small">
+                {t("manageJobs.applications.viewResume")}
+              </Typography>
             </a>
           </div>
         )}
@@ -449,8 +463,11 @@ function ApplicationCard({
         {/* Cover Letter */}
         {application.cover_letter && (
           <div className="mb-4 p-4 bg-muted/30 rounded-lg">
-            <Typography variant="small" className="text-muted-foreground mb-2 font-semibold">
-              {t('manageJobs.applications.coverLetter')}
+            <Typography
+              variant="small"
+              className="text-muted-foreground mb-2 font-semibold"
+            >
+              {t("manageJobs.applications.coverLetter")}
             </Typography>
             <Typography variant="p" className="text-foreground text-sm">
               {application.cover_letter}
@@ -461,10 +478,16 @@ function ApplicationCard({
         {/* Feedback */}
         {application.feedback && (
           <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <Typography variant="small" className="text-blue-700 dark:text-blue-400 mb-2 font-semibold">
-              {t('manageJobs.applications.feedback')}
+            <Typography
+              variant="small"
+              className="text-blue-700 dark:text-blue-400 mb-2 font-semibold"
+            >
+              {t("manageJobs.applications.feedback")}
             </Typography>
-            <Typography variant="p" className="text-blue-900 dark:text-blue-300 text-sm">
+            <Typography
+              variant="p"
+              className="text-blue-900 dark:text-blue-300 text-sm"
+            >
               {application.feedback}
             </Typography>
           </div>
@@ -473,7 +496,7 @@ function ApplicationCard({
         {/* Update Status Button */}
         <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
           <ReusableButton
-            btnText={t('manageJobs.applications.updateStatus')}
+            btnText={t("manageJobs.applications.updateStatus")}
             variant="default"
             onClick={() => setIsStatusDialogOpen(true)}
             icon={<i className="fa-solid fa-edit" />}
@@ -486,14 +509,17 @@ function ApplicationCard({
         isOpen={isStatusDialogOpen}
         setIsOpen={setIsStatusDialogOpen}
         dialogHeader={{
-          title: t('manageJobs.applications.updateStatusTitle'),
-          description: t('manageJobs.applications.updateStatusDesc'),
+          title: t("manageJobs.applications.updateStatusTitle"),
+          description: t("manageJobs.applications.updateStatusDesc"),
         }}
         dialogBody={
           <div className="space-y-4">
             <div>
-              <Typography variant="small" className="text-foreground mb-2 font-semibold">
-                {t('manageJobs.applications.status')}
+              <Typography
+                variant="small"
+                className="text-foreground mb-2 font-semibold"
+              >
+                {t("manageJobs.applications.status")}
               </Typography>
               <Select
                 value={selectedStatus}
@@ -501,28 +527,48 @@ function ApplicationCard({
                 className="w-full"
                 size="large"
                 options={[
-                  { label: t('manageJobs.applications.statusPending'), value: 'pending' },
-                  { label: t('manageJobs.applications.statusReviewed'), value: 'reviewed' },
-                  { label: t('manageJobs.applications.statusAccepted'), value: 'accepted' },
-                  { label: t('manageJobs.applications.statusRejected'), value: 'rejected' },
+                  {
+                    label: t("manageJobs.applications.statusPending"),
+                    value: "pending",
+                  },
+                  {
+                    label: t("manageJobs.applications.statusReviewed"),
+                    value: "reviewed",
+                  },
+                  {
+                    label: t("manageJobs.applications.statusAccepted"),
+                    value: "accepted",
+                  },
+                  {
+                    label: t("manageJobs.applications.statusRejected"),
+                    value: "rejected",
+                  },
                 ]}
               />
             </div>
 
             <div>
-              <Typography variant="small" className="text-foreground mb-2 font-semibold">
-                {t('manageJobs.applications.feedbackLabel')} ({t('manageJobs.applications.optional')})
+              <Typography
+                variant="small"
+                className="text-foreground mb-2 font-semibold"
+              >
+                {t("manageJobs.applications.feedbackLabel")} (
+                {t("manageJobs.applications.optional")})
               </Typography>
               <textarea
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
-                placeholder={t('manageJobs.applications.feedbackPlaceholder')}
+                placeholder={t("manageJobs.applications.feedbackPlaceholder")}
                 maxLength={2000}
                 rows={4}
                 className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground resize-none"
               />
-              <Typography variant="small" className="text-muted-foreground mt-1">
-                {feedback.length} / 2000 {t('manageJobs.applications.characters')}
+              <Typography
+                variant="small"
+                className="text-muted-foreground mt-1"
+              >
+                {feedback.length} / 2000{" "}
+                {t("manageJobs.applications.characters")}
               </Typography>
             </div>
           </div>
@@ -530,13 +576,13 @@ function ApplicationCard({
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('manageJobs.applications.cancel')}
+              btnText={t("manageJobs.applications.cancel")}
               onClick={() => setIsStatusDialogOpen(false)}
               variant="default"
               disabled={isUpdating}
             />
             <ReusableButton
-              btnText={t('manageJobs.applications.save')}
+              btnText={t("manageJobs.applications.save")}
               onClick={handleStatusUpdate}
               variant="primary"
               isLoading={isUpdating}
@@ -550,7 +596,7 @@ function ApplicationCard({
 
 function EmptyState() {
   const t = useEmployerTranslations();
-  
+
   return (
     <div className="flex flex-col items-center justify-center py-20">
       <div className="relative w-64 h-64 mb-6">
@@ -563,32 +609,32 @@ function EmptyState() {
         />
       </div>
       <Typography variant="h3" className="text-foreground mb-2">
-        {t('manageJobs.empty.title')}
+        {t("manageJobs.empty.title")}
       </Typography>
       <Link href={ROUTES.EMPLOYER.CREATE_JOB}>
         <ReusableButton variant="primary" className="mt-4">
-          {t('manageJobs.empty.button')}
+          {t("manageJobs.empty.button")}
         </ReusableButton>
       </Link>
     </div>
   );
 }
 
-function JobsList({ 
-  jobs, 
+function JobsList({
+  jobs,
   onDeleteSuccess,
-  onStatusChange 
-}: { 
-  jobs: Job[]; 
+  onStatusChange,
+}: {
+  jobs: Job[];
   onDeleteSuccess: (jobId: string) => void;
   onStatusChange: (jobId: string, isActive: boolean) => void;
 }) {
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-2 gap-4">
       {jobs?.map((job) => (
-        <JobCard 
-          key={job.id} 
-          job={job} 
+        <JobCard
+          key={job.id}
+          job={job}
           onDeleteSuccess={onDeleteSuccess}
           onStatusChange={onStatusChange}
         />
@@ -597,12 +643,12 @@ function JobsList({
   );
 }
 
-function JobCard({ 
-  job, 
+function JobCard({
+  job,
   onDeleteSuccess,
-  onStatusChange 
-}: { 
-  job: Job; 
+  onStatusChange,
+}: {
+  job: Job;
   onDeleteSuccess: (jobId: string) => void;
   onStatusChange: (jobId: string, isActive: boolean) => void;
 }) {
@@ -617,18 +663,18 @@ function JobCard({
     setIsLoading(true);
     try {
       const result = await deleteJobAction({ id: job.id });
-      
+
       if (result?.data) {
-        toast.success(t('manageJobs.messages.deleteSuccess'));
+        toast.success(t("manageJobs.messages.deleteSuccess"));
         onDeleteSuccess(job.id);
         setIsDeleteDialogOpen(false);
         router.refresh();
       } else {
-        toast.error(t('manageJobs.messages.deleteError'));
+        toast.error(t("manageJobs.messages.deleteError"));
       }
     } catch (error) {
-      console.error('Error deleting job:', error);
-      toast.error(t('manageJobs.messages.deleteError'));
+      console.error("Error deleting job:", error);
+      toast.error(t("manageJobs.messages.deleteError"));
     } finally {
       setIsLoading(false);
     }
@@ -638,18 +684,18 @@ function JobCard({
     setIsLoading(true);
     try {
       const result = await activateJobAction({ id: job.id });
-      
+
       if (result?.data) {
-        toast.success(t('manageJobs.messages.activateSuccess'));
+        toast.success(t("manageJobs.messages.activateSuccess"));
         onStatusChange(job.id, true);
         setIsActivateDialogOpen(false);
         router.refresh();
       } else {
-        toast.error(t('manageJobs.messages.activateError'));
+        toast.error(t("manageJobs.messages.activateError"));
       }
     } catch (error) {
-      console.error('Error activating job:', error);
-      toast.error(t('manageJobs.messages.activateError'));
+      console.error("Error activating job:", error);
+      toast.error(t("manageJobs.messages.activateError"));
     } finally {
       setIsLoading(false);
     }
@@ -659,18 +705,18 @@ function JobCard({
     setIsLoading(true);
     try {
       const result = await deactivateJobAction({ id: job.id });
-      
+
       if (result?.data) {
-        toast.success(t('manageJobs.messages.deactivateSuccess'));
+        toast.success(t("manageJobs.messages.deactivateSuccess"));
         onStatusChange(job.id, false);
         setIsDeactivateDialogOpen(false);
         router.refresh();
       } else {
-        toast.error(t('manageJobs.messages.deactivateError'));
+        toast.error(t("manageJobs.messages.deactivateError"));
       }
     } catch (error) {
-      console.error('Error deactivating job:', error);
-      toast.error(t('manageJobs.messages.deactivateError'));
+      console.error("Error deactivating job:", error);
+      toast.error(t("manageJobs.messages.deactivateError"));
     } finally {
       setIsLoading(false);
     }
@@ -679,31 +725,31 @@ function JobCard({
   // Build dropdown menu items
   const dropdownItems: IDropdownMenuItem[] = [
     {
-      key: 'edit',
-      label: t('manageJobs.actions.edit'),
+      key: "edit",
+      label: t("manageJobs.actions.edit"),
       icon: <i className="fa-solid fa-edit" />,
       onClick: () => router.push(ROUTES.EMPLOYER.getEditJob(job.id)),
     },
     ...(job.is_active
       ? [
           {
-            key: 'deactivate',
-            label: t('manageJobs.actions.deactivate'),
+            key: "deactivate",
+            label: t("manageJobs.actions.deactivate"),
             icon: <i className="fa-solid fa-ban" />,
             onClick: () => setIsDeactivateDialogOpen(true),
           },
         ]
       : [
           {
-            key: 'activate',
-            label: t('manageJobs.actions.activate'),
+            key: "activate",
+            label: t("manageJobs.actions.activate"),
             icon: <i className="fa-solid fa-check-circle" />,
             onClick: () => setIsActivateDialogOpen(true),
           },
         ]),
     {
-      key: 'delete',
-      label: t('manageJobs.actions.delete'),
+      key: "delete",
+      label: t("manageJobs.actions.delete"),
       icon: <i className="fa-solid fa-trash" />,
       danger: true,
       onClick: () => setIsDeleteDialogOpen(true),
@@ -740,11 +786,14 @@ function JobCard({
                     </span>
                   )}
                 </div>
-                <Typography variant="p" className="text-muted-foreground text-sm mb-1">
+                <Typography
+                  variant="p"
+                  className="text-muted-foreground text-sm mb-1"
+                >
                   {job?.company_name}
                 </Typography>
               </div>
-              
+
               {/* Dropdown Menu */}
               <ReusableDropdown items={dropdownItems} />
             </div>
@@ -754,7 +803,7 @@ function JobCard({
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-briefcase text-sm text-primary" />
                 <Typography variant="small" className="text-muted-foreground">
-                  {job?.job_type?.replace('_', ' ')}
+                  {job?.job_type?.replace("_", " ")}
                 </Typography>
               </div>
               <div className="flex items-center gap-2">
@@ -766,7 +815,7 @@ function JobCard({
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-laptop text-sm text-primary" />
                 <Typography variant="small" className="text-muted-foreground">
-                  {job?.work_mode?.replace('_', ' ')}
+                  {job?.work_mode?.replace("_", " ")}
                 </Typography>
               </div>
               {job?.display_salary && (
@@ -780,13 +829,17 @@ function JobCard({
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-users text-sm text-primary" />
                 <Typography variant="small" className="text-muted-foreground">
-                  {job?.vacancies} {job?.vacancies === 1 ? 'position' : 'positions'}
+                  {job?.vacancies}{" "}
+                  {job?.vacancies === 1 ? "position" : "positions"}
                 </Typography>
               </div>
               <div className="flex items-center gap-2">
                 <i className="fa-solid fa-file-circle-check text-sm text-primary" />
                 <Typography variant="small" className="text-muted-foreground">
-                  {job?.application_count} {job?.application_count === 1 ? 'application' : 'applications'}
+                  {job?.application_count}{" "}
+                  {job?.application_count === 1
+                    ? "application"
+                    : "applications"}
                 </Typography>
               </div>
             </div>
@@ -794,31 +847,48 @@ function JobCard({
             {/* Additional Info */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 p-4 bg-muted/30 rounded-lg">
               <div>
-                <Typography variant="small" className="text-muted-foreground mb-1">
+                <Typography
+                  variant="small"
+                  className="text-muted-foreground mb-1"
+                >
                   Experience Required
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
-                  {job?.experience_years} {job?.experience_years === 1 ? 'year' : 'years'} • {job?.job_level}
+                  {job?.experience_years}{" "}
+                  {job?.experience_years === 1 ? "year" : "years"} •{" "}
+                  {job?.job_level}
                 </Typography>
               </div>
               <div>
-                <Typography variant="small" className="text-muted-foreground mb-1">
+                <Typography
+                  variant="small"
+                  className="text-muted-foreground mb-1"
+                >
                   Education
                 </Typography>
-                <Typography variant="p" className="text-foreground text-sm capitalize">
-                  {job?.education_level?.replace('_', ' ')}
+                <Typography
+                  variant="p"
+                  className="text-foreground text-sm capitalize"
+                >
+                  {job?.education_level?.replace("_", " ")}
                 </Typography>
               </div>
               <div>
-                <Typography variant="small" className="text-muted-foreground mb-1">
+                <Typography
+                  variant="small"
+                  className="text-muted-foreground mb-1"
+                >
                   Languages
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
-                  {job?.languages?.join(', ')}
+                  {job?.languages?.join(", ")}
                 </Typography>
               </div>
               <div>
-                <Typography variant="small" className="text-muted-foreground mb-1">
+                <Typography
+                  variant="small"
+                  className="text-muted-foreground mb-1"
+                >
                   Expires At
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
@@ -865,19 +935,21 @@ function JobCard({
         isOpen={isDeleteDialogOpen}
         setIsOpen={setIsDeleteDialogOpen}
         dialogHeader={{
-          title: t('manageJobs.confirmDelete.title'),
-          description: t('manageJobs.confirmDelete.message', { title: job.title }),
+          title: t("manageJobs.confirmDelete.title"),
+          description: t("manageJobs.confirmDelete.message", {
+            title: job.title,
+          }),
         }}
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('manageJobs.confirmDelete.cancel')}
+              btnText={t("manageJobs.confirmDelete.cancel")}
               onClick={() => setIsDeleteDialogOpen(false)}
               variant="default"
               disabled={isLoading}
             />
             <ReusableButton
-              btnText={t('manageJobs.confirmDelete.confirm')}
+              btnText={t("manageJobs.confirmDelete.confirm")}
               onClick={handleDelete}
               variant="primary"
               danger
@@ -892,19 +964,21 @@ function JobCard({
         isOpen={isActivateDialogOpen}
         setIsOpen={setIsActivateDialogOpen}
         dialogHeader={{
-          title: t('manageJobs.confirmActivate.title'),
-          description: t('manageJobs.confirmActivate.message', { title: job.title }),
+          title: t("manageJobs.confirmActivate.title"),
+          description: t("manageJobs.confirmActivate.message", {
+            title: job.title,
+          }),
         }}
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('manageJobs.confirmActivate.cancel')}
+              btnText={t("manageJobs.confirmActivate.cancel")}
               onClick={() => setIsActivateDialogOpen(false)}
               variant="default"
               disabled={isLoading}
             />
             <ReusableButton
-              btnText={t('manageJobs.confirmActivate.confirm')}
+              btnText={t("manageJobs.confirmActivate.confirm")}
               onClick={handleActivate}
               variant="primary"
               isLoading={isLoading}
@@ -918,19 +992,21 @@ function JobCard({
         isOpen={isDeactivateDialogOpen}
         setIsOpen={setIsDeactivateDialogOpen}
         dialogHeader={{
-          title: t('manageJobs.confirmDeactivate.title'),
-          description: t('manageJobs.confirmDeactivate.message', { title: job.title }),
+          title: t("manageJobs.confirmDeactivate.title"),
+          description: t("manageJobs.confirmDeactivate.message", {
+            title: job.title,
+          }),
         }}
         dialogFooter={
           <Flex classes="gap-2 justify-end">
             <ReusableButton
-              btnText={t('manageJobs.confirmDeactivate.cancel')}
+              btnText={t("manageJobs.confirmDeactivate.cancel")}
               onClick={() => setIsDeactivateDialogOpen(false)}
               variant="default"
               disabled={isLoading}
             />
             <ReusableButton
-              btnText={t('manageJobs.confirmDeactivate.confirm')}
+              btnText={t("manageJobs.confirmDeactivate.confirm")}
               onClick={handleDeactivate}
               variant="primary"
               isLoading={isLoading}

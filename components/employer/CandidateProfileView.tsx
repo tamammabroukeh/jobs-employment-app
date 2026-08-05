@@ -4,6 +4,7 @@ import type { Candidate } from '@/apis/services/employer/interface';
 import { getCandidatesTranslations } from '@/lib/get-translations';
 import Link from 'next/link';
 import ROUTES from '@/constants/routes';
+import SendOfferButton from './SendOfferButton';
 
 interface CandidateProfileViewProps {
   candidate: Candidate;
@@ -79,11 +80,13 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
                 </Typography>
               </div>
 
-              {/* Buy This CV Button */}
-              <button className="w-full bg-warning hover:bg-warning/90 text-white font-medium py-3 rounded-lg transition-colors mb-6 flex items-center justify-center gap-2">
-                <i className="fa-solid fa-download" />
-                {t('profile.buyThisCV')}
-              </button>
+              {/* Send Direct Offer Button */}
+              <div className="mb-6">
+                <SendOfferButton
+                  candidateUserId={candidate.user_id}
+                  candidateName={candidate.full_name}
+                />
+              </div>
 
               {/* Personal Information */}
               <div className="space-y-4 mb-6">

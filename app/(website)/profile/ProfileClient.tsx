@@ -17,6 +17,7 @@ interface ProfileClientProps {
 }
 
 export default function ProfileClient({ initialProfile, initialDocuments }: ProfileClientProps) {
+  console.log('initialProfile', initialProfile)
   return (
     <div className="max-w-7xl mx-auto px-4 flex flex-col gap-5 sm:px-6 lg:px-8 py-8">
       <Typography variant="h1" className="mb-6">

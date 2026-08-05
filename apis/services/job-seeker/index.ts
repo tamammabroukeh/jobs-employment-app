@@ -25,7 +25,9 @@ import {
   IApplyJobRequest,
   IApplyJobResponse,
   IJobApplicationsResponse,
-  IAIAnalysisProfile
+  IAIAnalysisProfile,
+  IReceivedOffersResponse,
+  IOffersQueryParams
 } from './interface';
 
 /**
@@ -341,6 +343,54 @@ export const jobSeekerRepository = {
     return authFetcher(`/job-seeker/resume/analysis-status`, {
       method: Methods.GET,
       cache: 'no-store',
+    });
+  },
+
+  /**
+   * Get received job offers
+   * @param params - Query parameters for pagination
+   * @returns Promise with paginated offers response
+   */
+  getReceivedOffers: async (params?: IOffersQueryParams): Promise<IReceivedOffersResponse> => {
+    const queryParams = new URLSearchParams();
+    
+    if (params) {
+      if (params.per_page !== undefined) queryParams.append('per_page', String(params.per_page));
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+    }
+    
+    const queryString = queryParams.toString();
+    const url = queryString ? `/job-seeker/offers?${queryString}` : '/job-seeker/offers';
+    
+    return authFetcher<IReceivedOffersResponse>(url, {
+      method: Methods.GET,
+      cache: 'no-store',
+      next: {
+        tags: ['received-offers'],
+        revalidate: 60,
+      },
+    });
+  },
+
+  /**
+   * Accept a job offer
+   * @param id - Offer ID to accept
+   * @returns Promise with acceptance response
+   */
+  acceptOffer: async (id: string): Promise<{ message: string }> => {
+    return authFetcher<{ message: string }>(`/job-seeker/offers/${id}/accept`, {
+      method: Methods.POST,
+    });
+  },
+
+  /**
+   * Decline a job offer
+   * @param id - Offer ID to decline
+   * @returns Promise with decline response
+   */
+  declineOffer: async (id: string): Promise<{ message: string }> => {
+    return authFetcher<{ message: string }>(`/job-seeker/offers/${id}/decline`, {
+      method: Methods.POST,
     });
   },
 };

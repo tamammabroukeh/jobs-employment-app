@@ -19,6 +19,7 @@ import type {
   CandidateDetailResponse,
   JobApplicationsResponse,
   UpdateApplicationStatusResponse,
+  SendOfferResponse,
 } from './interface';
 
 /**
@@ -184,5 +185,18 @@ export const employerRepository = {
     authFetcher<UpdateApplicationStatusResponse>(`/employer/applications/${id}/status`, {
       method: Methods.PUT,
       body: JSON.stringify({ status, feedback }),
+    }),
+
+  /**
+   * Send direct offer to candidate
+   * @param job_seeker_id - User ID of the job seeker
+   * @param job_post_id - ID of the job post
+   * @param message - Personalized offer message (max 1000 chars)
+   * @returns Promise with send offer response
+   */
+  sendOffer: (job_seeker_id: string, job_post_id: string, message: string): Promise<SendOfferResponse> =>
+    authFetcher<SendOfferResponse>('/employer/offers', {
+      method: Methods.POST,
+      body: JSON.stringify({ job_seeker_id, job_post_id, message }),
     }),
 };

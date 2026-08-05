@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: CandidateProfilePageProps): P
     const { userId } = await params;
     const response = await employerRepository.getCandidateDetail(userId);
     
-    if (response?.seeker?.profile) {
+    if (response?.user_id) {
       return {
-        title: `${response.seeker.profile.full_name} - Candidate Profile`,
-        description: response.seeker.profile.experience_summary || 'View candidate profile',
+        title: `${response.full_name} - Candidate Profile`,
+        description: response.experience_summary || 'View candidate profile',
       };
     }
   } catch (error) {
@@ -40,7 +40,8 @@ export default async function CandidateProfilePage({ params }: CandidateProfileP
 
   try {
     const response = await employerRepository.getCandidateDetail(userId);
-    candidate = response.seeker.profile;
+    console.log('response', response)
+    candidate = response;
   } catch (err) {
     console.error('Error fetching candidate:', err);
     error = 'Failed to load candidate profile';

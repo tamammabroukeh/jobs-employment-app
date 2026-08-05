@@ -131,7 +131,7 @@ export default function ApplicationsClient({ initialData, initialPage }: Applica
       </div>
 
       {/* Applications List */}
-      <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-6">
         {applications.map((application) => (
           <ReusableCard key={application.id} styleForCard="p-6 hover:shadow-lg transition-shadow">
             <div className="flex flex-col gap-4">
