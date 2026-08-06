@@ -89,9 +89,12 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.error("[Auth] Missing credentials");
           return null
         }
         try {
+          console.log("[Auth] Attempting login for:", credentials.email);
+          
           const response = await apiFetcher<IAuth>(`/auth/login`, {
             method: Methods.POST,
             body: JSON.stringify({
@@ -100,13 +103,15 @@ export const authOptions: NextAuthOptions = {
             }),
           })
           
-          console.log("[Auth] Login response:", response);
+          console.log("[Auth] Login response received");
           
           // Handle API response errors
           if (!response.user || !response.access_token) {
-            console.error("[Auth] API Error:", response.message);
+            console.error("[Auth] API Error: Missing user or access_token");
             return null;
           }
+
+          console.log("[Auth] Login successful for:", response.user.email);
 
           return {
             id: response.user.id,
@@ -120,7 +125,7 @@ export const authOptions: NextAuthOptions = {
         } catch (error) {
           console.error("[Auth] Authorization error:", error);
           if (error instanceof Error) {
-            console.error("[Auth] NextAuth Error:", error.name, error.message);
+            console.error("[Auth] Error details:", error.name, error.message);
           }
           return null;
         }
@@ -129,8 +134,9 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user, trigger }) {
+      // Initial sign in
       if (user) {
-        console.log("[Auth] Initial sign in, setting up tokens")
+        console.log("[Auth JWT] Initial sign in, setting up tokens")
         return {
           ...token,
           accessToken: user.accessToken,
@@ -141,11 +147,13 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
+      // Session update triggered
       if (trigger === "update") {
-        console.log("[Auth] Session update triggered")
+        console.log("[Auth JWT] Session update triggered")
         return token
       }
 
+      // Check if token is expired
       const bufferTime = 5 * 60 * 1000 // 5 minutes in milliseconds
       const tokenExpiresWithBuffer = (token.tokenExpires as number) - bufferTime
 
@@ -153,12 +161,13 @@ export const authOptions: NextAuthOptions = {
         return token
       }
 
-      console.log("[Auth] Token expired or expiring soon, refreshing...")
+      console.log("[Auth JWT] Token expired or expiring soon, refreshing...")
       return refreshAccessToken(token)
     },
     async session({ session, token }) {
       if (token.error) {
-        console.log("[Auth] Session has error:", token.error)
+        console.error("[Auth Session] Token has error:", token.error)
+        // Return session with error for client-side handling
         return {
           ...session,
           error: token.error as string,
@@ -179,18 +188,14 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/login",
+    error: "/auth/login", // Redirect to login on error instead of default error page
   },
   session: {
     strategy: "jwt",
     maxAge: 1 * 60 * 60, // 1 hour
   },
   secret: process.env.NEXTAUTH_SECRET,
-  events: {
-    async signIn({ user }) {
-      console.log("[Auth] User signed in:", user.email)
-    },
-    async signOut() {
-      console.log("[Auth] User signed out")
-    },
-  },
+  debug: process.env.NODE_ENV === 'development',
+  // Trust host in production (required for Vercel and other platforms)
+  trustHost: true,
 }
