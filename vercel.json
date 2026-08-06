@@ -1,8 +1,7 @@
 {
-    "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/"
-        }
-    ]
+  "buildCommand": "bun run build",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "cleanUrls": true,
+  "trailingSlash": false
 }
