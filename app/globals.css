@@ -226,3 +226,39 @@ body {
 .antd-pagination .ant-pagination-options {
   margin-left: 1rem;
 }
+
+/* Notifications Popover Styles */
+.notifications-popover .ant-popover-inner {
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+:root.dark .notifications-popover .ant-popover-inner {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+}
+
+.notifications-popover .ant-popover-arrow {
+  display: none;
+}
+
+/* Custom scrollbar for notifications */
+.notifications-popover ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notifications-popover ::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+.notifications-popover ::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 3px;
+}
+
+.notifications-popover ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}

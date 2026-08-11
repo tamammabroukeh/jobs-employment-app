@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
+import { useProfileTranslations } from '@/hooks/use-translations';
 import { IJobSeekerProfile, IUpdateCareerInfoRequest } from '@/apis/services/job-seeker/interface';
 import { Form, InputNumber, Select, Input } from 'antd';
 import { Controller } from 'react-hook-form';

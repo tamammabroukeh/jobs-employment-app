@@ -74,8 +74,8 @@ export const jobSeekerRepository = {
       if (data.date_of_birth) formData.append('date_of_birth', data.date_of_birth);
       if (data.marital_status) formData.append('marital_status', data.marital_status);
       
-      return authFetcher<IUpdatePersonalInfoResponse>('/job-seeker/profile/personal-info', {
-        method: Methods.PUT,
+      return authFetcher<IUpdatePersonalInfoResponse>('/job-seeker/profile/personal-info?_method=PUT', {
+        method: Methods.POST,
         body: formData,
         skipDefaultHeaders: true,
       });

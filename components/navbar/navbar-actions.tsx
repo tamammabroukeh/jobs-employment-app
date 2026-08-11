@@ -2,6 +2,7 @@
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import LogoutButton from "@/components/LogoutButton";
+import NotificationsPopover from "@/components/notifications/NotificationsPopover";
 import { ReusableButton } from "@/components/Reusable-Components";
 import { useRouter, usePathname } from "next/navigation";
 import ROUTES, { NAVBAR_LINKS } from "@/constants/routes";
@@ -55,6 +56,7 @@ function NavbarActions() {
         {isAuthenticated ? (
           // Show user info and logout button when user is logged in
           <>
+              <NotificationsPopover />
               <LogoutButton />
           </>
         ) : (

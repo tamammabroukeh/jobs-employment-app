@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
+import { useProfileTranslations } from "@/hooks/use-translations";
 import { ISkill } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';

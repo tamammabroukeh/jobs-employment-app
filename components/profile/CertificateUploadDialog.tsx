@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ReusableDialog, ReusableButton, Flex } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
+import { useProfileTranslations } from '@/hooks/use-translations';
 import { Upload, Image } from 'antd';
 import type { UploadFile } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';

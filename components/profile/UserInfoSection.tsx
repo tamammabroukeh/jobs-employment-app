@@ -8,7 +8,7 @@ import {
   ReusableButton,
   Flex,
 } from "@/components/Reusable-Components";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 import { IJobSeekerProfile, IUpdatePersonalInfoRequest, IUpdateCareerInfoRequest, IUpdateSocialLinksRequest } from "@/apis/services/job-seeker/interface";
 import PersonalInfoDialog from "./PersonalInfoDialog";
 import CareerInfoDialog from "./CareerInfoDialog";
@@ -122,9 +122,8 @@ export default function UserInfoSection({
       const result = await updatePersonalInfoAction({
         image: file,
       });
-
+      console.log('result', result)
       if (result.data?.success) {
-        toast.success('Profile image updated successfully');
         // Update with the actual image URL from server
         if (result.data.profile?.image) {
           setProfileImage(result.data.profile.image);

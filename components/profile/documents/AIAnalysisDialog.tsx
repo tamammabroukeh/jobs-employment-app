@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Typography, ReusableButton, ReusableDialog, Flex } from "@/components/Reusable-Components";
 import { IAIAnalysisProfile } from "@/apis/services/job-seeker/interface";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 
 interface AIAnalysisDialogProps {
   isOpen: boolean;

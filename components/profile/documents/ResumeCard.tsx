@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { UploadOutlined, DeleteOutlined, EditOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { Typography, ReusableButton } from "@/components/Reusable-Components";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 
 interface ResumeCardProps {
   resumeUrl: string | null;

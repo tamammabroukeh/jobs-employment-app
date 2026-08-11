@@ -2,7 +2,7 @@
 
 import { DeleteOutlined, EditOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Typography, ReusableButton } from "@/components/Reusable-Components";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 
 interface CoverLetterCardProps {
   coverLetter: string | null;

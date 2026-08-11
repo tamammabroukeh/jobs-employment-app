@@ -88,3 +88,18 @@ export function useApplicationsTranslations() {
 export function useOffersTranslations() {
   return useNextIntlTranslations("offers")
 }
+export function useNotificationsTranslations() {
+  return useNextIntlTranslations("notifications")
+}
+
+export function useEmployerProfileTranslations() {
+  return useNextIntlTranslations("employerProfile")
+}
+
+export const useEmployerTranslations = () => {
+  return useNextIntlTranslations('employer');
+};
+
+export function useProfileTranslations() {
+  return useNextIntlTranslations("profile");
+}

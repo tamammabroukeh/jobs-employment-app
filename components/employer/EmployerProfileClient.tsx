@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { Typography } from '@/components/Reusable-Components';
 import type { CompanyProfile } from '@/apis/services/employer';
-import CompanyInfoSection from './CompanyInfoSection';
+import CompanyImagesSection from './CompanyImagesSection';
+import CompanyPublicInfoSection from './CompanyPublicInfoSection';
+import CompanyPrivateInfoSection from './CompanyPrivateInfoSection';
+import { useEmployerProfileTranslations } from '@/hooks/use-translations';
 
 interface EmployerProfileClientProps {
   initialData: CompanyProfile | null;
@@ -11,25 +14,38 @@ interface EmployerProfileClientProps {
 
 export default function EmployerProfileClient({ initialData }: EmployerProfileClientProps) {
   const [companyData, setCompanyData] = useState<CompanyProfile | null>(initialData);
-  console.log('companyData', companyData)
+  const t = useEmployerProfileTranslations();
+
   const handleUpdate = (updatedData: CompanyProfile) => {
     setCompanyData(updatedData);
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
         <Typography variant="h1" className="text-foreground mb-2">
-          Company Profile
+          {t('header.title')}
         </Typography>
         <Typography variant="p" className="text-muted-foreground">
-          Manage your company information and settings
+          {t('header.description')}
         </Typography>
       </div>
 
-      {/* Company Info Section */}
-      <CompanyInfoSection 
+      {/* Company Images Section */}
+      <CompanyImagesSection 
+        logo={companyData?.logo}
+        coverImage={companyData?.cover_image}
+      />
+
+      {/* Company Public Info Section */}
+      <CompanyPublicInfoSection 
+        initialData={companyData} 
+        onUpdate={handleUpdate}
+      />
+
+      {/* Company Private Info Section */}
+      <CompanyPrivateInfoSection 
         initialData={companyData} 
         onUpdate={handleUpdate}
       />
@@ -38,7 +54,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
       {companyData && (
         <div className="auth-card p-6 mt-6">
           <Typography variant="h2" className="text-foreground mb-6">
-            Company Statistics
+            {t('statistics.title')}
           </Typography>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -47,7 +63,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
                 {companyData.open_positions}
               </div>
               <Typography variant="small" className="text-muted-foreground">
-                Open Positions
+                {t('statistics.openPositions')}
               </Typography>
             </div>
             
@@ -56,7 +72,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
                 {companyData.rating.toFixed(1)}
               </div>
               <Typography variant="small" className="text-muted-foreground">
-                Average Rating
+                {t('statistics.averageRating')}
               </Typography>
             </div>
             
@@ -65,7 +81,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
                 {companyData.review_count}
               </div>
               <Typography variant="small" className="text-muted-foreground">
-                Total Reviews
+                {t('statistics.totalReviews')}
               </Typography>
             </div>
             
@@ -74,7 +90,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
                 {companyData.would_recommend}%
               </div>
               <Typography variant="small" className="text-muted-foreground">
-                Would Recommend
+                {t('statistics.wouldRecommend')}
               </Typography>
             </div>
           </div>
@@ -85,7 +101,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
       {companyData && companyData.review_count > 0 && (
         <div className="auth-card p-6 mt-6">
           <Typography variant="h2" className="text-foreground mb-6">
-            Category Ratings
+            {t('categoryRatings.title')}
           </Typography>
           
           <div className="space-y-4">
@@ -93,7 +109,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
               <div key={key}>
                 <div className="flex justify-between mb-2">
                   <Typography variant="p" className="text-foreground capitalize">
-                    {key.replace('_', ' ')}
+                    {t(`categoryRatings.${key}` as any)}
                   </Typography>
                   <Typography variant="p" className="text-primary font-semibold">
                     {value.toFixed(1)}/5

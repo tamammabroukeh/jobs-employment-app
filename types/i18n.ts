@@ -14,6 +14,8 @@ export type Messages = {
   employer: typeof import("../messages/en/employer.json")
   applications: typeof import("../messages/en/applications.json")
   offers: typeof import("../messages/en/offers.json")
+  notifications: typeof import("../messages/en/notifications.json")
+  employerProfile: typeof import("../messages/en/employerProfile.json")
 }
 
 export type IntlKeys =
@@ -51,6 +53,21 @@ export type IntlKeys =
   | `offers.status.${keyof Messages["offers"]["status"]}`
   | `offers.emptyState.${keyof Messages["offers"]["emptyState"]}`
   | `offers.filters.${keyof Messages["offers"]["filters"]}`
+  | `notifications.${keyof Messages["notifications"]}`
+  | `notifications.empty.${keyof Messages["notifications"]["empty"]}`
+  | `notifications.timeAgo.${keyof Messages["notifications"]["timeAgo"]}`
+  | `notifications.types.${keyof Messages["notifications"]["types"]}`
+  | `notifications.actions.${keyof Messages["notifications"]["actions"]}`
+  | `notifications.messages.${keyof Messages["notifications"]["messages"]}`
+  | `employerProfile.header.${keyof Messages["employerProfile"]["header"]}`
+  | `employerProfile.publicInfo.${keyof Messages["employerProfile"]["publicInfo"]}`
+  | `employerProfile.companySize.${keyof Messages["employerProfile"]["companySize"]}`
+  | `employerProfile.privateInfo.${keyof Messages["employerProfile"]["privateInfo"]}`
+  | `employerProfile.socialMedia.${keyof Messages["employerProfile"]["socialMedia"]}`
+  | `employerProfile.images.logo.${keyof Messages["employerProfile"]["images"]["logo"]}`
+  | `employerProfile.images.cover.${keyof Messages["employerProfile"]["images"]["cover"]}`
+  | `employerProfile.statistics.${keyof Messages["employerProfile"]["statistics"]}`
+  | `employerProfile.categoryRatings.${keyof Messages["employerProfile"]["categoryRatings"]}`
   | "errors.noPermission"
   | "errors.noPermissionAction"
   | "errors.signInRequired"

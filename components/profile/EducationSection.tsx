@@ -7,7 +7,7 @@ import {
   Flex,
   ReusableDialog,
 } from "@/components/Reusable-Components";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 import { IEducation } from "@/apis/services/job-seeker/interface";
 import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import EducationDialog from "./EducationDialog";
