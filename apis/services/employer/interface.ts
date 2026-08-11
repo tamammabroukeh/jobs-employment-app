@@ -88,19 +88,44 @@ export interface DeleteJobResponse {
 }
 
 // Company Profile Interfaces
+export interface CompanySocialMedia {
+  linkedin: string | null;
+  github: string | null;
+  twitter: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  telegram: string | null;
+  behance: string | null;
+}
+
+export interface CompanyPrivateInfo {
+  expose_to_applicants: boolean;
+  address: string | null;
+  industry_tags: string[];
+  founded_year: number | null;
+  website: string | null;
+  social_media: CompanySocialMedia;
+}
+
 export interface CompanyProfile {
   id: string;
-  name: string;
-  description: string;
-  industry: string;
-  company_size: 'less_than_10' | '10_to_50' | '51_to_200' | '201_to_500' | '501_to_1000' | '1001_to_5000' | 'more_than_5000';
-  city: string;
-  country: string;
-  phone: string;
-  phone_visible: boolean;
-  email: string;
   employer_id: string;
+  name: string;
   slug: string;
+  logo: string | null;
+  logo_public_id: string | null;
+  cover_image: string | null;
+  cover_image_public_id: string | null;
+  description: string | null;
+  industry: string | null;
+  company_size: 'less_than_10' | '10_to_50' | '51_to_200' | '201_to_500' | '501_to_1000' | '1001_to_5000' | 'more_than_5000' | null;
+  city: string | null;
+  country: string | null;
+  phone_main: string | null;
+  phone_extra: string | null;
+  phone_visible: boolean;
+  email: string | null;
+  private_info: CompanyPrivateInfo | null;
   rating: number;
   review_count: number;
   would_recommend: number;
@@ -113,27 +138,46 @@ export interface CompanyProfile {
     management: number;
   };
   reviews: unknown[];
-  updated_at: string;
-  created_at: string;
   open_positions: number;
+  jobs: unknown[];
+  created_at: string;
+  updated_at: string;
 }
 
-export interface UpdateCompanyRequest {
+export interface UpdateCompanyPublicRequest {
   name?: string;
   description?: string;
   industry?: string;
   company_size?: string;
   city?: string;
   country?: string;
-  phone?: string;
+  phone_main?: string;
+  phone_extra?: string;
   phone_visible?: boolean;
   email?: string;
+}
+
+export interface UpdateCompanyPrivateRequest {
+  expose_to_applicants?: boolean;
+  address?: string;
+  industry_tags?: string[];
+  founded_year?: number;
+  website?: string;
+  social_media?: Partial<CompanySocialMedia>;
 }
 
 export interface CompanyProfileResponse {
   success: boolean;
   message?: string;
   data?: CompanyProfile;
+}
+
+export interface UploadLogoImageResponse {
+    logo: string;
+}
+
+export interface UploadCoverImageResponse {
+    cover_image: string;
 }
 
 // Candidate/Seeker Interfaces

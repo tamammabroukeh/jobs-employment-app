@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ReusableCard, ReusableButton, Flex } from '@/components/Reusable-Components';
-import { useProfileTranslations } from '@/hooks/use-profile';
+import { useProfileTranslations } from "@/hooks/use-translations";
 import { ISkill } from '@/apis/services/job-seeker/interface';
 import { EditOutlined } from '@ant-design/icons';
 import SkillsDialog from './SkillsDialog';

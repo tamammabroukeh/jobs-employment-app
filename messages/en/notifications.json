@@ -1,0 +1,40 @@
+{
+  "title": "Notifications",
+  "empty": {
+    "title": "No notifications",
+    "description": "You don't have any notifications yet"
+  },
+  "markAllAsRead": "Mark all as read",
+  "viewAll": "View all notifications",
+  "unreadCount": "{count} unread",
+  "timeAgo": {
+    "justNow": "Just now",
+    "minutesAgo": "{minutes}m ago",
+    "hoursAgo": "{hours}h ago",
+    "daysAgo": "{days}d ago",
+    "weeksAgo": "{weeks}w ago",
+    "monthsAgo": "{months}mo ago",
+    "yearsAgo": "{years}y ago"
+  },
+  "types": {
+    "application_status_changed": "Application Status",
+    "new_job_match": "Job Match",
+    "interview_scheduled": "Interview Scheduled",
+    "offer_received": "Offer Received",
+    "message_received": "New Message",
+    "profile_viewed": "Profile Viewed",
+    "default": "Notification"
+  },
+  "actions": {
+    "markAsRead": "Mark as read",
+    "delete": "Delete"
+  },
+  "messages": {
+    "markAllSuccess": "All notifications marked as read",
+    "markAllError": "Failed to mark all as read",
+    "markAsReadSuccess": "Notification marked as read",
+    "markAsReadError": "Failed to mark as read",
+    "loadError": "Failed to load notifications"
+  },
+  "loading": "Loading notifications..."
+}

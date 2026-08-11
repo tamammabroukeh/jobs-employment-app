@@ -237,21 +237,22 @@ export const deactivateJobAction = actionClient
     }
   });
 
-// Update Company Profile Action
-const updateCompanySchema = z.object({
+// Update Company Profile Action (Public Info)
+const updateCompanyPublicSchema = z.object({
   name: z.string().min(1, "Company name is required").max(150, "Company name must be at most 150 characters").optional(),
   description: z.string().optional(),
   industry: z.string().optional(),
   company_size: z.enum(['less_than_10', '10_to_50', '51_to_200', '201_to_500', '501_to_1000', '1001_to_5000', 'more_than_5000']).optional(),
   city: z.string().optional(),
   country: z.string().optional(),
-  phone: z.string().optional(),
+  phone_main: z.string().optional(),
+  phone_extra: z.string().optional(),
   phone_visible: z.boolean().optional(),
   email: z.string().email("Invalid email format").optional(),
 });
 
 export const updateCompanyProfileAction = actionClient
-  .schema(updateCompanySchema)
+  .schema(updateCompanyPublicSchema)
   .action(async ({ parsedInput }) => {
     try {
       console.log('[Update Company Profile] ========== STARTING COMPANY UPDATE ==========');
@@ -282,6 +283,155 @@ export const updateCompanyProfileAction = actionClient
         throw new Error(error.message || 'Failed to update company profile');
       }
       throw new Error('Failed to update company profile. Please try again.');
+    }
+  });
+
+// Update Company Private Info Action
+const updateCompanyPrivateSchema = z.object({
+  expose_to_applicants: z.boolean().optional(),
+  address: z.string().optional(),
+  industry_tags: z.array(z.string()).optional(),
+  founded_year: z.number().min(1800, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future").optional(),
+  website: z.string().url("Invalid URL").optional(),
+  social_media: z.object({
+    linkedin: z.string().url("Invalid LinkedIn URL").optional().nullable(),
+    github: z.string().url("Invalid GitHub URL").optional().nullable(),
+    twitter: z.string().url("Invalid Twitter URL").optional().nullable(),
+    facebook: z.string().url("Invalid Facebook URL").optional().nullable(),
+    instagram: z.string().url("Invalid Instagram URL").optional().nullable(),
+    telegram: z.string().url("Invalid Telegram URL").optional().nullable(),
+    behance: z.string().url("Invalid Behance URL").optional().nullable(),
+  }).optional(),
+});
+
+export const updateCompanyPrivateInfoAction = actionClient
+  .schema(updateCompanyPrivateSchema)
+  .action(async ({ parsedInput }) => {
+    try {
+      console.log('[Update Company Private Info] ========== STARTING PRIVATE INFO UPDATE ==========');
+      console.log('[Update Company Private Info] Data:', parsedInput);
+
+      const response = await employerRepository.updateCompanyPrivateInfo(parsedInput);
+      console.log('[Update Company Private Info] Response:', response);
+
+      if (!response) {
+        console.error('[Update Company Private Info] Update failed');
+        throw new Error('Failed to update company private information');
+      }
+      
+      // Revalidate the employer profile page
+      revalidateTag("employer-profile", "max");
+      
+      console.log('[Update Company Private Info] Update success');
+      return {
+        success: true,
+        message: "Company private information updated successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error('[Update Company Private Info] ========== EXCEPTION ==========');
+      console.error('[Update Company Private Info] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to update company private information');
+      }
+      throw new Error('Failed to update company private information. Please try again.');
+    }
+  });
+
+// Upload Company Logo Action
+const uploadLogoSchema = z.object({
+  logo: z.instanceof(File)
+    .refine(
+      (file) => file.size <= 2 * 1024 * 1024,
+      'Logo file size must be less than 2MB'
+    )
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
+      'Logo must be JPEG, PNG, or WebP'
+    ),
+});
+
+export const uploadCompanyLogoAction = actionClient
+  .schema(uploadLogoSchema)
+  .action(async ({ parsedInput: { logo } }) => {
+    try {
+      console.log('[Upload Company Logo] ========== STARTING LOGO UPLOAD ==========');
+      console.log('[Upload Company Logo] File:', { name: logo.name, size: logo.size, type: logo.type });
+
+      const response = await employerRepository.uploadCompanyLogo(logo);
+      console.log('[Upload Company Logo] Response:', response);
+
+      if (!response) {
+        console.error('[Upload Company Logo] Upload failed');
+        throw new Error('Failed to upload company logo');
+      }
+      
+      // Revalidate the employer profile page
+      revalidateTag("employer-profile", "max");
+      
+      console.log('[Upload Company Logo] Upload success');
+      return {
+        success: true,
+        message: "Company logo uploaded successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error('[Upload Company Logo] ========== EXCEPTION ==========');
+      console.error('[Upload Company Logo] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to upload company logo');
+      }
+      throw new Error('Failed to upload company logo. Please try again.');
+    }
+  });
+
+// Upload Company Cover Image Action
+const uploadCoverImageSchema = z.object({
+  cover_image: z.instanceof(File)
+    .refine(
+      (file) => file.size <= 4 * 1024 * 1024,
+      'Cover image file size must be less than 4MB'
+    )
+    .refine(
+      (file) => ['image/jpeg', 'image/png', 'image/webp'].includes(file.type),
+      'Cover image must be JPEG, PNG, or WebP'
+    ),
+});
+
+export const uploadCompanyCoverImageAction = actionClient
+  .schema(uploadCoverImageSchema)
+  .action(async ({ parsedInput: { cover_image } }) => {
+    try {
+      console.log('[Upload Company Cover Image] ========== STARTING COVER IMAGE UPLOAD ==========');
+      console.log('[Upload Company Cover Image] File:', { name: cover_image.name, size: cover_image.size, type: cover_image.type });
+
+      const response = await employerRepository.uploadCompanyCoverImage(cover_image);
+      console.log('[Upload Company Cover Image] Response:', response);
+
+      if (!response) {
+        console.error('[Upload Company Cover Image] Upload failed');
+        throw new Error('Failed to upload company cover image');
+      }
+      
+      // Revalidate the employer profile page
+      revalidateTag("employer-profile", "max");
+      
+      console.log('[Upload Company Cover Image] Upload success');
+      return {
+        success: true,
+        message: response || "Company cover image uploaded successfully",
+        data: response,
+      };
+    } catch (error) {
+      console.error('[Upload Company Cover Image] ========== EXCEPTION ==========');
+      console.error('[Upload Company Cover Image] Error:', error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || 'Failed to upload company cover image');
+      }
+      throw new Error('Failed to upload company cover image. Please try again.');
     }
   });
 

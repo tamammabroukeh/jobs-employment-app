@@ -12,7 +12,8 @@ import type {
   DeleteJobResponse,
   Job,
   CompanyProfile,
-  UpdateCompanyRequest,
+  UpdateCompanyPublicRequest,
+  UpdateCompanyPrivateRequest,
   CompanyProfileResponse,
   CandidatesResponse,
   CandidatesQueryParams,
@@ -20,6 +21,8 @@ import type {
   JobApplicationsResponse,
   UpdateApplicationStatusResponse,
   SendOfferResponse,
+  UploadLogoImageResponse,
+  UploadCoverImageResponse,
 } from './interface';
 
 /**
@@ -102,15 +105,58 @@ export const employerRepository = {
     }),
 
   /**
-   * Update company profile
+   * Update company profile (public information)
    * @param data - Company update data
    * @returns Promise with updated company profile
    */
-  updateCompanyProfile: (data: UpdateCompanyRequest): Promise<CompanyProfile> =>
+  updateCompanyProfile: (data: UpdateCompanyPublicRequest): Promise<CompanyProfile> =>
     authFetcher<CompanyProfile>('/employer/company', {
       method: Methods.PUT,
       body: JSON.stringify(data),
     }),
+
+  /**
+   * Update company private information
+   * @param data - Private company info data
+   * @returns Promise with updated company profile
+   */
+  updateCompanyPrivateInfo: (data: UpdateCompanyPrivateRequest): Promise<CompanyProfile> =>
+    authFetcher<CompanyProfile>('/employer/company/private', {
+      method: Methods.PUT,
+      body: JSON.stringify(data),
+    }),
+
+  /**
+   * Upload company logo
+   * @param file - Logo image file (JPEG, PNG, WebP, max 2MB)
+   * @returns Promise with upload response
+   */
+  uploadCompanyLogo: async (file: File): Promise<UploadLogoImageResponse> => {
+    const formData = new FormData();
+    formData.append('logo', file);
+    
+    return authFetcher<UploadLogoImageResponse>('/employer/company/logo', {
+      method: Methods.POST,
+      body: formData,
+      skipDefaultHeaders: true,
+    });
+  },
+
+  /**
+   * Upload company cover image
+   * @param file - Cover image file (JPEG, PNG, WebP, max 4MB)
+   * @returns Promise with upload response
+   */
+  uploadCompanyCoverImage: async (file: File): Promise<UploadCoverImageResponse> => {
+    const formData = new FormData();
+    formData.append('cover_image', file);
+    
+    return authFetcher<UploadCoverImageResponse>('/employer/company/cover', {
+      method: Methods.POST,
+      body: formData,
+      skipDefaultHeaders: true,
+    });
+  },
 
   /**
    * Get candidates/seekers

@@ -43,3 +43,7 @@ export async function getProfileTranslations() {
 export async function getCandidatesTranslations() {
   return await getTranslations("candidates");
 }
+
+export async function getTalentsTranslations() {
+  return await getTranslations("talents");
+}

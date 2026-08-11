@@ -70,7 +70,7 @@ This directory contains comprehensive guides for development patterns and best p
 import { ReusableButton, ReusableDialog, Flex } from "@/components/Reusable-Components";
 
 // Translations
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 
 // API
 import { featureRepository } from "@/apis/services/feature";

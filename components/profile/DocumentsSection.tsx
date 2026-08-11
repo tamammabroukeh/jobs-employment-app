@@ -12,7 +12,7 @@ import {
   getResumeAnalysisStatusAction,
 } from "@/apis/services/job-seeker/actions";
 import { toast } from "sonner";
-import { useProfileTranslations } from "@/hooks/use-profile";
+import { useProfileTranslations } from "@/hooks/use-translations";
 import ResumeCard from "./documents/ResumeCard";
 import CoverLetterCard from "./documents/CoverLetterCard";
 import AIAnalysisDialog from "./documents/AIAnalysisDialog";

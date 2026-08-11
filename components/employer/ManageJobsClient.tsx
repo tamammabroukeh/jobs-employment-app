@@ -25,7 +25,7 @@ import {
   updateApplicationStatusAction,
 } from "@/apis/services/employer/actions";
 import { employerRepository } from "@/apis/services/employer";
-import { useEmployerTranslations } from "@/hooks/use-employer";
+import { useEmployerTranslations } from "@/hooks/use-translations";
 
 interface ManageJobsClientProps {
   initialJobs: Job[];

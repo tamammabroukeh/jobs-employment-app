@@ -42,7 +42,7 @@ Located in `/hooks/` directory:
 
 #### useProfileTranslations
 ```tsx
-import { useProfileTranslations } from '@/hooks/use-profile';
+import { useProfileTranslations } from '@/hooks/use-translations';
 
 const ProfileComponent = () => {
   const t = useProfileTranslations();

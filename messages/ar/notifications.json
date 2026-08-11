@@ -1,0 +1,40 @@
+{
+  "title": "الإشعارات",
+  "empty": {
+    "title": "لا توجد إشعارات",
+    "description": "ليس لديك أي إشعارات حتى الآن"
+  },
+  "markAllAsRead": "تحديد الكل كمقروء",
+  "viewAll": "عرض جميع الإشعارات",
+  "unreadCount": "{count} غير مقروء",
+  "timeAgo": {
+    "justNow": "الآن",
+    "minutesAgo": "منذ {minutes} د",
+    "hoursAgo": "منذ {hours} س",
+    "daysAgo": "منذ {days} يوم",
+    "weeksAgo": "منذ {weeks} أسبوع",
+    "monthsAgo": "منذ {months} شهر",
+    "yearsAgo": "منذ {years} سنة"
+  },
+  "types": {
+    "application_status_changed": "حالة الطلب",
+    "new_job_match": "وظيفة مطابقة",
+    "interview_scheduled": "مقابلة مجدولة",
+    "offer_received": "عرض وظيفي",
+    "message_received": "رسالة جديدة",
+    "profile_viewed": "تم عرض الملف الشخصي",
+    "default": "إشعار"
+  },
+  "actions": {
+    "markAsRead": "تحديد كمقروء",
+    "delete": "حذف"
+  },
+  "messages": {
+    "markAllSuccess": "تم تحديد جميع الإشعارات كمقروءة",
+    "markAllError": "فشل تحديد الكل كمقروء",
+    "markAsReadSuccess": "تم تحديد الإشعار كمقروء",
+    "markAsReadError": "فشل تحديد الإشعار كمقروء",
+    "loadError": "فشل تحميل الإشعارات"
+  },
+  "loading": "جاري تحميل الإشعارات..."
+}
