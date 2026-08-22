@@ -4,14 +4,15 @@ import { getTalentByIdAction } from '@/apis/services/talents/actions';
 import TalentProfileView from '@/components/talents/TalentProfileView';
 
 interface TalentDetailPageProps {
-  params: {
+  params: Promise<{
     userId: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: TalentDetailPageProps): Promise<Metadata> {
   try {
-    const result = await getTalentByIdAction(params.userId);
+    const { userId } = await params;
+    const result = await getTalentByIdAction(userId);
     const talentName = result.data.user.profile.ai_full_name || result.data.user.name;
     
     return {
@@ -27,16 +28,19 @@ export async function generateMetadata({ params }: TalentDetailPageProps): Promi
 }
 
 export default async function TalentDetailPage({ params }: TalentDetailPageProps) {
+  const { userId } = await params;
+  
+  let result;
   try {
-    const result = await getTalentByIdAction(params.userId);
-    console.log("result", result);
+    result = await getTalentByIdAction(userId);
+    
     if (!result.success || !result.data) {
       notFound();
     }
-
-    return <TalentProfileView talentData={result.data} />;
   } catch (error) {
     console.error('Error loading talent detail:', error);
     notFound();
   }
+
+  return <TalentProfileView talentData={result.data} />;
 }

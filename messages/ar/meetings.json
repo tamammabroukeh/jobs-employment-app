@@ -1,0 +1,211 @@
+{
+  "title": "الاجتماعات",
+  "myMeetings": "اجتماعاتي",
+  "scheduleMeeting": "جدولة اجتماع",
+  "upcomingMeetings": "الاجتماعات القادمة",
+  "noUpcomingMeetings": "لا توجد اجتماعات قادمة",
+  
+  "status": {
+    "pending": "قيد الانتظار",
+    "accepted": "مقبول",
+    "declined": "مرفوض",
+    "cancelled": "ملغى",
+    "rescheduled": "معاد جدولته",
+    "completed": "مكتمل"
+  },
+  
+  "meetingType": {
+    "in_person": "شخصي",
+    "phone_call": "مكالمة هاتفية",
+    "video_call": "مكالمة فيديو"
+  },
+  
+  "tabs": {
+    "all": "الكل",
+    "pending": "قيد الانتظار",
+    "accepted": "مقبول",
+    "completed": "مكتمل"
+  },
+  
+  "filters": {
+    "status": "الحالة",
+    "dateRange": "نطاق التاريخ",
+    "from": "من",
+    "to": "إلى",
+    "clearFilters": "مسح الفلاتر",
+    "apply": "تطبيق"
+  },
+  
+  "createMeeting": {
+    "title": "جدولة اجتماع جديد",
+    "description": "إنشاء دعوة اجتماع لمقابلة أو مناقشة",
+    "selectParticipant": "اختر المشارك",
+    "searchParticipant": "البحث بالاسم أو البريد الإلكتروني",
+    "meetingTitle": "عنوان الاجتماع",
+    "meetingTitlePlaceholder": "مثال: مقابلة تقنية",
+    "meetingType": "نوع الاجتماع",
+    "date": "التاريخ",
+    "startTime": "وقت البدء",
+    "duration": "المدة",
+    "durationMinutes": "{minutes} دقيقة",
+    "location": "الموقع",
+    "locationPlaceholder": "أدخل موقع الاجتماع",
+    "phoneNumber": "رقم الهاتف",
+    "phoneNumberPlaceholder": "أدخل رقم الهاتف",
+    "videoLink": "رابط الفيديو (اختياري)",
+    "videoLinkPlaceholder": "اتركه فارغاً لإنشاء رابط Google Meet تلقائياً",
+    "googleMeetInfo": "سيتم إنشاء رابط Google Meet تلقائياً إذا قمت بربط تقويم Google",
+    "cancel": "إلغاء",
+    "create": "إنشاء اجتماع",
+    "creating": "جارٍ الإنشاء..."
+  },
+  
+  "detail": {
+    "title": "تفاصيل الاجتماع",
+    "organizer": "المنظم",
+    "invitee": "المدعو",
+    "with": "مع",
+    "dateTime": "التاريخ والوقت",
+    "duration": "المدة",
+    "minutes": "{minutes} دقيقة",
+    "location": "الموقع",
+    "phoneNumber": "رقم الهاتف",
+    "meetingLink": "رابط الاجتماع",
+    "joinMeeting": "الانضمام للاجتماع",
+    "copyLink": "نسخ الرابط",
+    "linkCopied": "تم نسخ الرابط",
+    "declineReason": "سبب الرفض",
+    "cancellationReason": "سبب الإلغاء",
+    "cancelledBy": "ألغاه",
+    "notes": "الملاحظات",
+    "addNote": "إضافة ملاحظة",
+    "notePlaceholder": "أضف ملاحظة عن هذا الاجتماع...",
+    "noteMaxLength": "الحد الأقصى 2000 حرف",
+    "previousSchedules": "المواعيد السابقة",
+    "rescheduledFrom": "معاد جدولته من",
+    "noNotes": "لا توجد ملاحظات بعد",
+    "actions": "الإجراءات"
+  },
+  
+  "actions": {
+    "accept": "قبول",
+    "decline": "رفض",
+    "cancel": "إلغاء الاجتماع",
+    "reschedule": "إعادة الجدولة",
+    "complete": "تحديد كمكتمل",
+    "back": "العودة للاجتماعات"
+  },
+  
+  "acceptDialog": {
+    "title": "قبول الاجتماع",
+    "description": "تأكيد قبولك لدعوة الاجتماع",
+    "videoCallNote": "هذا اجتماع عبر الفيديو",
+    "provideLink": "أدخل رابط الاجتماع (اختياري)",
+    "linkPlaceholder": "مثال: https://zoom.us/j/123456789",
+    "googleMeetNote": "سيتم إنشاء رابط Google Meet تلقائياً",
+    "cancel": "إلغاء",
+    "confirm": "قبول الاجتماع"
+  },
+  
+  "declineDialog": {
+    "title": "رفض الاجتماع",
+    "description": "هل أنت متأكد من رفض هذا الاجتماع؟",
+    "reason": "السبب (اختياري)",
+    "reasonPlaceholder": "أخبرهم لماذا ترفض...",
+    "cancel": "إلغاء",
+    "confirm": "رفض الاجتماع"
+  },
+  
+  "cancelDialog": {
+    "title": "إلغاء الاجتماع",
+    "description": "هل أنت متأكد من إلغاء هذا الاجتماع؟",
+    "reason": "السبب (اختياري)",
+    "reasonPlaceholder": "أخبرهم لماذا تلغي...",
+    "cancel": "رجوع",
+    "confirm": "إلغاء الاجتماع"
+  },
+  
+  "rescheduleDialog": {
+    "title": "إعادة جدولة الاجتماع",
+    "description": "اختر تاريخ ووقت جديد لهذا الاجتماع",
+    "date": "التاريخ الجديد",
+    "startTime": "وقت البدء الجديد",
+    "duration": "المدة",
+    "durationMinutes": "{minutes} دقيقة",
+    "cancel": "إلغاء",
+    "confirm": "إعادة جدولة الاجتماع"
+  },
+  
+  "completeDialog": {
+    "title": "إتمام الاجتماع",
+    "description": "تحديد هذا الاجتماع كمكتمل؟",
+    "cancel": "إلغاء",
+    "confirm": "تحديد كمكتمل"
+  },
+  
+  "conflicts": {
+    "title": "تعارضات في المواعيد",
+    "organizerConflicts": "لديك تعارضات مع اجتماعات أخرى:",
+    "inviteeConflicts": "المشارك لديه تعارضات مع اجتماعات أخرى:",
+    "conflictTime": "{date} في {time} ({duration} دقيقة)",
+    "proceedAnyway": "يمكنك المتابعة في إنشاء هذا الاجتماع على أي حال."
+  },
+  
+  "empty": {
+    "title": "لم يتم العثور على اجتماعات",
+    "description": "ليس لديك أي اجتماعات بعد",
+    "action": "جدول اجتماعك الأول"
+  },
+  
+  "messages": {
+    "createSuccess": "تم إنشاء الاجتماع بنجاح",
+    "createError": "فشل إنشاء الاجتماع",
+    "acceptSuccess": "تم قبول الاجتماع بنجاح",
+    "acceptError": "فشل قبول الاجتماع",
+    "declineSuccess": "تم رفض الاجتماع بنجاح",
+    "declineError": "فشل رفض الاجتماع",
+    "cancelSuccess": "تم إلغاء الاجتماع بنجاح",
+    "cancelError": "فشل إلغاء الاجتماع",
+    "rescheduleSuccess": "تم إعادة جدولة الاجتماع بنجاح",
+    "rescheduleError": "فشل إعادة جدولة الاجتماع",
+    "completeSuccess": "تم تحديد الاجتماع كمكتمل",
+    "completeError": "فشل إتمام الاجتماع",
+    "noteAddSuccess": "تمت إضافة الملاحظة بنجاح",
+    "noteAddError": "فشل إضافة الملاحظة",
+    "loadError": "فشل تحميل الاجتماعات"
+  },
+  
+  "google": {
+    "title": "دمج تقويم Google",
+    "description": "اربط تقويم Google لإنشاء روابط Google Meet وأحداث التقويم تلقائياً",
+    "connect": "ربط تقويم Google",
+    "disconnect": "قطع الاتصال",
+    "connected": "متصل",
+    "notConnected": "غير متصل",
+    "connectedDescription": "سيتم إنشاء روابط Google Meet تلقائياً لمكالمات الفيديو",
+    "notConnectedDescription": "اربط لتفعيل إنشاء روابط Google Meet تلقائياً",
+    "connectSuccess": "تم ربط تقويم Google بنجاح",
+    "connectError": "فشل ربط تقويم Google",
+    "disconnectSuccess": "تم قطع اتصال تقويم Google بنجاح",
+    "disconnectError": "فشل قطع اتصال تقويم Google"
+  },
+  
+  "validation": {
+    "inviteeRequired": "الرجاء اختيار مشارك",
+    "titleRequired": "عنوان الاجتماع مطلوب",
+    "titleMaxLength": "يجب أن يكون العنوان أقل من 255 حرفاً",
+    "meetingTypeRequired": "الرجاء اختيار نوع الاجتماع",
+    "dateRequired": "التاريخ مطلوب",
+    "dateFuture": "يجب أن يكون التاريخ في المستقبل",
+    "timeRequired": "الوقت مطلوب",
+    "durationRequired": "المدة مطلوبة",
+    "durationMin": "الحد الأدنى للمدة 15 دقيقة",
+    "durationMax": "الحد الأقصى للمدة 480 دقيقة",
+    "locationRequired": "الموقع مطلوب للاجتماعات الشخصية",
+    "phoneRequired": "رقم الهاتف مطلوب للمكالمات الهاتفية",
+    "locationMaxLength": "يجب أن يكون الموقع أقل من 500 حرف",
+    "noteRequired": "محتوى الملاحظة مطلوب",
+    "noteMaxLength": "يجب أن تكون الملاحظة أقل من 2000 حرف",
+    "reasonMaxLength": "يجب أن يكون السبب أقل من 500 حرف"
+  }
+}
