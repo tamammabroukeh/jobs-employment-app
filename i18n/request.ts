@@ -13,7 +13,7 @@ export default getRequestConfig(async () => {
   }
 
   // Load all message files for the locale
-  const [auth, errors, dashboard, session, home, footer, jobs, companies, jobDetail, profile, employer, candidates, talents, applications, offers, notifications, employerProfile] = await Promise.all([
+  const [auth, errors, dashboard, session, home, footer, jobs, companies, jobDetail, profile, employer, candidates, talents, applications, offers, notifications, employerProfile, meetings] = await Promise.all([
     import(`../messages/${locale}/auth.json`).then((m) => m.default),
     import(`../messages/${locale}/errors.json`).then((m) => m.default),
     import(`../messages/${locale}/dashboard.json`).then((m) => m.default),
@@ -31,6 +31,7 @@ export default getRequestConfig(async () => {
     import(`../messages/${locale}/offers.json`).then((m) => m.default),
     import(`../messages/${locale}/notifications.json`).then((m) => m.default),
     import(`../messages/${locale}/employerProfile.json`).then((m) => m.default),
+    import(`../messages/${locale}/meetings.json`).then((m) => m.default),
   ])
 
   return {
@@ -52,7 +53,8 @@ export default getRequestConfig(async () => {
       applications,
       offers,
       notifications,
-      employerProfile
+      employerProfile,
+      meetings
     },
   }
 })

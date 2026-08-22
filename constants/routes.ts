@@ -60,6 +60,12 @@ const ROUTES = {
     getEditJob: (id: string) => `/forsa/${id}`,
     PROFILE: "/employer-profile",
     CANDIDATES: "/candidates",
+  },
+  MEETINGS: {
+    LIST: "/meetings",
+    CREATE: "/meetings/create",
+    DETAIL: "/meetings/:id",
+    getDetail: (id: string) => `/meetings/${id}`,
   }
 };
 
@@ -140,6 +146,13 @@ export const NAVBAR_LINKS = [
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers
+  },
+  {
+    label: "Meetings",
+    href: ROUTES.MEETINGS.LIST,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employee", "employer"], // Both roles can access meetings
   }
 ];
 

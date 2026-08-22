@@ -1,0 +1,211 @@
+{
+  "title": "Meetings",
+  "myMeetings": "My Meetings",
+  "scheduleMeeting": "Schedule Meeting",
+  "upcomingMeetings": "Upcoming Meetings",
+  "noUpcomingMeetings": "No upcoming meetings",
+  
+  "status": {
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "cancelled": "Cancelled",
+    "rescheduled": "Rescheduled",
+    "completed": "Completed"
+  },
+  
+  "meetingType": {
+    "in_person": "In Person",
+    "phone_call": "Phone Call",
+    "video_call": "Video Call"
+  },
+  
+  "tabs": {
+    "all": "All",
+    "pending": "Pending",
+    "accepted": "Accepted",
+    "completed": "Completed"
+  },
+  
+  "filters": {
+    "status": "Status",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To",
+    "clearFilters": "Clear Filters",
+    "apply": "Apply"
+  },
+  
+  "createMeeting": {
+    "title": "Schedule New Meeting",
+    "description": "Create a meeting invitation for an interview or discussion",
+    "selectParticipant": "Select Participant",
+    "searchParticipant": "Search by name or email",
+    "meetingTitle": "Meeting Title",
+    "meetingTitlePlaceholder": "e.g., Technical Interview",
+    "meetingType": "Meeting Type",
+    "date": "Date",
+    "startTime": "Start Time",
+    "duration": "Duration",
+    "durationMinutes": "{minutes} minutes",
+    "location": "Location",
+    "locationPlaceholder": "Enter meeting location",
+    "phoneNumber": "Phone Number",
+    "phoneNumberPlaceholder": "Enter phone number",
+    "videoLink": "Video Link (Optional)",
+    "videoLinkPlaceholder": "Leave empty to auto-generate Google Meet link",
+    "googleMeetInfo": "Google Meet link will be auto-generated if you have Google Calendar connected",
+    "cancel": "Cancel",
+    "create": "Create Meeting",
+    "creating": "Creating..."
+  },
+  
+  "detail": {
+    "title": "Meeting Details",
+    "organizer": "Organizer",
+    "invitee": "Invitee",
+    "with": "with",
+    "dateTime": "Date & Time",
+    "duration": "Duration",
+    "minutes": "{minutes} minutes",
+    "location": "Location",
+    "phoneNumber": "Phone Number",
+    "meetingLink": "Meeting Link",
+    "joinMeeting": "Join Meeting",
+    "copyLink": "Copy Link",
+    "linkCopied": "Link copied to clipboard",
+    "declineReason": "Decline Reason",
+    "cancellationReason": "Cancellation Reason",
+    "cancelledBy": "Cancelled by",
+    "notes": "Notes",
+    "addNote": "Add Note",
+    "notePlaceholder": "Add a note about this meeting...",
+    "noteMaxLength": "Maximum 2000 characters",
+    "previousSchedules": "Previous Schedules",
+    "rescheduledFrom": "Rescheduled from",
+    "noNotes": "No notes yet",
+    "actions": "Actions"
+  },
+  
+  "actions": {
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel Meeting",
+    "reschedule": "Reschedule",
+    "complete": "Mark as Completed",
+    "back": "Back to Meetings"
+  },
+  
+  "acceptDialog": {
+    "title": "Accept Meeting",
+    "description": "Confirm your acceptance of this meeting invitation",
+    "videoCallNote": "This is a video call meeting",
+    "provideLink": "Provide meeting link (optional)",
+    "linkPlaceholder": "e.g., https://zoom.us/j/123456789",
+    "googleMeetNote": "Google Meet link will be auto-generated",
+    "cancel": "Cancel",
+    "confirm": "Accept Meeting"
+  },
+  
+  "declineDialog": {
+    "title": "Decline Meeting",
+    "description": "Are you sure you want to decline this meeting?",
+    "reason": "Reason (Optional)",
+    "reasonPlaceholder": "Let them know why you're declining...",
+    "cancel": "Cancel",
+    "confirm": "Decline Meeting"
+  },
+  
+  "cancelDialog": {
+    "title": "Cancel Meeting",
+    "description": "Are you sure you want to cancel this meeting?",
+    "reason": "Reason (Optional)",
+    "reasonPlaceholder": "Let them know why you're cancelling...",
+    "cancel": "Back",
+    "confirm": "Cancel Meeting"
+  },
+  
+  "rescheduleDialog": {
+    "title": "Reschedule Meeting",
+    "description": "Choose a new date and time for this meeting",
+    "date": "New Date",
+    "startTime": "New Start Time",
+    "duration": "Duration",
+    "durationMinutes": "{minutes} minutes",
+    "cancel": "Cancel",
+    "confirm": "Reschedule Meeting"
+  },
+  
+  "completeDialog": {
+    "title": "Complete Meeting",
+    "description": "Mark this meeting as completed?",
+    "cancel": "Cancel",
+    "confirm": "Mark as Completed"
+  },
+  
+  "conflicts": {
+    "title": "Schedule Conflicts",
+    "organizerConflicts": "You have conflicts with other meetings:",
+    "inviteeConflicts": "The participant has conflicts with other meetings:",
+    "conflictTime": "{date} at {time} ({duration} minutes)",
+    "proceedAnyway": "You can still proceed with creating this meeting."
+  },
+  
+  "empty": {
+    "title": "No meetings found",
+    "description": "You don't have any meetings yet",
+    "action": "Schedule your first meeting"
+  },
+  
+  "messages": {
+    "createSuccess": "Meeting created successfully",
+    "createError": "Failed to create meeting",
+    "acceptSuccess": "Meeting accepted successfully",
+    "acceptError": "Failed to accept meeting",
+    "declineSuccess": "Meeting declined successfully",
+    "declineError": "Failed to decline meeting",
+    "cancelSuccess": "Meeting cancelled successfully",
+    "cancelError": "Failed to cancel meeting",
+    "rescheduleSuccess": "Meeting rescheduled successfully",
+    "rescheduleError": "Failed to reschedule meeting",
+    "completeSuccess": "Meeting marked as completed",
+    "completeError": "Failed to complete meeting",
+    "noteAddSuccess": "Note added successfully",
+    "noteAddError": "Failed to add note",
+    "loadError": "Failed to load meetings"
+  },
+  
+  "google": {
+    "title": "Google Calendar Integration",
+    "description": "Connect your Google Calendar to automatically create Google Meet links and calendar events",
+    "connect": "Connect Google Calendar",
+    "disconnect": "Disconnect",
+    "connected": "Connected",
+    "notConnected": "Not Connected",
+    "connectedDescription": "Google Meet links will be automatically created for video calls",
+    "notConnectedDescription": "Connect to enable automatic Google Meet link generation",
+    "connectSuccess": "Google Calendar connected successfully",
+    "connectError": "Failed to connect Google Calendar",
+    "disconnectSuccess": "Google Calendar disconnected successfully",
+    "disconnectError": "Failed to disconnect Google Calendar"
+  },
+  
+  "validation": {
+    "inviteeRequired": "Please select a participant",
+    "titleRequired": "Meeting title is required",
+    "titleMaxLength": "Title must be less than 255 characters",
+    "meetingTypeRequired": "Please select a meeting type",
+    "dateRequired": "Date is required",
+    "dateFuture": "Date must be in the future",
+    "timeRequired": "Time is required",
+    "durationRequired": "Duration is required",
+    "durationMin": "Minimum duration is 15 minutes",
+    "durationMax": "Maximum duration is 480 minutes",
+    "locationRequired": "Location is required for in-person meetings",
+    "phoneRequired": "Phone number is required for phone calls",
+    "locationMaxLength": "Location must be less than 500 characters",
+    "noteRequired": "Note content is required",
+    "noteMaxLength": "Note must be less than 2000 characters",
+    "reasonMaxLength": "Reason must be less than 500 characters"
+  }
+}

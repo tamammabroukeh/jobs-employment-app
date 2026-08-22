@@ -62,7 +62,7 @@ export const signInAction = actionClient.schema(loginSchema).action(async ({ par
     
     // Call the login API directly
     const response = await authRepository.signIn(data);
-    
+    console.log('response', response)
     console.log("[Sign In Action] ========== API RESPONSE ==========");
     console.log("[Sign In Action] Has access_token?", !!response.access_token);
     console.log("[Sign In Action] Has user?", !!response.user);

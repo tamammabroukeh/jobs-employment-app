@@ -103,3 +103,7 @@ export const useEmployerTranslations = () => {
 export function useProfileTranslations() {
   return useNextIntlTranslations("profile");
 }
+
+export function useMeetingsTranslations() {
+  return useNextIntlTranslations("meetings");
+}

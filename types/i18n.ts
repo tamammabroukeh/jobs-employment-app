@@ -16,6 +16,7 @@ export type Messages = {
   offers: typeof import("../messages/en/offers.json")
   notifications: typeof import("../messages/en/notifications.json")
   employerProfile: typeof import("../messages/en/employerProfile.json")
+  meetings: typeof import("../messages/en/meetings.json")
 }
 
 export type IntlKeys =
