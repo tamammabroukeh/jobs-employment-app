@@ -1,17 +1,15 @@
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthOptions } from "next-auth";
 import { authOptions as libAuthOptions } from "@/lib/auth";
-import type { Session, User } from "next-auth";
-import type { JWT } from "next-auth/jwt";
 
-// Export the unified auth configuration
-export const authOptions = {
+// Export the unified auth configuration with proper typing
+export const authOptions: NextAuthOptions = {
   ...libAuthOptions,
   pages: {
     signIn: "/auth/login",
     error: "/auth/login",
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
     maxAge: 1 * 60 * 60, // 1 hour
   },
   cookies: {
@@ -19,7 +17,7 @@ export const authOptions = {
       name: `next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        sameSite: 'lax' as const,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
       },
