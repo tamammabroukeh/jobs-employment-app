@@ -98,7 +98,7 @@ export default function MeetingsClient({ userId }: MeetingsClientProps) {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto py-8">
       {/* Header */}
       <Flex classes="w-full justify-between! items-center! mb-6">
         <Typography variant="h1" className="text-3xl font-bold">
