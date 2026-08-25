@@ -16,5 +16,5 @@ export default async function MeetingsPage() {
     redirect('/auth/login');
   }
 
-  return <MeetingsClient userId={session.user.id} />;
+  return <MeetingsClient />;
 }
