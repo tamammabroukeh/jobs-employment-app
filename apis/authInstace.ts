@@ -28,6 +28,7 @@ export async function authFetcher<T>(
   console.log("[Auth Fetcher]", path);
   console.log("[Auth Fetcher] Has session?", !!session);
   console.log("[Auth Fetcher] Has token?", !!token);
+  console.log("[Auth Fetcher] token", token);
   console.log("[Auth Fetcher] Is retry?", isRetry);
 
   if (!isAuthorized) {
