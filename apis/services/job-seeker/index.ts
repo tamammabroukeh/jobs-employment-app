@@ -29,6 +29,7 @@ import {
   IReceivedOffersResponse,
   IOffersQueryParams
 } from './interface';
+import apiFetcher from '@/apis/api.instance';
 
 /**
  * Job Seeker API Repository
@@ -173,9 +174,9 @@ export const jobSeekerRepository = {
     }
     
     const queryString = queryParams.toString();
-    const url = queryString ? `/job-seeker/jobs/search?${queryString}` : '/job-seeker/jobs/search';
+    const url = queryString ? `/jobs/search?${queryString}` : '/jobs/search';
     
-    return authFetcher<JobSearchResponse>(url, {
+    return apiFetcher<JobSearchResponse>(url, {
       method: Methods.GET,
       cache: 'no-store',
     });
