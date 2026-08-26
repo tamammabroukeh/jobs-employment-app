@@ -17,6 +17,7 @@ export type Messages = {
   notifications: typeof import("../messages/en/notifications.json")
   employerProfile: typeof import("../messages/en/employerProfile.json")
   meetings: typeof import("../messages/en/meetings.json")
+  coach: typeof import("../messages/en/coach.json")
 }
 
 export type IntlKeys =
@@ -69,6 +70,14 @@ export type IntlKeys =
   | `employerProfile.images.cover.${keyof Messages["employerProfile"]["images"]["cover"]}`
   | `employerProfile.statistics.${keyof Messages["employerProfile"]["statistics"]}`
   | `employerProfile.categoryRatings.${keyof Messages["employerProfile"]["categoryRatings"]}`
+  | `coach.${keyof Messages["coach"]}`
+  | `coach.sidebar.${keyof Messages["coach"]["sidebar"]}`
+  | `coach.chat.${keyof Messages["coach"]["chat"]}`
+  | `coach.messages.${keyof Messages["coach"]["messages"]}`
+  | `coach.actions.${keyof Messages["coach"]["actions"]}`
+  | `coach.toast.${keyof Messages["coach"]["toast"]}`
+  | `coach.validation.${keyof Messages["coach"]["validation"]}`
+  | `coach.suggestions.${keyof Messages["coach"]["suggestions"]}`
   | "errors.noPermission"
   | "errors.noPermissionAction"
   | "errors.signInRequired"

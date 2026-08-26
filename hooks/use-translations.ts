@@ -107,3 +107,7 @@ export function useProfileTranslations() {
 export function useMeetingsTranslations() {
   return useNextIntlTranslations("meetings");
 }
+
+export function useCoachTranslations() {
+  return useNextIntlTranslations("coach");
+}
