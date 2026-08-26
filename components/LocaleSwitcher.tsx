@@ -5,8 +5,8 @@ import { useTransition } from 'react';
 import ReusableSelect from './Reusable-Components/Reusable-Select';
 
 const locales = [
-  { value: 'en', title: 'English (EN)' },
-  { value: 'ar', title: 'العربية (AR)' },
+  { value: 'en', title: 'EN' },
+  { value: 'ar', title: 'AR' },
 ];
 
 export default function LocaleSwitcher() {
