@@ -194,7 +194,7 @@ export default function NotificationsPopover() {
                     {t("empty.title")}
                   </Typography>
                   <Typography
-                    variant="text"
+                    variant="p"
                     className="text-sm text-muted-foreground mt-1"
                   >
                     {t("empty.description")}
