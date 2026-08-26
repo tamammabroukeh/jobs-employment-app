@@ -53,6 +53,17 @@
   --doc-evaluation-icon: #d97706;
   --doc-work-history-border: #2563eb;
   --doc-education-border: #22c55e;
+
+  /* Coach Chat Semantic Colors */
+  --coach-user-message-bg: #2563eb;
+  --coach-user-message-text: #ffffff;
+  --coach-assistant-message-bg: #f1f5f9;
+  --coach-assistant-message-text: #0f172a;
+  --coach-assistant-message-border: #e2e8f0;
+  --coach-assistant-avatar-bg: #eff6ff;
+  --coach-assistant-avatar-border: #dbeafe;
+  --coach-assistant-icon: #2563eb;
+  --coach-session-active-bg: #eff6ff;
 }
 
 :root.dark {
@@ -108,6 +119,17 @@
   --doc-evaluation-icon: #fbbf24;
   --doc-work-history-border: #3b82f6;
   --doc-education-border: #4ade80;
+
+  /* Coach Chat Semantic Colors */
+  --coach-user-message-bg: #910a0a;
+  --coach-user-message-text: #ffffff;
+  --coach-assistant-message-bg: #1e293b;
+  --coach-assistant-message-text: #f1f5f9;
+  --coach-assistant-message-border: #334155;
+  --coach-assistant-avatar-bg: #1e3a8a;
+  --coach-assistant-avatar-border: #1e40af;
+  --coach-assistant-icon: #3b82f6;
+  --coach-session-active-bg: #1e3a8a;
 }
 
 @theme inline {
@@ -143,6 +165,15 @@
   --color-doc-evaluation-icon: var(--doc-evaluation-icon);
   --color-doc-work-history-border: var(--doc-work-history-border);
   --color-doc-education-border: var(--doc-education-border);
+  --color-coach-user-message-bg: var(--coach-user-message-bg);
+  --color-coach-user-message-text: var(--coach-user-message-text);
+  --color-coach-assistant-message-bg: var(--coach-assistant-message-bg);
+  --color-coach-assistant-message-text: var(--coach-assistant-message-text);
+  --color-coach-assistant-message-border: var(--coach-assistant-message-border);
+  --color-coach-assistant-avatar-bg: var(--coach-assistant-avatar-bg);
+  --color-coach-assistant-avatar-border: var(--coach-assistant-avatar-border);
+  --color-coach-assistant-icon: var(--coach-assistant-icon);
+  --color-coach-session-active-bg: var(--coach-session-active-bg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   
@@ -163,6 +194,22 @@ body {
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* Card styles */

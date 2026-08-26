@@ -1,0 +1,57 @@
+{
+  "title": "AI Resume Coach",
+  "subtitle": "Get personalized advice to improve your resume",
+  "sidebar": {
+    "title": "Chat History",
+    "newChat": "New Chat",
+    "noSessions": "No chat sessions yet",
+    "noSessionsDescription": "Start a new conversation with the AI coach",
+    "deleteConfirm": "Delete this chat?",
+    "deleteDescription": "This will permanently delete the chat and all its messages."
+  },
+  "chat": {
+    "welcome": "Welcome to AI Resume Coach",
+    "welcomeMessage": "Hello! I'm your AI Resume Coach. I'm here to help you improve your resume and increase your chances of landing your dream job. How can I assist you today?",
+    "placeholder": "Type your message here...",
+    "send": "Send",
+    "thinking": "Coach is typing...",
+    "emptyState": "Select a chat or start a new conversation",
+    "emptyStateDescription": "Choose a chat from the sidebar or click 'New Chat' to begin"
+  },
+  "messages": {
+    "user": "You",
+    "assistant": "AI Coach",
+    "justNow": "Just now",
+    "today": "Today",
+    "yesterday": "Yesterday"
+  },
+  "actions": {
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  },
+  "toast": {
+    "sessionCreated": "New chat session created",
+    "sessionDeleted": "Chat session deleted",
+    "messageSent": "Message sent",
+    "createError": "Failed to create chat session",
+    "deleteError": "Failed to delete chat session",
+    "sendError": "Failed to send message",
+    "loadError": "Failed to load chat history"
+  },
+  "validation": {
+    "messageRequired": "Please enter a message",
+    "messageTooLong": "Message must be 1000 characters or less",
+    "titleTooLong": "Title must be 100 characters or less"
+  },
+  "suggestions": {
+    "title": "Quick Suggestions",
+    "items": [
+      "How can I improve my resume?",
+      "What should I include in my work experience?",
+      "How do I write a compelling summary?",
+      "What are common resume mistakes to avoid?",
+      "How can I highlight my skills effectively?"
+    ]
+  }
+}

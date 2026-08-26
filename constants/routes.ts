@@ -66,6 +66,9 @@ const ROUTES = {
     CREATE: "/meetings/create",
     DETAIL: "/meetings/:id",
     getDetail: (id: string) => `/meetings/${id}`,
+  },
+  COACH: {
+    ROOT: "/resume-coach",
   }
 };
 
@@ -153,6 +156,13 @@ export const NAVBAR_LINKS = [
     showInNavbar: true,
     authRequired: true,
     roles: ["employee", "employer"], // Both roles can access meetings
+  },
+  {
+    label: "AI Resume Coach",
+    href: ROUTES.COACH.ROOT,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employee"], // Only for job seekers
   }
 ];
 
