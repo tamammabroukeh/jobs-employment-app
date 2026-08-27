@@ -1,8 +1,8 @@
 {
   "forsa": {
     "title": {
-      "create": "Add New Forsa",
-      "edit": "Edit Forsa"
+      "create": "Add New Job",
+      "edit": "Edit Job"
     },
     "cvReceive": {
       "title": "How do you want to receive CVs?",
@@ -136,8 +136,8 @@
       "lbp": "LBP"
     },
     "buttons": {
-      "submit": "Add New Forsa",
-      "update": "Update Forsa",
+      "submit": "Add New Job",
+      "update": "Update Job",
       "submitting": "Submitting..."
     },
     "messages": {

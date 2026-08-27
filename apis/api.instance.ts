@@ -6,6 +6,7 @@ import { ErrorMessages } from "@/constants/errors";
 
 // Configuration
 const baseUrl = process.env.BASE_URL;
+const aiBaseUrl = process.env.AI_BASE_URL
 const DEFAULT_REVALIDATION_TIME = 3600 * 3; // 3 hours
 const API_TIMEOUT = Number(process.env.NEXT_PUBLIC_API_TIMEOUT || 50000);
 const MAX_RETRIES = 2; // Retry failed requests up to 2 times
@@ -21,9 +22,11 @@ export default async function apiFetcher<T>(
   path: string,
   requestInit?: RequestInit & { skipDefaultHeaders?: boolean },
   retryCount: number = 0,
+  overridedBaseUrl?: boolean,
 ): Promise<T> {
-  console.log("baseUrl", baseUrl);
-  const url = normalizeUrl(baseUrl, path);
+  const myBaseUrl = overridedBaseUrl ? aiBaseUrl : baseUrl
+  console.log("myBaseUrl", myBaseUrl);
+  const url = normalizeUrl(myBaseUrl, path);
   const timeout = API_TIMEOUT;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout);

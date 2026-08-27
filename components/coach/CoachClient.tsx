@@ -53,7 +53,7 @@ export default function CoachClient() {
       setMessages([]);
     }
   }, [activeSessionId]);
-
+  console.log('activeSessionId', activeSessionId)
   /**
    * Load all sessions
    */
@@ -91,6 +91,7 @@ export default function CoachClient() {
     try {
       const result = await getSessionMessagesAction({ sessionId });
       if (result?.data?.success && Array.isArray(result.data.data)) {
+        console.log('result.data.data', result.data.data)
         setMessages(result.data.data);
       } else {
         setMessages([]);
@@ -174,8 +175,8 @@ export default function CoachClient() {
     // Add user message to UI immediately (optimistic update)
     const userMessage: ICoachMessage = {
       role: "user",
-      content: message,
-      created_at: new Date().toISOString(),
+      message: message,
+      timestamp: new Date().toISOString(),
     };
 
     setMessages((prev) => {
@@ -197,8 +198,8 @@ export default function CoachClient() {
         // Add assistant message
         const assistantMessage: ICoachMessage = {
           role: "assistant",
-          content: response,
-          created_at: new Date().toISOString(),
+          message: response,
+          timestamp: new Date().toISOString(),
         };
 
         setMessages((prev) => {
@@ -247,7 +248,7 @@ export default function CoachClient() {
       setIsSending(false);
     }
   };
-
+  console.log('messages', messages)
   return (
     <div className="flex h-full w-full overflow-hidden bg-background">
       {/* Sidebar */}
