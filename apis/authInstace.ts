@@ -20,6 +20,8 @@ export async function authFetcher<T>(
   path: string,
   requestInit?: RequestInit & { skipDefaultHeaders?: boolean },
   isRetry: boolean = false,
+  retryCount?: number,
+  overridedBaseUrl?: boolean
 ): Promise<T> {
   const session = await getServerSession(authOptions);
   const token = session?.accessToken;
@@ -63,7 +65,7 @@ export async function authFetcher<T>(
       headers: authHeaders,
       // Preserve cache settings from requestInit, don't override them
       // This allows revalidation tags to work properly
-    });
+    }, retryCount, overridedBaseUrl);
   } catch (error) {
     // Check if it's a 401 error and we haven't already retried
     if (is401Error(error) && !isRetry) {
@@ -95,7 +97,7 @@ export async function authFetcher<T>(
         return await apiFetcher<T>(path, {
           ...requestInit,
           headers: newAuthHeaders,
-        });
+        }, retryCount, overridedBaseUrl);
       } else {
         console.error(
           "[Auth Fetcher] Token refresh failed, throwing 401 error",

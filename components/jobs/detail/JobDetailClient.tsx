@@ -16,6 +16,7 @@ interface JobDetailClientProps {
 }
 
 export default function JobDetailClient({ job }: JobDetailClientProps) {
+  console.log('job', job)
   const [applyDialogOpen, setApplyDialogOpen] = useState(false);
   const router = useRouter();
   const { isAuthenticated } = useAuth()

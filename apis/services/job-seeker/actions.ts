@@ -595,7 +595,7 @@ export const applyForJobAction = actionClient
       const response = await jobSeekerRepository.applyForJob(parsedInput);
       console.log('response', response)
       return {
-        success: response.status,
+        success: true,
         message: response.message,
         application_id: response.application_id,
       };

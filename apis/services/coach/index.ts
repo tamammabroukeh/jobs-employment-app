@@ -54,18 +54,22 @@ export const coachRepository = {
    * @param sessionId - The session ID
    * @returns Promise with list of messages
    */
+  ///sessions/{session_id}/messages
   getSessionMessages: async (
     sessionId: string
   ): Promise<IGetSessionMessagesResponse> => {
     return authFetcher<IGetSessionMessagesResponse>(
-      `/job-seeker/coach/sessions/${sessionId}`,
+      `/sessions/${sessionId}/messages`,
       {
         method: Methods.GET,
         next: {
           tags: [`coach-session-${sessionId}`],
           revalidate: 30,
         },
-      }
+      },
+      false,
+      0,
+      true
     );
   },
 

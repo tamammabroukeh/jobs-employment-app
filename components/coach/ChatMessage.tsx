@@ -32,8 +32,8 @@ export default function ChatMessage({ message }: ChatMessageProps) {
 
   // Parse assistant message content if needed
   const displayContent = isUser 
-    ? message.content 
-    : parseAssistantMessage(message.content);
+    ? message.message 
+    : parseAssistantMessage(message.message);
 
   return (
     <div
@@ -81,7 +81,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
 
         {/* Timestamp */}
         <Typography variant="text" className="text-xs text-muted-foreground px-1">
-          {getTimeAgo(message.created_at)}
+          {getTimeAgo(message.timestamp)}
         </Typography>
       </div>
     </div>

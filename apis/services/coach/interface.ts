@@ -15,8 +15,8 @@ export interface ICoachSession {
  */
 export interface ICoachMessage {
   role: 'user' | 'assistant';
-  content: string;
-  created_at: string;
+  message: string;
+  timestamp: string;
 }
 
 // Request Interfaces
@@ -56,7 +56,7 @@ export interface IGetSessionsResponse {
  * Response from get session messages endpoint
  */
 export interface IGetSessionMessagesResponse {
-  data: ICoachMessage[];
+  messages: ICoachMessage[];
 }
 
 /**

@@ -71,10 +71,10 @@ export const getSessionMessagesAction = actionClient
       const response = await coachRepository.getSessionMessages(
         parsedInput.sessionId
       );
-
+      console.log('response', response)
       return {
         success: true,
-        data: response.data,
+        data: response.messages,
       };
     } catch (error) {
       console.error('Get session messages error:', error);
