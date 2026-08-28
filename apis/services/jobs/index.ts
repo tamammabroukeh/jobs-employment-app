@@ -2,7 +2,7 @@ export * from './interfaces';
 export * from './actions';
 
 import { Methods } from '@/constants/methods';
-import type { JobsListResponse, JobsQueryParams, Job } from './interfaces';
+import type { JobsListResponse, JobsQueryParams, Job, CategoryStatsResponse, LocationStatsResponse } from './interfaces';
 import { buildQueryString } from '@/apis/utils/queryBuilder';
 import apiFetcher from '@/apis/api.instance';
 
@@ -37,6 +37,32 @@ export const jobsRepository = {
       next: {
         tags: ['job-details'],
         revalidate: 3600,
+      },
+    }),
+
+  /**
+   * Get active job counts grouped by category
+   * @returns Promise with category statistics
+   */
+  getCategoryStats: (): Promise<CategoryStatsResponse> =>
+    apiFetcher<CategoryStatsResponse>('/jobs/stats/by-category', {
+      method: Methods.GET,
+      next: {
+        tags: ['category-stats'],
+        revalidate: 3600, // Cache for 1 hour
+      },
+    }),
+
+  /**
+   * Get active job counts grouped by city
+   * @returns Promise with location statistics
+   */
+  getLocationStats: (): Promise<LocationStatsResponse> =>
+    apiFetcher<LocationStatsResponse>('/jobs/stats/by-location', {
+      method: Methods.GET,
+      next: {
+        tags: ['location-stats'],
+        revalidate: 3600, // Cache for 1 hour
       },
     }),
 };

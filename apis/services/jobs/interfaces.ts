@@ -107,3 +107,33 @@ export interface JobsQueryParams {
   city?: string;
   search?: string;
 }
+
+/**
+ * Category Stat Interface
+ */
+export interface CategoryStat {
+  category: string;
+  count: number;
+}
+
+/**
+ * Location Stat Interface
+ */
+export interface LocationStat {
+  city: string;
+  count: number;
+}
+
+/**
+ * Category Stats Response
+ */
+export interface CategoryStatsResponse {
+  data: CategoryStat[];
+}
+
+/**
+ * Location Stats Response
+ */
+export interface LocationStatsResponse {
+  data: LocationStat[];
+}

@@ -1,12 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Typography, ReusableCard } from "@/components/Reusable-Components";
 import ROUTES from "@/constants/routes";
 
 interface LocationCardProps {
   id: string;
   name: string;
-  image: string;
   jobCount: number;
   availableJobsLabel: string;
 }
@@ -14,7 +12,6 @@ interface LocationCardProps {
 export default function LocationCard({
   id,
   name,
-  image,
   jobCount,
   availableJobsLabel,
 }: LocationCardProps) {
@@ -26,18 +23,10 @@ export default function LocationCard({
         styleForContent="p-0"
       >
         <div className="relative h-48 w-full overflow-hidden bg-linear-to-br from-primary/20 to-primary/5">
-          {!image ? (
-            <Image
-              src={image}
-              alt={name}
-              fill
-              className="object-cover group-hover:scale-110 transition-transform duration-300"
-            />
-          ) : (
+          
             <div className="w-full h-full flex items-center justify-center">
               <i className="fa-solid fa-location-dot text-6xl text-primary/30" />
             </div>
-          )}
           <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
         </div>
         
