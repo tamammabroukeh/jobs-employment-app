@@ -1,64 +1,33 @@
 import { getHomeTranslations } from "@/lib/get-translations";
 import { Typography } from "@/components/Reusable-Components";
 import CategoryCard from "./CategoryCard";
+import { getCategoryStatsAction } from "@/apis/services/jobs/actions";
 
-// Mock data - Replace with actual API call
-const getCategoriesData = async () => {
-  return [
-    {
-      id: "1",
-      nameKey: "technology",
-      icon: "fa-solid fa-laptop-code",
-      jobCount: 1234,
-    },
-    {
-      id: "2",
-      nameKey: "design",
-      icon: "fa-solid fa-palette",
-      jobCount: 856,
-    },
-    {
-      id: "3",
-      nameKey: "marketing",
-      icon: "fa-solid fa-bullhorn",
-      jobCount: 742,
-    },
-    {
-      id: "4",
-      nameKey: "business",
-      icon: "fa-solid fa-briefcase",
-      jobCount: 923,
-    },
-    {
-      id: "5",
-      nameKey: "healthcare",
-      icon: "fa-solid fa-heart-pulse",
-      jobCount: 567,
-    },
-    {
-      id: "6",
-      nameKey: "education",
-      icon: "fa-solid fa-graduation-cap",
-      jobCount: 432,
-    },
-    {
-      id: "7",
-      nameKey: "engineering",
-      icon: "fa-solid fa-gears",
-      jobCount: 891,
-    },
-    {
-      id: "8",
-      nameKey: "customerService",
-      icon: "fa-solid fa-headset",
-      jobCount: 654,
-    },
-  ];
+// Icon mapping for categories
+const categoryIcons: Record<string, string> = {
+  Technology: "fa-solid fa-laptop-code",
+  Design: "fa-solid fa-palette",
+  Marketing: "fa-solid fa-bullhorn",
+  Business: "fa-solid fa-briefcase",
+  Healthcare: "fa-solid fa-heart-pulse",
+  Education: "fa-solid fa-graduation-cap",
+  Engineering: "fa-solid fa-gears",
+  "Customer Service": "fa-solid fa-headset",
+  Finance: "fa-solid fa-sack-dollar",
+  Sales: "fa-solid fa-chart-line",
+  HR: "fa-solid fa-users",
+  Legal: "fa-solid fa-scale-balanced",
+  // Add more category icons as needed
 };
 
 export default async function CategoriesSection() {
   const t = await getHomeTranslations();
-  const categories = await getCategoriesData();
+  
+  // Fetch real category stats from API
+  const categoryStats = await getCategoryStatsAction();
+  
+  // Take only top 8 categories
+  const topCategories = categoryStats.slice(0, 8);
 
   return (
     <section className="py-20 bg-background">
@@ -74,18 +43,26 @@ export default async function CategoriesSection() {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {categories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              id={category.id}
-              name={category.nameKey}
-              icon={category.icon}
-              jobCount={category.jobCount}
-              availableJobsLabel={t("categories.availableJobs")}
-            />
-          ))}
-        </div>
+        {topCategories.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {topCategories.map((category) => (
+              <CategoryCard
+                key={category.category}
+                id={category.category}
+                name={category.category}
+                icon={categoryIcons[category.category] || "fa-solid fa-briefcase"}
+                jobCount={category.count}
+                availableJobsLabel={t("categories.availableJobs")}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Typography variant="text" className="text-muted-foreground">
+              {t("categories.noCategories")}
+            </Typography>
+          </div>
+        )}
       </div>
     </section>
   );

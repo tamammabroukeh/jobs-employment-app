@@ -1,64 +1,16 @@
 import { Typography } from "@/components/Reusable-Components";
 import LocationCard from "./LocationCard";
 import { getHomeTranslations } from "@/lib/get-translations";
-
-// Mock data - Replace with actual API call
-const getLocationsData = async () => {
-  return [
-    {
-      id: "1",
-      nameKey: "cairo",
-      image: "/images/locations/cairo.jpg",
-      jobCount: 2543,
-    },
-    {
-      id: "2",
-      nameKey: "alexandria",
-      image: "/images/locations/alexandria.jpg",
-      jobCount: 1876,
-    },
-    {
-      id: "3",
-      nameKey: "giza",
-      image: "/images/locations/giza.jpg",
-      jobCount: 1432,
-    },
-    {
-      id: "4",
-      nameKey: "sharmElSheikh",
-      image: "/images/locations/sharm.jpg",
-      jobCount: 892,
-    },
-    {
-      id: "5",
-      nameKey: "hurghada",
-      image: "/images/locations/hurghada.jpg",
-      jobCount: 756,
-    },
-    {
-      id: "6",
-      nameKey: "luxor",
-      image: "/images/locations/luxor.jpg",
-      jobCount: 543,
-    },
-    {
-      id: "7",
-      nameKey: "aswan",
-      image: "/images/locations/aswan.jpg",
-      jobCount: 421,
-    },
-    {
-      id: "8",
-      nameKey: "portSaid",
-      image: "/images/locations/portsaid.jpg",
-      jobCount: 687,
-    },
-  ];
-};
+import { getLocationStatsAction } from "@/apis/services/jobs/actions";
 
 export default async function LocationsSection() {
   const t = await getHomeTranslations();
-  const locations = await getLocationsData();
+  
+  // Fetch real location stats from API
+  const locationStats = await getLocationStatsAction();
+  
+  // Take only top 8 locations
+  const topLocations = locationStats.slice(0, 8);
 
   return (
     <section className="py-20 bg-card">
@@ -74,18 +26,25 @@ export default async function LocationsSection() {
         </div>
 
         {/* Locations Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {locations.map((location) => (
-            <LocationCard
-              key={location.id}
-              id={location.id}
-              name={location.nameKey}
-              image={location.image}
-              jobCount={location.jobCount}
-              availableJobsLabel={t("locations.availableJobs")}
-            />
-          ))}
-        </div>
+        {topLocations.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {topLocations.map((location) => (
+              <LocationCard
+                key={location.city}
+                id={location.city}
+                name={location.city}
+                jobCount={location.count}
+                availableJobsLabel={t("locations.availableJobs")}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <Typography variant="text" className="text-muted-foreground">
+              {t("locations.noLocations")}
+            </Typography>
+          </div>
+        )}
       </div>
     </section>
   );
