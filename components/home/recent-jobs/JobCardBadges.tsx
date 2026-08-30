@@ -4,9 +4,10 @@ interface JobCardBadgesProps {
   roles: string[];
   types: string[];
   levels: string[];
+  tags: string[];
 }
 
-export default function JobCardBadges({ roles, types, levels }: JobCardBadgesProps) {
+export default function JobCardBadges({ roles, types, levels, tags }: JobCardBadgesProps) {
   console.log('roles', roles)
   console.log('types', roles)
   console.log('levels', levels)
@@ -33,6 +34,11 @@ export default function JobCardBadges({ roles, types, levels }: JobCardBadgesPro
         {levels?.length > 0 && levels.map((level, index) => (
           <ReusableBadge key={index} variant="warning">
             {level?.replace(/_/g, ' ')}
+          </ReusableBadge>
+        ))}
+        {tags?.length > 0 && tags.map((tag, index) => (
+          <ReusableBadge key={index} variant="danger">
+            {tag?.replace(/_/g, ' ')}
           </ReusableBadge>
         ))}
       </div>

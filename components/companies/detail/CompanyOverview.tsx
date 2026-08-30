@@ -13,7 +13,7 @@ export default function CompanyOverview({ company }: CompanyOverviewProps) {
   const t = useCompaniesTranslations();
 
   // Format location from city and country
-  const location = [company.city, company.country].filter(Boolean).join(', ') || 'N/A';
+  const location = [company.city, company.country].filter(Boolean).join(', ') || '';
 
   // Format company size for display
   const companySizeMap: Record<string, string> = {
@@ -72,7 +72,7 @@ export default function CompanyOverview({ company }: CompanyOverviewProps) {
         </div>
 
         {/* Location */}
-        <div className="auth-card p-6">
+        {location && <div className="auth-card p-6">
           <div className="flex items-center gap-3 mb-2">
             <i className="fa-solid fa-location-dot text-warning text-xl" />
             <Typography variant="h5" className="text-muted-foreground">
@@ -82,7 +82,7 @@ export default function CompanyOverview({ company }: CompanyOverviewProps) {
           <Typography variant="h4" className="text-foreground">
             {location}
           </Typography>
-        </div>
+        </div>}
 
         {/* Website */}
         {company.website && (
@@ -112,7 +112,7 @@ export default function CompanyOverview({ company }: CompanyOverviewProps) {
             <div className="flex items-center gap-3 mb-2">
               <i className="fa-solid fa-envelope text-info text-xl" />
               <Typography variant="h5" className="text-muted-foreground">
-                Email
+                {t("detail.overview.email")}
               </Typography>
             </div>
             <Typography variant="h5" className="text-foreground break-all">
@@ -142,7 +142,7 @@ export default function CompanyOverview({ company }: CompanyOverviewProps) {
             <div className="flex items-center gap-3 mb-2">
               <i className="fa-solid fa-briefcase text-warning text-xl" />
               <Typography variant="h5" className="text-muted-foreground">
-                {t("detail.overview.openPositions") || "Open Positions"}
+                {t("detail.overview.openPositions")}
               </Typography>
             </div>
             <Typography variant="h4" className="text-foreground">

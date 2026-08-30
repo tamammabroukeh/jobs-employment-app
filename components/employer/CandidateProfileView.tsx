@@ -260,7 +260,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
             )}
 
             {/* Training Courses - Placeholder for future */}
-            <div className="auth-card p-6">
+            {/* <div className="auth-card p-6">
               <div className="flex items-center gap-3 mb-6">
                 <i className="fa-solid fa-certificate text-info text-2xl" />
                 <Typography variant="h3" className="text-foreground">
@@ -270,7 +270,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
               <Typography variant="p" className="text-muted-foreground text-center py-8">
                 {t('profile.noTrainingCourses')}
               </Typography>
-            </div>
+            </div> */}
 
             {/* Your Experience */}
             {candidate.work_experience && candidate.work_experience.length > 0 && (
@@ -369,7 +369,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
             </div>
 
             {/* References - Placeholder */}
-            <div className="auth-card p-6">
+            {/* <div className="auth-card p-6">
               <div className="flex items-center gap-3 mb-6">
                 <i className="fa-solid fa-user-check text-primary text-2xl" />
                 <Typography variant="h3" className="text-foreground">
@@ -379,7 +379,7 @@ export default async function CandidateProfileView({ candidate }: CandidateProfi
               <Typography variant="p" className="text-muted-foreground text-center py-8">
                 {t('profile.noReferences')}
               </Typography>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

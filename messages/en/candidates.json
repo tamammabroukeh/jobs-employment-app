@@ -16,7 +16,11 @@
   },
   "profile": {
     "backToCandidates": "Back to Candidates",
+    "backToTalents": "Back to Talents",
     "lastUpdated": "Last updated",
+    "atsScore": "ATS Score",
+    "downloadResume": "Download Resume",
+    "aiEvaluation": "AI Profile Evaluation",
     "buyThisCV": "Buy This CV",
     "sendOffer": "Send Direct Offer",
     "personalInfo": "Personal Information",

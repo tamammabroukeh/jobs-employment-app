@@ -71,6 +71,7 @@ export default function JobsList({ jobs, pagination, onPageChange }: JobsListPro
           <JobCardClient
             key={job.id}
             id={job.id}
+            tags={job.tags}
             displayId={job.job_id}
             companyName={job.company_name}
             companyLogo={job.company_logo ?? ""}

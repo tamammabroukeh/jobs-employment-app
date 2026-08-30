@@ -1,0 +1,21 @@
+{
+  "links": {
+    "home": "الرئيسية",
+    "jobs": "الوظائف",
+    "matchedJobs": "الوظائف المطابقة",
+    "companies": "الشركات",
+    "talents": "المواهب",
+    "profile": "الملف الشخصي",
+    "applications": "طلباتي",
+    "offers": "العروض",
+    "manageJobs": "إدارة الوظائف",
+    "candidates": "المرشحين",
+    "meetings": "الاجتماعات",
+    "aiResumeCoach": "مدرب السيرة الذاتية بالذكاء الاصطناعي"
+  },
+  "actions": {
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "logout": "تسجيل الخروج"
+  }
+}

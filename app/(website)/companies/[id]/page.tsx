@@ -76,7 +76,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
       </main>
     );
   }
-
+  console.log('company.jobs', company.jobs)
   // Map company jobs to the format expected by CompanyJobs component
   const mappedJobs = company.jobs.map((job) => ({
     id: job.id,
@@ -90,6 +90,7 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
     levels: [job.job_level],
     experience: `${job.experience_years} years`,
     location: job.city,
+    tags:job.tags
   }));
 
   const tabItems = [
@@ -124,11 +125,11 @@ export default async function CompanyDetailPage({ params }: CompanyDetailPagePro
       label: t('detail.tabs.jobs'),
       children: <CompanyJobs jobs={mappedJobs} />,
     },
-    {
-      key: 'directApply',
-      label: t('detail.tabs.directApply'),
-      children: <CompanyDirectApply companyId={id} companyName={company.name} />,
-    },
+    // {
+    //   key: 'directApply',
+    //   label: t('detail.tabs.directApply'),
+    //   children: <CompanyDirectApply companyId={id} companyName={company.name} />,
+    // },
   ];
 
   return (

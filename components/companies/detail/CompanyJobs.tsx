@@ -12,6 +12,7 @@ interface Job {
   roles: string[];
   types: string[];
   levels: string[];
+  tags: string[];
   experience: string;
   location: string;
 }
@@ -36,7 +37,7 @@ export default async function CompanyJobs({ jobs }: CompanyJobsProps) {
       </div>
     );
   }
-
+  console.log('jobs', jobs)
   return (
     <div className="space-y-8">
       {/* Section Header */}
@@ -53,6 +54,7 @@ export default async function CompanyJobs({ jobs }: CompanyJobsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {jobs.map((job) => (
           <JobCard
+            tags={job.tags}
             key={job.id}
             id={job.id}
             displayId={job.displayId}

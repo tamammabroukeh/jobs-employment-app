@@ -16,8 +16,8 @@ export default function JobCardDetails({
   postedOnLabel,
 }: JobCardDetailsProps) {
   return (
-    <Flex justify="start" align="start" orientation="vertical">
-      <Flex justify="start">
+    <Flex justify="start" align="start" gap={2} orientation="vertical">
+      <Flex className="h-fit!" justify="start">
         <i className="fa-solid fa-briefcase text-sm" />
         <Typography variant="small">
           {experienceLabel}: {experience}
@@ -25,13 +25,13 @@ export default function JobCardDetails({
       </Flex>
 
       {location && (
-        <Flex justify="start">
+        <Flex className="h-fit!" justify="start">
           <i className="fa-solid fa-location-dot text-sm" />
           <Typography variant="small">{location}</Typography>
         </Flex>
       )}
 
-      <Flex justify="start">
+      <Flex className="h-fit!" justify="start">
         <i className="fa-solid fa-calendar text-sm" />
         <Typography variant="small">
           {postedOnLabel}: {new Date(createdAt).toLocaleDateString()}

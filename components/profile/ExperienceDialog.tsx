@@ -7,6 +7,8 @@ import { IWorkExperience } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select, Checkbox } from 'antd';
 import { Controller, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { getRolesAction } from '@/apis/services/common/actions';
+import type { IRole } from '@/apis/services/common/interface';
 
 const { TextArea } = Input;
 
@@ -25,6 +27,9 @@ export default function ExperienceDialog({
 }: ExperienceDialogProps) {
   const t = useProfileTranslations();
   const [isSaving, setIsSaving] = useState(false);
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [isLoadingRoles, setIsLoadingRoles] = useState(false);
+  
   const { control, handleSubmit, formState: { errors }, reset, setValue } = useForm<IWorkExperience>({
     defaultValues: experience || {
       job_title: '',
@@ -38,6 +43,25 @@ export default function ExperienceDialog({
   });
 
   const is_currently_working = useWatch({ control, name: 'is_currently_working' });
+
+  // Fetch roles when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchRoles();
+    }
+  }, [isOpen]);
+
+  const fetchRoles = async () => {
+    setIsLoadingRoles(true);
+    try {
+      const rolesData = await getRolesAction();
+      setRoles(rolesData);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    } finally {
+      setIsLoadingRoles(false);
+    }
+  };
 
   useEffect(() => {
     if (experience) {
@@ -74,16 +98,11 @@ export default function ExperienceDialog({
     { label: 'Product Manager', value: 'product-manager' },
   ];
 
-  const jobRolesOptions = [
-    { label: 'Frontend Development', value: 'frontend' },
-    { label: 'Backend Development', value: 'backend' },
-    { label: 'Full Stack Development', value: 'fullstack' },
-    { label: 'DevOps', value: 'devops' },
-    { label: 'UI/UX Design', value: 'design' },
-    { label: 'Team Lead', value: 'team-lead' },
-    { label: 'Code Review', value: 'code-review' },
-    { label: 'Mentoring', value: 'mentoring' },
-  ];
+  // Convert roles from API to Select options
+  const jobRolesOptions = roles.map(role => ({
+    label: role.name,
+    value: role.name,
+  }));
 
   const dialogFooter = (
     <Flex classes="gap-2 justify-end">
@@ -157,9 +176,16 @@ export default function ExperienceDialog({
                 >
                   <Select
                     {...field}
-                    mode="multiple"
+                    mode="tags"
                     options={jobRolesOptions}
-                    placeholder={t('experience.jobRoles')}
+                    placeholder={isLoadingRoles ? 'Loading roles...' : t('experience.jobRoles')}
+                    loading={isLoadingRoles}
+                    disabled={isLoadingRoles}
+                    notFoundContent={isLoadingRoles ? 'Loading...' : 'No roles found'}
+                    tokenSeparators={[',']}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
                   />
                 </Form.Item>
               )}

@@ -5,6 +5,7 @@ export type Messages = {
   session: typeof import("../messages/en/session.json")
   home: typeof import("../messages/en/home.json")
   footer: typeof import("../messages/en/footer.json")
+  navbar: typeof import("../messages/en/navbar.json")
   jobs: typeof import("../messages/en/jobs.json")
   companies: typeof import("../messages/en/companies.json")
   jobDetail: typeof import("../messages/en/job-detail.json")
@@ -31,6 +32,8 @@ export type IntlKeys =
   | `errors.unauthorized.${keyof Messages["errors"]["unauthorized"]}`
   | `session.${keyof Messages["session"]}`
   | `footer.${keyof Messages["footer"]}`
+  | `navbar.links.${keyof Messages["navbar"]["links"]}`
+  | `navbar.actions.${keyof Messages["navbar"]["actions"]}`
   | `profile.documents.${keyof Messages["profile"]["documents"]}`
   | `profile.documents.resume.${keyof Messages["profile"]["documents"]["resume"]}`
   | `profile.documents.coverLetter.${keyof Messages["profile"]["documents"]["coverLetter"]}`

@@ -74,91 +74,91 @@ const ROUTES = {
 
 export const NAVBAR_LINKS = [
   {
-    label: "Home",
+    labelKey: "links.home",
     href: ROUTES.HOME,
     showInNavbar: true,
     authRequired: false, // Public - always visible
     roles: ["employee"], // Empty means all roles can access
   },
   {
-    label: "Jobs",
+    labelKey: "links.jobs",
     href: ROUTES.JOB.LIST,
     showInNavbar: true,
     authRequired: false, // Public - always visible
     roles: ["employee"],
   },
   {
-    label: "Matched Jobs",
+    labelKey: "links.matchedJobs",
     href: ROUTES.JOB.MATCHED,
     showInNavbar: true,
     authRequired: true, // Protected - only visible when logged in
     roles: ["employee"], // Only for job seekers
   },
   {
-    label: "Companies",
+    labelKey: "links.companies",
     href: ROUTES.COMPANIES.LIST,
     showInNavbar: true,
     authRequired: false, // Public - always visible
     roles: ["employee"],
   },
   {
-    label: "Talents",
+    labelKey: "links.talents",
     href: ROUTES.TALENTS.LIST,
     showInNavbar: true,
     authRequired: false, // Public - always visible
     roles: ["employee"],
   },
   {
-    label: "Profile",
+    labelKey: "links.profile",
     href: ROUTES.PROFILE.VIEW,
     showInNavbar: true,
     authRequired: true, // Protected - only visible when logged in
     roles: ["employee"], // Only for job seekers
   },
   {
-    label: "Applications",
+    labelKey: "links.applications",
     href: ROUTES.APPLICATIONS,
     showInNavbar: true,
     authRequired: true,
     roles: ["employee"], // Only for job seekers
   },
   {
-    label: "Offers",
+    labelKey: "links.offers",
     href: ROUTES.OFFERS,
     showInNavbar: true,
     authRequired: true,
     roles: ["employee"], // Only for job seekers
   },
   {
-    label: "Manage Jobs",
+    labelKey: "links.manageJobs",
     href: ROUTES.EMPLOYER.MANAGE_JOBS,
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers
   },
   {
-    label: "Candidates",
+    labelKey: "links.candidates",
     href: ROUTES.EMPLOYER.CANDIDATES,
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers
   },
   {
-    label: "Profile",
+    labelKey: "links.profile",
     href: ROUTES.EMPLOYER.PROFILE,
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers
   },
   {
-    label: "Meetings",
+    labelKey: "links.meetings",
     href: ROUTES.MEETINGS.LIST,
     showInNavbar: true,
     authRequired: true,
     roles: ["employee", "employer"], // Both roles can access meetings
   },
   {
-    label: "AI Resume Coach",
+    labelKey: "links.aiResumeCoach",
     href: ROUTES.COACH.ROOT,
     showInNavbar: true,
     authRequired: true,

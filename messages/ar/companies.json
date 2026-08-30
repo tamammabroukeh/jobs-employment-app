@@ -34,8 +34,12 @@
       "employees": "الموظفون",
       "location": "الموقع",
       "website": "الموقع الإلكتروني",
+      "email": "البريد الإلكتروني",
       "socialMedia": "وسائل التواصل الاجتماعي",
-      "visitWebsite": "زيارة الموقع"
+      "visitWebsite": "زيارة الموقع",
+      "industry": "الصناعة",
+      "companySize": "حجم الشركة",
+      "openPositions": "الوظائف المتاحة"
     },
     "reviews": {
       "addReview": "إضافة تقييم",

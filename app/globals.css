@@ -64,6 +64,16 @@
   --coach-assistant-avatar-border: #dbeafe;
   --coach-assistant-icon: #2563eb;
   --coach-session-active-bg: #eff6ff;
+
+  /* Pagination Semantic Colors */
+  --pagination-item-bg: #ffffff;
+  --pagination-item-border: #e2e8f0;
+  --pagination-item-text: #0f172a;
+  --pagination-item-hover-bg: #f1f5f9;
+  --pagination-item-hover-border: #2563eb;
+  --pagination-item-active-bg: #2563eb;
+  --pagination-item-active-text: #ffffff;
+  --pagination-disabled-opacity: 0.5;
 }
 
 :root.dark {
@@ -130,6 +140,16 @@
   --coach-assistant-avatar-border: #1e40af;
   --coach-assistant-icon: #3b82f6;
   --coach-session-active-bg: #1e3a8a;
+
+  /* Pagination Semantic Colors */
+  --pagination-item-bg: #1e293b;
+  --pagination-item-border: #334155;
+  --pagination-item-text: #f1f5f9;
+  --pagination-item-hover-bg: #334155;
+  --pagination-item-hover-border: #910a0a;
+  --pagination-item-active-bg: #910a0a;
+  --pagination-item-active-text: #ffffff;
+  --pagination-disabled-opacity: 0.5;
 }
 
 @theme inline {
@@ -174,6 +194,13 @@
   --color-coach-assistant-avatar-border: var(--coach-assistant-avatar-border);
   --color-coach-assistant-icon: var(--coach-assistant-icon);
   --color-coach-session-active-bg: var(--coach-session-active-bg);
+  --color-pagination-item-bg: var(--pagination-item-bg);
+  --color-pagination-item-border: var(--pagination-item-border);
+  --color-pagination-item-text: var(--pagination-item-text);
+  --color-pagination-item-hover-bg: var(--pagination-item-hover-bg);
+  --color-pagination-item-hover-border: var(--pagination-item-hover-border);
+  --color-pagination-item-active-bg: var(--pagination-item-active-bg);
+  --color-pagination-item-active-text: var(--pagination-item-active-text);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   
@@ -259,10 +286,20 @@ body {
   border: 1px solid var(--border);
   background-color: var(--card-bg);
   transition: all 0.2s;
+  color: var(--foreground);
+}
+
+.antd-pagination .ant-pagination-item a {
+  color: var(--foreground);
 }
 
 .antd-pagination .ant-pagination-item:hover {
   border-color: var(--primary);
+  background-color: var(--muted);
+}
+
+.antd-pagination .ant-pagination-item:hover a {
+  color: var(--primary);
 }
 
 .antd-pagination .ant-pagination-item-active {
@@ -271,16 +308,90 @@ body {
 }
 
 .antd-pagination .ant-pagination-item-active a {
-  color: var(--primary-foreground);
+  color: var(--primary-foreground) !important;
+  font-weight: 600;
 }
 
 .antd-pagination .ant-pagination-prev,
 .antd-pagination .ant-pagination-next {
   border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  transition: all 0.2s;
+}
+
+.antd-pagination .ant-pagination-prev button,
+.antd-pagination .ant-pagination-next button {
+  color: var(--foreground);
+}
+
+.antd-pagination .ant-pagination-prev:hover,
+.antd-pagination .ant-pagination-next:hover {
+  border-color: var(--primary);
+  background-color: var(--muted);
+}
+
+.antd-pagination .ant-pagination-prev:hover button,
+.antd-pagination .ant-pagination-next:hover button {
+  color: var(--primary);
+}
+
+.antd-pagination .ant-pagination-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.antd-pagination .ant-pagination-disabled:hover {
+  border-color: var(--border);
+  background-color: var(--card-bg);
 }
 
 .antd-pagination .ant-pagination-options {
   margin-left: 1rem;
+}
+
+.antd-pagination .ant-select {
+  border-radius: 0.5rem;
+}
+
+.antd-pagination .ant-select-selector {
+  border-color: var(--border) !important;
+  background-color: var(--card-bg) !important;
+  color: var(--foreground) !important;
+}
+
+.antd-pagination .ant-select-selector:hover {
+  border-color: var(--primary) !important;
+}
+
+.antd-pagination .ant-select-arrow {
+  color: var(--foreground);
+}
+
+.antd-pagination .ant-pagination-options-quick-jumper {
+  color: var(--foreground);
+}
+
+.antd-pagination .ant-pagination-options-quick-jumper input {
+  border-radius: 0.5rem;
+  border-color: var(--border);
+  background-color: var(--card-bg);
+  color: var(--foreground);
+}
+
+.antd-pagination .ant-pagination-options-quick-jumper input:hover {
+  border-color: var(--primary);
+}
+
+.antd-pagination .ant-pagination-options-quick-jumper input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(var(--primary), 0.1);
+}
+
+/* Total items text */
+.antd-pagination .ant-pagination-total-text {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
 }
 
 /* Notifications Popover Styles */
