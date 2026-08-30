@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ICoachSession, ICoachMessage } from "@/apis/services/coach/interface";
 import {
   createSessionAction,
@@ -12,12 +13,13 @@ import {
 import { useCoachTranslations } from "@/hooks/use-translations";
 import SessionSidebar from "./SessionSidebar";
 import ChatWindow from "./ChatWindow";
+import NewSessionDialog from "./NewSessionDialog";
 import { toast } from "sonner";
-
-const ACTIVE_SESSION_KEY = "coach_active_session_id";
 
 export default function CoachClient() {
   const t = useCoachTranslations();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // State
   const [sessions, setSessions] = useState<ICoachSession[]>([]);
@@ -29,21 +31,21 @@ export default function CoachClient() {
   const [sessionToDelete, setSessionToDelete] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isNewSessionDialogOpen, setIsNewSessionDialogOpen] = useState(false);
+
+  // Get session ID from URL params
+  useEffect(() => {
+    const sessionId = searchParams.get("session");
+    if (sessionId) {
+      setActiveSessionId(sessionId);
+    }
+  }, [searchParams]);
 
   // Load sessions on mount
   useEffect(() => {
     loadSessions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Persist active session ID to localStorage
-  useEffect(() => {
-    if (activeSessionId) {
-      localStorage.setItem(ACTIVE_SESSION_KEY, activeSessionId);
-    } else {
-      localStorage.removeItem(ACTIVE_SESSION_KEY);
-    }
-  }, [activeSessionId]);
 
   // Load messages when active session changes
   useEffect(() => {
@@ -53,7 +55,6 @@ export default function CoachClient() {
       setMessages([]);
     }
   }, [activeSessionId]);
-  console.log('activeSessionId', activeSessionId)
   /**
    * Load all sessions
    */
@@ -64,15 +65,18 @@ export default function CoachClient() {
       if (result?.data) {
         setSessions(result.data);
         
-        // Try to restore the last active session from localStorage
-        const savedSessionId = localStorage.getItem(ACTIVE_SESSION_KEY);
+        // Get session ID from URL params
+        const urlSessionId = searchParams.get("session");
         
-        if (savedSessionId && result.data.some(s => s.id === savedSessionId)) {
-          // If saved session exists in the list, restore it
-          setActiveSessionId(savedSessionId);
-        } else if (result.data.length > 0) {
-          // Otherwise, select the most recent session
-          setActiveSessionId(result.data[0].id);
+        if (urlSessionId && result.data.some(s => s.id === urlSessionId)) {
+          // If URL session exists in the list, use it
+          setActiveSessionId(urlSessionId);
+        } else if (!urlSessionId && result.data.length > 0) {
+          // If no URL session but sessions exist, select the most recent
+          const mostRecentSession = result.data[0];
+          setActiveSessionId(mostRecentSession.id);
+          // Update URL with the selected session
+          router.push(`/resume-coach?session=${mostRecentSession.id}`, { scroll: false });
         }
       }
     } catch (error) {
@@ -91,7 +95,6 @@ export default function CoachClient() {
     try {
       const result = await getSessionMessagesAction({ sessionId });
       if (result?.data?.success && Array.isArray(result.data.data)) {
-        console.log('result.data.data', result.data.data)
         setMessages(result.data.data);
       } else {
         setMessages([]);
@@ -106,12 +109,19 @@ export default function CoachClient() {
   };
 
   /**
+   * Open new session dialog
+   */
+  const handleOpenNewSessionDialog = () => {
+    setIsNewSessionDialogOpen(true);
+  };
+
+  /**
    * Create a new session
    */
-  const handleNewSession = async () => {
+  const handleCreateNewSession = async (title?: string) => {
     try {
       const result = await createSessionAction({
-        title: t("sidebar.newChat"),
+        title: title || t("sidebar.newChat"),
       });
 
       if (result?.data?.success && result.data.data) {
@@ -119,11 +129,16 @@ export default function CoachClient() {
         setSessions((prev) => [newSession, ...prev]);
         setActiveSessionId(newSession.id);
         setMessages([]);
+        
+        // Update URL with new session
+        router.push(`/resume-coach?session=${newSession.id}`, { scroll: false });
+        
         toast.success(t("toast.sessionCreated"));
       }
     } catch (error) {
       console.error("Create session error:", error);
       toast.error(t("toast.createError"));
+      throw error; // Re-throw to handle in dialog
     }
   };
 
@@ -132,6 +147,8 @@ export default function CoachClient() {
    */
   const handleSelectSession = (sessionId: string) => {
     setActiveSessionId(sessionId);
+    // Update URL with selected session
+    router.push(`/resume-coach?session=${sessionId}`, { scroll: false });
   };
 
   /**
@@ -144,11 +161,13 @@ export default function CoachClient() {
       if (result?.data?.success) {
         setSessions((prev) => prev.filter((s) => s.id !== sessionId));
 
-        // If deleting active session, clear it
+        // If deleting active session, clear it and URL params
         if (activeSessionId === sessionId) {
           setActiveSessionId(null);
           setMessages([]);
+          router.push('/resume-coach', { scroll: false });
         }
+        
         setDeleteDialogOpen(false);
         setSessionToDelete(null);
         setIsDeleting(false);
@@ -219,6 +238,9 @@ export default function CoachClient() {
           
           setSessions((prev) => [newSession, ...prev]);
           setActiveSessionId(session_id);
+          
+          // Update URL with new session
+          router.push(`/resume-coach?session=${session_id}`, { scroll: false });
         } else if (session_id) {
           // Update existing session's updated_at timestamp
           setSessions((prev) => {
@@ -248,7 +270,7 @@ export default function CoachClient() {
       setIsSending(false);
     }
   };
-  console.log('messages', messages)
+
   return (
     <div className="flex h-full w-full overflow-hidden bg-background">
       {/* Sidebar */}
@@ -256,7 +278,7 @@ export default function CoachClient() {
         sessions={sessions}
         activeSessionId={activeSessionId}
         onSelectSession={handleSelectSession}
-        onNewSession={handleNewSession}
+        onNewSession={handleOpenNewSessionDialog}
         onDeleteSession={handleDeleteSession}
         isLoading={isLoadingSessions}
         sessionToDelete={sessionToDelete}
@@ -274,6 +296,13 @@ export default function CoachClient() {
         isLoading={isLoadingMessages}
         isSending={isSending}
         hasActiveSession={activeSessionId !== null}
+      />
+
+      {/* New Session Dialog */}
+      <NewSessionDialog
+        isOpen={isNewSessionDialogOpen}
+        setIsOpen={setIsNewSessionDialogOpen}
+        onCreateSession={handleCreateNewSession}
       />
     </div>
   );

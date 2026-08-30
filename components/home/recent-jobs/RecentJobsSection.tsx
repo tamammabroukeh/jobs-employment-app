@@ -36,6 +36,7 @@ export default async function RecentJobsSection() {
           {jobs.length > 0 ? (
             jobs.map((job) => (
               <JobCard
+                tags={job.tags}
                 key={job.id}
                 id={job.id}
                 displayId={job.job_id}

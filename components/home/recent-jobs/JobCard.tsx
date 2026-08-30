@@ -14,6 +14,7 @@ interface JobCardProps {
   roles: string[];
   types: string[];
   levels: string[];
+  tags: string[];
   experience: string;
   location: string;
 }
@@ -27,6 +28,7 @@ export default async function JobCard({
   roles,
   types,
   levels,
+  tags,
   experience,
   location,
   displayId,
@@ -46,7 +48,7 @@ export default async function JobCard({
       {/* Job Details */}
       <div className="flex-1 space-y-3 mb-4">
         {/* Badges: Roles, Types, Levels */}
-        <JobCardBadges roles={roles} types={types} levels={levels} />
+        <JobCardBadges tags={tags} roles={roles} types={types} levels={levels} />
 
         {/* Experience, Location, Posted Date */}
         <JobCardDetails

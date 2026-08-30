@@ -6,7 +6,9 @@ import { useProfileTranslations } from '@/hooks/use-translations';
 import { IJobSeekerProfile, IUpdateCareerInfoRequest } from '@/apis/services/job-seeker/interface';
 import { Form, InputNumber, Select, Input } from 'antd';
 import { Controller } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getRolesAction, getCitiesAction } from '@/apis/services/common/actions';
+import type { IRole, ICity } from '@/apis/services/common/interface';
 
 interface CareerInfoDialogProps {
   isOpen: boolean;
@@ -39,6 +41,11 @@ export default function CareerInfoDialog({
 }: CareerInfoDialogProps) {
   const t = useProfileTranslations();
   const [isSaving, setIsSaving] = useState(false);
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [cities, setCities] = useState<ICity[]>([]);
+  const [isLoadingRoles, setIsLoadingRoles] = useState(false);
+  const [isLoadingCities, setIsLoadingCities] = useState(false);
+  
   const { control, handleSubmit, formState: { errors } } = useForm<CareerInfoFormData>({
     defaultValues: {
       salary_range_from: careerInfo.salary_range_from,
@@ -56,6 +63,40 @@ export default function CareerInfoDialog({
       is_actively_seeking: careerInfo.is_actively_seeking || false,
     },
   });
+
+  // Fetch roles and cities when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchRoles();
+      fetchCities();
+    }
+  }, [isOpen]);
+
+  const fetchRoles = async () => {
+    setIsLoadingRoles(true);
+    try {
+      const rolesData = await getRolesAction();
+      console.log('rolesData', rolesData)
+      setRoles(rolesData);
+    } catch (error) {
+      console.error('Error fetching roles:', error);
+    } finally {
+      setIsLoadingRoles(false);
+    }
+  };
+
+  const fetchCities = async () => {
+    setIsLoadingCities(true);
+    try {
+      const citiesData = await getCitiesAction();
+      console.log('citiesData', citiesData)
+      setCities(citiesData);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+    } finally {
+      setIsLoadingCities(false);
+    }
+  };
 
   const onSubmit = async (data: CareerInfoFormData) => {
     setIsSaving(true);
@@ -99,22 +140,19 @@ export default function CareerInfoDialog({
     { label: 'Remote', value: 'remote' },
   ];
 
-  const jobRolesOptions = [
-    { label: 'Frontend Developer', value: 'frontend' },
-    { label: 'Backend Developer', value: 'backend' },
-    { label: 'Full Stack Developer', value: 'fullstack' },
-    { label: 'DevOps Engineer', value: 'devops' },
-    { label: 'UI/UX Designer', value: 'designer' },
-  ];
+  // Convert roles from API to Select options
+  const jobRolesOptions = roles.map(role => ({
+    label: role.name,
+    value: role.name,
+  }));
+  console.log('jobRolesOptions', jobRolesOptions)
 
-  const workCitiesOptions = [
-    { label: 'New York', value: 'new-york' },
-    { label: 'San Francisco', value: 'san-francisco' },
-    { label: 'London', value: 'london' },
-    { label: 'Berlin', value: 'berlin' },
-    { label: 'Remote', value: 'remote' },
-  ];
-
+  // Convert cities from API to Select options
+  const workCitiesOptions = cities.map(city => ({
+    label: city.name,
+    value: city.name,
+  }));
+  console.log('workCitiesOptions', workCitiesOptions)
   const dialogFooter = (
     <Flex classes="gap-2 justify-end">
       <ReusableButton
@@ -279,7 +317,7 @@ export default function CareerInfoDialog({
               )}
             />
 
-            {/* Job Roles - Multi Select */}
+            {/* Job Roles - Multi Select with Tags */}
             <Controller
               name="job_roles"
               control={control}
@@ -293,15 +331,22 @@ export default function CareerInfoDialog({
                 >
                   <Select
                     {...field}
-                    mode="multiple"
+                    mode="tags"
                     options={jobRolesOptions}
-                    placeholder={t('userInfo.careerInfo.jobRoles')}
+                    placeholder={isLoadingRoles ? 'Loading roles...' : t('userInfo.careerInfo.jobRoles')}
+                    loading={isLoadingRoles}
+                    disabled={isLoadingRoles}
+                    notFoundContent={isLoadingRoles ? 'Loading...' : 'No roles found'}
+                    tokenSeparators={[',']}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
                   />
                 </Form.Item>
               )}
             />
 
-            {/* Work Cities - Multi Select */}
+            {/* Work Cities - Multi Select with Tags */}
             <Controller
               name="work_cities"
               control={control}
@@ -315,9 +360,16 @@ export default function CareerInfoDialog({
                 >
                   <Select
                     {...field}
-                    mode="multiple"
+                    mode="tags"
                     options={workCitiesOptions}
-                    placeholder={t('userInfo.careerInfo.workCities')}
+                    placeholder={isLoadingCities ? 'Loading cities...' : t('userInfo.careerInfo.workCities')}
+                    loading={isLoadingCities}
+                    disabled={isLoadingCities}
+                    notFoundContent={isLoadingCities ? 'Loading...' : 'No cities found'}
+                    tokenSeparators={[',']}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
                   />
                 </Form.Item>
               )}

@@ -78,6 +78,7 @@ export default function MatchedJobsList({ jobs, pagination, onPageChange }: Matc
             <JobCardClient
               id={job.id}
               displayId={job.job_id}
+              tags={job.tags}
               companyName={job.company_name}
               companyLogo={job.company_logo ?? ""}
               title={job.title}

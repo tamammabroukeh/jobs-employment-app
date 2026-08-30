@@ -8,11 +8,13 @@ import { useRouter, usePathname } from "next/navigation";
 import ROUTES, { NAVBAR_LINKS } from "@/constants/routes";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslations } from "next-intl";
 
 function NavbarActions() {
   const router = useRouter();
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
+  const t = useTranslations('navbar');
   
   // Filter navbar links based on authentication status and user role
   const visibleLinks = NAVBAR_LINKS.filter(link => {
@@ -43,7 +45,7 @@ function NavbarActions() {
                 : 'text-foreground'
             }`}
           >
-            {link.label}
+            {t(link.labelKey as any)}
           </Link>
         ))}
       </nav>
@@ -63,13 +65,13 @@ function NavbarActions() {
           // Show login/register buttons when user is not logged in
           <>
             <ReusableButton
-              btnText="Login"
+              btnText={t('actions.login')}
               onClick={() => router.push(ROUTES.AUTH.LOGIN)}
               variant="default"
             />
             
             <ReusableButton
-              btnText="Register"
+              btnText={t('actions.register')}
               onClick={() => router.push(ROUTES.AUTH.REGISTER)}
               variant="primary"
             />

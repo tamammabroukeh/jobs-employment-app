@@ -6,6 +6,7 @@ import { signOut } from 'next-auth/react';
 import { toast } from 'sonner';
 import ReusableButton from './Reusable-Components/Reusable-Button';
 import { signOutAction } from '@/apis/services/auth/actions';
+import { useTranslations } from 'next-intl';
 
 interface LogoutButtonProps {
   className?: string;
@@ -14,6 +15,7 @@ interface LogoutButtonProps {
 export default function LogoutButton({ className }: LogoutButtonProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations('navbar');
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -45,7 +47,7 @@ export default function LogoutButton({ className }: LogoutButtonProps) {
 
   return (
     <ReusableButton
-      btnText="Logout"
+      btnText={t('actions.logout')}
       onClick={handleLogout}
       isLoading={isLoading}
       variant="default"

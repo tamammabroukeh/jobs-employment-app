@@ -34,10 +34,12 @@
       "employees": "Employees",
       "location": "Location",
       "website": "Website",
+      "email": "Email",
       "socialMedia": "Social Media",
       "visitWebsite": "Visit Website",
       "industry": "Industry",
-      "companySize": "Company Size"
+      "companySize": "Company Size",
+      "openPositions": "Open Positions"
     },
     "reviews": {
       "addReview": "Add Review",

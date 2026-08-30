@@ -14,6 +14,7 @@ interface JobCardClientProps {
   roles: string[];
   types: string[];
   levels: string[];
+  tags: string[];
   experience: string;
   location: string;
   experienceLabel: string;
@@ -36,6 +37,7 @@ export default function JobCardClient({
   experienceLabel,
   postedOnLabel,
   applyNowLabel,
+  tags
 }: JobCardClientProps) {
 
   return (
@@ -51,7 +53,7 @@ export default function JobCardClient({
       {/* Job Details */}
       <div className="flex-1 space-y-3 mb-4">
         {/* Badges: Roles, Types, Levels */}
-        <JobCardBadges roles={roles} types={types} levels={levels} />
+        <JobCardBadges tags={tags} roles={roles} types={types} levels={levels} />
 
         {/* Experience, Location, Posted Date */}
         <JobCardDetails

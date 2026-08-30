@@ -111,3 +111,7 @@ export function useMeetingsTranslations() {
 export function useCoachTranslations() {
   return useNextIntlTranslations("coach");
 }
+
+export function useNavbarTranslations() {
+  return useNextIntlTranslations("navbar");
+}

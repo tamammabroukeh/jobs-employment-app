@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -8,10 +8,12 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { useTranslations } from 'use-intl';
 import { Typography, ReusableButton, ReusableInput, ReusableSelect } from '@/components/Reusable-Components';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
 import ROUTES from '@/constants/routes';
 import { createJobAction, updateJobAction } from '@/apis/services/employer/actions';
+import { getCategoriesAction } from '@/apis/services/common/actions';
 import type { Job } from '@/apis/services/employer';
+import type { ICategory } from '@/apis/services/common/interface';
 
 const { TextArea } = Input;
 
@@ -59,6 +61,8 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
   const router = useRouter();
   const t = useTranslations('employer.forsa');
   const [isLoading, setIsLoading] = useState(false);
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
 
   const {
     control,
@@ -113,6 +117,23 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
           work_mode: 'on_site',
         },
   });
+
+  // Fetch categories on mount
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    setIsLoadingCategories(true);
+    try {
+      const categoriesData = await getCategoriesAction();
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setIsLoadingCategories(false);
+    }
+  };
 
   const onSubmit = async (data: ForsaFormData) => {
     setIsLoading(true);
@@ -225,31 +246,46 @@ export default function ForsaForm({ mode, initialData, jobId }: ForsaFormProps) 
 
             {/* Category */}
             <div>
+              <label className="block mb-2">
+                <Typography variant="p" className="text-foreground">
+                  {t('employeeSpec.category')} <span className="text-red-500">*</span>
+                </Typography>
+              </label>
               <Controller
                 name="category"
                 control={control}
                 render={({ field }) => (
-                  <ReusableSelect
-                    label={`${t('employeeSpec.category')} *`}
-                    placeholder={t('placeholders.selectCategory')}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    error={errors.category?.message}
+                  <Select
+                    {...field}
+                    mode="tags"
+                    maxCount={1}
+                    placeholder={isLoadingCategories ? 'Loading categories...' : t('placeholders.selectCategory')}
+                    loading={isLoadingCategories}
+                    disabled={isLoadingCategories}
+                    notFoundContent={isLoadingCategories ? 'Loading...' : 'No categories found'}
                     size="large"
-                    selectValues={[
-                      { title: t('categories.engineering'), value: 'Engineering' },
-                      { title: t('categories.design'), value: 'Design' },
-                      { title: t('categories.marketing'), value: 'Marketing' },
-                      { title: t('categories.sales'), value: 'Sales' },
-                      { title: t('categories.product'), value: 'Product' },
-                      { title: t('categories.customerSupport'), value: 'Customer Support' },
-                      { title: t('categories.hr'), value: 'HR' },
-                      { title: t('categories.finance'), value: 'Finance' },
-                      { title: t('categories.other'), value: 'Other' },
-                    ]}
+                    className="w-full"
+                    status={errors.category ? 'error' : undefined}
+                    options={categories.map(cat => ({
+                      label: cat.name,
+                      value: cat.name,
+                    }))}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    onChange={(value) => {
+                      // Since maxCount is 1, value will be an array with one element
+                      field.onChange(Array.isArray(value) ? value[0] : value);
+                    }}
+                    value={field.value ? [field.value] : []}
                   />
                 )}
               />
+              {errors.category && (
+                <Typography variant="small" className="text-red-500 mt-1">
+                  {errors.category.message}
+                </Typography>
+              )}
             </div>
 
             {/* Roles */}

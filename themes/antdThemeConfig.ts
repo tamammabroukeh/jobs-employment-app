@@ -52,6 +52,10 @@ export const antdLightTheme: ThemeConfig = {
       colorText: '#0f172a',
       colorTextDisabled: '#9ca3af',
       colorBorder: '#e2e8f0',
+      colorBgContainer: '#ffffff',
+      colorBgTextHover: '#f1f5f9',
+      colorPrimaryBorder: '#2563eb',
+      itemActiveBgDisabled: '#f1f5f9',
     },
     
     // Button
@@ -137,15 +141,19 @@ export const antdDarkTheme: ThemeConfig = {
   components: {
     // Pagination
     Pagination: {
-      itemActiveBg: '#3b82f6',
+      itemActiveBg: '#910a0a',
       itemBg: '#1e293b',
       itemLinkBg: '#1e293b',
       itemInputBg: '#1e293b',
-      colorPrimary: '#3b82f6',
-      colorPrimaryHover: '#60a5fa',
+      colorPrimary: '#910a0a',
+      colorPrimaryHover: '#b91c1c',
       colorText: '#f1f5f9',
       colorTextDisabled: '#6b7280',
       colorBorder: '#334155',
+      colorBgContainer: '#1e293b',
+      colorBgTextHover: '#334155',
+      colorPrimaryBorder: '#910a0a',
+      itemActiveBgDisabled: '#334155',
     },
     
     // Button

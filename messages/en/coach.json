@@ -44,6 +44,16 @@
     "messageTooLong": "Message must be 1000 characters or less",
     "titleTooLong": "Title must be 100 characters or less"
   },
+  "dialog": {
+    "newSessionTitle": "Create New Chat Session",
+    "newSessionDescription": "Give your chat session a name to help you organize your conversations.",
+    "sessionNameLabel": "Session Name",
+    "sessionNamePlaceholder": "e.g., Resume Review, Cover Letter Help...",
+    "sessionNameHint": "Leave empty to use the default name",
+    "optional": "optional",
+    "create": "Create Session",
+    "cancel": "Cancel"
+  },
   "suggestions": {
     "title": "Quick Suggestions",
     "items": [

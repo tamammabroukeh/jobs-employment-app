@@ -1,0 +1,21 @@
+{
+  "links": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "matchedJobs": "Matched Jobs",
+    "companies": "Companies",
+    "talents": "Talents",
+    "profile": "Profile",
+    "applications": "Applications",
+    "offers": "Offers",
+    "manageJobs": "Manage Jobs",
+    "candidates": "Candidates",
+    "meetings": "Meetings",
+    "aiResumeCoach": "AI Resume Coach"
+  },
+  "actions": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  }
+}

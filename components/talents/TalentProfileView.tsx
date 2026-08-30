@@ -29,7 +29,7 @@ export default async function TalentProfileView({ talentData }: TalentProfileVie
           className="inline-flex items-center gap-2 text-primary hover:text-primary/80 mb-6"
         >
           <i className="fa-solid fa-arrow-left" />
-          <span>{t('profile.backToCandidates')}</span>
+          <span>{t('profile.backToTalents')}</span>
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -66,7 +66,7 @@ export default async function TalentProfileView({ talentData }: TalentProfileVie
                 <div className="mb-6 p-4 bg-primary/10 rounded-lg">
                   <div className="flex items-center justify-between">
                     <Typography variant="p" className="text-foreground font-semibold">
-                      ATS Score
+                      {t('profile.atsScore')}
                     </Typography>
                     <Typography variant="h3" className="text-primary">
                       {profile.ats_score}%
@@ -127,7 +127,7 @@ export default async function TalentProfileView({ talentData }: TalentProfileVie
                     className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
                   >
                     <i className="fa-solid fa-download" />
-                    <span>Download Resume</span>
+                    <span>{t('profile.downloadResume')}</span>
                   </a>
                 </div>
               )}
@@ -142,7 +142,7 @@ export default async function TalentProfileView({ talentData }: TalentProfileVie
                 <div className="flex items-center gap-3 mb-4">
                   <i className="fa-solid fa-star text-warning text-2xl" />
                   <Typography variant="h3" className="text-foreground">
-                    AI Profile Evaluation
+                    {t('profile.aiEvaluation')}
                   </Typography>
                 </div>
                 <Typography variant="p" className="text-foreground whitespace-pre-wrap">
@@ -215,7 +215,7 @@ export default async function TalentProfileView({ talentData }: TalentProfileVie
                   {profile.ai_work_history.map((exp, index) => (
                     <div key={index} className="border-l-2 border-success pl-4">
                       <Typography variant="h4" className="text-foreground mb-1">
-                        {exp.role} {t('profile.at')} {exp.company}
+                        {exp.role} {exp.company}
                       </Typography>
                       <Typography variant="p" className="text-muted-foreground mb-3">
                         {exp.duration}

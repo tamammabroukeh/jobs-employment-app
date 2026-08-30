@@ -44,6 +44,16 @@
     "messageTooLong": "يجب ألا تتجاوز الرسالة 1000 حرف",
     "titleTooLong": "يجب ألا يتجاوز العنوان 100 حرف"
   },
+  "dialog": {
+    "newSessionTitle": "إنشاء جلسة محادثة جديدة",
+    "newSessionDescription": "أعط جلسة المحادثة اسماً لمساعدتك في تنظيم محادثاتك.",
+    "sessionNameLabel": "اسم الجلسة",
+    "sessionNamePlaceholder": "مثال: مراجعة السيرة الذاتية، مساعدة في خطاب التقديم...",
+    "sessionNameHint": "اتركه فارغاً لاستخدام الاسم الافتراضي",
+    "optional": "اختياري",
+    "create": "إنشاء جلسة",
+    "cancel": "إلغاء"
+  },
   "suggestions": {
     "title": "اقتراحات سريعة",
     "items": [

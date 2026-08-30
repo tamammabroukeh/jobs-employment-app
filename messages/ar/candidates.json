@@ -16,7 +16,11 @@
   },
   "profile": {
     "backToCandidates": "العودة إلى المرشحين",
+    "backToTalents": "العودة إلى المواهب",
     "lastUpdated": "آخر تحديث",
+    "atsScore": "درجة ATS",
+    "downloadResume": "تحميل السيرة الذاتية",
+    "aiEvaluation": "تقييم الذكاء الاصطناعي للملف الشخصي",
     "buyThisCV": "شراء هذه السيرة الذاتية",
     "sendOffer": "إرسال عرض مباشر",
     "personalInfo": "المعلومات الشخصية",
