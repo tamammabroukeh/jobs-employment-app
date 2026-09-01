@@ -53,3 +53,20 @@ export interface ICitiesResponse {
 export interface ICategoriesResponse {
   data: ICategory[];
 }
+
+/**
+ * Education Lookup Item Interface
+ * Generic interface for universities, faculties, and majors
+ */
+export interface IEducationLookupItem {
+  _id: string;
+  name: string;
+}
+
+/**
+ * Education Lookup Response
+ * Response for universities, faculties, and majors endpoints
+ */
+export interface IEducationLookupResponse {
+  data: IEducationLookupItem[];
+}

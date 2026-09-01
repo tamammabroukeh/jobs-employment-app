@@ -7,6 +7,8 @@ import { IEducation } from '@/apis/services/job-seeker/interface';
 import { Form, Input, Select } from 'antd';
 import { Controller } from 'react-hook-form';
 import { useEffect, useState } from 'react';
+import { getUniversitiesAction, getFacultiesAction, getMajorsAction } from '@/apis/services/common/actions';
+import type { IEducationLookupItem } from '@/apis/services/common/interface';
 
 interface EducationDialogProps {
   isOpen: boolean;
@@ -23,6 +25,11 @@ export default function EducationDialog({
 }: EducationDialogProps) {
   const t = useProfileTranslations();
   const [isSaving, setIsSaving] = useState(false);
+  const [universities, setUniversities] = useState<IEducationLookupItem[]>([]);
+  const [faculties, setFaculties] = useState<IEducationLookupItem[]>([]);
+  const [majors, setMajors] = useState<IEducationLookupItem[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  
   const { control, handleSubmit, formState: { errors }, reset } = useForm<IEducation>({
     defaultValues: education || {
       certificate_type: 'bachelor',
@@ -36,11 +43,37 @@ export default function EducationDialog({
     },
   });
 
+  // Fetch lookup data when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchLookupData();
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (education) {
       reset(education);
     }
   }, [education, reset]);
+
+  const fetchLookupData = async () => {
+    setIsLoadingData(true);
+    try {
+      const [universitiesData, facultiesData, majorsData] = await Promise.all([
+        getUniversitiesAction(),
+        getFacultiesAction(),
+        getMajorsAction(),
+      ]);
+      
+      setUniversities(universitiesData);
+      setFaculties(facultiesData);
+      setMajors(majorsData);
+    } catch (error) {
+      console.error('Error fetching lookup data:', error);
+    } finally {
+      setIsLoadingData(false);
+    }
+  };
 
   const onSubmit = async (data: IEducation) => {
     setIsSaving(true);
@@ -74,26 +107,21 @@ export default function EducationDialog({
     { label: t('gradeOptions.pass'), value: 'pass' },
   ];
 
-  const universityOptions = [
-    { label: 'Harvard University', value: 'harvard' },
-    { label: 'MIT', value: 'mit' },
-    { label: 'Stanford University', value: 'stanford' },
-    { label: 'Oxford University', value: 'oxford' },
-  ];
+  // Convert lookup data to Select options
+  const universityOptions = universities.map(uni => ({
+    label: uni.name,
+    value: uni.name,
+  }));
 
-  const facultyOptions = [
-    { label: 'Engineering', value: 'engineering' },
-    { label: 'Science', value: 'science' },
-    { label: 'Arts', value: 'arts' },
-    { label: 'Business', value: 'business' },
-  ];
+  const facultyOptions = faculties.map(faculty => ({
+    label: faculty.name,
+    value: faculty.name,
+  }));
 
-  const majorOptions = [
-    { label: 'Computer Science', value: 'computer-science' },
-    { label: 'Software Engineering', value: 'software-engineering' },
-    { label: 'Data Science', value: 'data-science' },
-    { label: 'Business Administration', value: 'business-admin' },
-  ];
+  const majorOptions = majors.map(major => ({
+    label: major.name,
+    value: major.name,
+  }));
 
   const dialogFooter = (
     <Flex classes="gap-2 justify-end">
@@ -134,7 +162,12 @@ export default function EducationDialog({
                   validateStatus={errors.certificate_type ? 'error' : ''}
                   help={errors.certificate_type?.message}
                 >
-                  <Select {...field} options={certificateTypeOptions} placeholder={t('education.certificateType')} />
+                  <Select 
+                    {...field} 
+                    options={certificateTypeOptions} 
+                    placeholder={t('education.certificateType')}
+                    loading={isLoadingData}
+                  />
                 </Form.Item>
               )}
             />
@@ -149,7 +182,16 @@ export default function EducationDialog({
                   validateStatus={errors.university ? 'error' : ''}
                   help={errors.university?.message}
                 >
-                  <Select {...field} options={universityOptions} placeholder={t('education.university')} />
+                  <Select 
+                    {...field} 
+                    options={universityOptions} 
+                    placeholder={t('education.university')}
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    loading={isLoadingData}
+                  />
                 </Form.Item>
               )}
             />
@@ -164,7 +206,16 @@ export default function EducationDialog({
                   validateStatus={errors.faculty ? 'error' : ''}
                   help={errors.faculty?.message}
                 >
-                  <Select {...field} options={facultyOptions} placeholder={t('education.faculty')} />
+                  <Select 
+                    {...field} 
+                    options={facultyOptions} 
+                    placeholder={t('education.faculty')}
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    loading={isLoadingData}
+                  />
                 </Form.Item>
               )}
             />
@@ -179,7 +230,16 @@ export default function EducationDialog({
                   validateStatus={errors.major ? 'error' : ''}
                   help={errors.major?.message}
                 >
-                  <Select {...field} options={majorOptions} placeholder={t('education.major')} />
+                  <Select 
+                    {...field} 
+                    options={majorOptions} 
+                    placeholder={t('education.major')}
+                    showSearch
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    loading={isLoadingData}
+                  />
                 </Form.Item>
               )}
             />

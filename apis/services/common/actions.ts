@@ -1,7 +1,7 @@
 'use server';
 
 import { commonRepository } from './index';
-import type { IRole, ICity, ICategory } from './interface';
+import type { IRole, ICity, ICategory, IEducationLookupItem } from './interface';
 
 /**
  * Get all available job roles
@@ -47,6 +47,57 @@ export async function getCategoriesAction(): Promise<ICategory[]> {
     return response.data;
   } catch (error) {
     console.error('Get categories error:', error);
+    return [];
+  }
+}
+
+/**
+ * Get universities list
+ * Server action for fetching universities
+ * No authentication required
+ * 
+ * @returns Promise with array of universities or empty array on error
+ */
+export async function getUniversitiesAction(): Promise<IEducationLookupItem[]> {
+  try {
+    const response = await commonRepository.getEducationLookup('universities');
+    return response.data;
+  } catch (error) {
+    console.error('Get universities error:', error);
+    return [];
+  }
+}
+
+/**
+ * Get faculties list
+ * Server action for fetching faculties
+ * No authentication required
+ * 
+ * @returns Promise with array of faculties or empty array on error
+ */
+export async function getFacultiesAction(): Promise<IEducationLookupItem[]> {
+  try {
+    const response = await commonRepository.getEducationLookup('faculties');
+    return response.data;
+  } catch (error) {
+    console.error('Get faculties error:', error);
+    return [];
+  }
+}
+
+/**
+ * Get majors list
+ * Server action for fetching majors
+ * No authentication required
+ * 
+ * @returns Promise with array of majors or empty array on error
+ */
+export async function getMajorsAction(): Promise<IEducationLookupItem[]> {
+  try {
+    const response = await commonRepository.getEducationLookup('majors');
+    return response.data;
+  } catch (error) {
+    console.error('Get majors error:', error);
     return [];
   }
 }

@@ -2,8 +2,8 @@ export * from './interface';
 export * from './actions';
 
 import { Methods } from '@/constants/methods';
-import type { IRolesResponse, ICitiesResponse, ICategoriesResponse } from './interface';
-import { authFetcher } from '@/apis/authInstace';
+import type { IRolesResponse, ICitiesResponse, ICategoriesResponse, IEducationLookupResponse } from './interface';
+import apiFetcher from '@/apis/api.instance';
 
 /**
  * Common API Repository
@@ -15,7 +15,7 @@ export const commonRepository = {
    * @returns Promise with roles list
    */
   getRoles: async (): Promise<IRolesResponse> => {
-    return authFetcher<IRolesResponse>('/roles', {
+    return apiFetcher<IRolesResponse>('/roles', {
       method: Methods.GET,
       next: {
         tags: ['roles'],
@@ -29,7 +29,7 @@ export const commonRepository = {
    * @returns Promise with cities list
    */
   getCities: async (): Promise<ICitiesResponse> => {
-    return authFetcher<ICitiesResponse>('/cities', {
+    return apiFetcher<ICitiesResponse>('/cities', {
       method: Methods.GET,
       next: {
         tags: ['cities'],
@@ -43,10 +43,26 @@ export const commonRepository = {
    * @returns Promise with categories list
    */
   getCategories: async (): Promise<ICategoriesResponse> => {
-    return authFetcher<ICategoriesResponse>('/categories', {
+    return apiFetcher<ICategoriesResponse>('/categories', {
       method: Methods.GET,
       next: {
         tags: ['categories'],
+        revalidate: 86400, // Cache for 24 hours
+      },
+    });
+  },
+
+  /**
+   * Get education lookup items (universities, faculties, majors)
+   * No authentication required - intended for autocomplete and dropdown population
+   * @param resource - The lookup table: 'universities', 'faculties', or 'majors'
+   * @returns Promise with lookup items list
+   */
+  getEducationLookup: async (resource: 'universities' | 'faculties' | 'majors'): Promise<IEducationLookupResponse> => {
+    return apiFetcher<IEducationLookupResponse>(`/${resource}`, {
+      method: Methods.GET,
+      next: {
+        tags: [resource],
         revalidate: 86400, // Cache for 24 hours
       },
     });
