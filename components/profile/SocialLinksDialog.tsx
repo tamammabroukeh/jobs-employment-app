@@ -55,13 +55,13 @@ export default function SocialLinksDialog({
   const dialogFooter = (
     <Flex classes="gap-2 justify-end">
       <ReusableButton
-        btnText={t('userInfo.socialLinks.cancel')}
+        btnText={t('userInfo.personalInfo.cancel')}
         onClick={() => setIsOpen(false)}
         variant="default"
         disabled={isSaving}
       />
       <ReusableButton
-        btnText={t('userInfo.socialLinks.save')}
+        btnText={t('userInfo.personalInfo.save')}
         onClick={handleSubmit(onSubmit)}
         variant="primary"
         isLoading={isSaving}

@@ -7,6 +7,8 @@
     "applicationDetails": "Application Details",
     "useProfileDocuments": "Use resume and cover letter from your profile",
     "orUploadNew": "Or upload new documents for this application",
+    "screeningQuestions": "Screening Questions",
+    "answerPlaceholder": "Type your answer here...",
     "coverLetter": "Cover Letter",
     "coverLetterPlaceholder": "Write your cover letter here (max 1000 characters)...",
     "resume": "Resume/CV",
@@ -45,7 +47,8 @@
       "noticePeriodTooLong": "Notice period must not exceed 100 characters",
       "salaryTooLong": "Expected salary must not exceed 100 characters",
       "fileTooLarge": "File size must be less than 5MB",
-      "invalidFileType": "File must be PDF, DOC, or DOCX"
+      "invalidFileType": "File must be PDF, DOC, or DOCX",
+      "answerRequired": "This question is required"
     }
   },
   "jobDetails": {

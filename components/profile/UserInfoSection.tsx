@@ -163,7 +163,7 @@ export default function UserInfoSection({
               size={120}
               src={
                 profileImage ||
-                "https://api.dicebear.com/7.x/avataaars/svg?seed=Default"
+                "https://www.google.com/imgres?q=user%20default%20image%20as%20url&imgurl=https%3A%2F%2Fimg.magnific.com%2Ffree-vector%2Fuser-circles-set_78370-4704.jpg%3Fsemt%3Dais_hybrid%26w%3D740%26q%3D80&imgrefurl=https%3A%2F%2Fwww.magnific.com%2Ffree-photos-vectors%2Fdefault-user&docid=cpJ8NuTCIU3KKM&tbnid=_8G6DkzVIGYofM&vet=12ahUKEwiEooSNkdiWAxVDVKQEHe9gB9EQnPAOegUIsQEQAA..i&w=740&h=740&hcb=2&ved=2ahUKEwiEooSNkdiWAxVDVKQEHe9gB9EQnPAOegUIsQEQAA"
               }
               icon={<UserOutlined />}
               className="border-4 border-primary"

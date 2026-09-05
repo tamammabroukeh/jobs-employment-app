@@ -10,18 +10,21 @@ import {
   IJobSeekerProfile,
   IJobSeekerDocuments,
 } from "@/apis/services/job-seeker/interface";
+import { getTranslations } from "next-intl/server";
 
 interface ProfileClientProps {
   initialProfile: IJobSeekerProfile;
   initialDocuments: IJobSeekerDocuments;
 }
 
-export default function ProfileClient({ initialProfile, initialDocuments }: ProfileClientProps) {
-  console.log('initialProfile', initialProfile)
+export default async function ProfileClient({ initialProfile, initialDocuments }: ProfileClientProps) {
+  console.log('initialProfile', initialProfile)  
+  const t = await getTranslations("profile");
+  
   return (
     <div className="max-w-7xl mx-auto px-4 flex flex-col gap-5 sm:px-6 lg:px-8 py-8">
       <Typography variant="h1" className="mb-6">
-        My Profile
+        {t("title")}
       </Typography>
 
       <UserInfoSection profile={initialProfile} />

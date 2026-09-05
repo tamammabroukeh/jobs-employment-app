@@ -399,6 +399,13 @@ export interface IDeleteCoverLetterResponse {
 /**
  * Apply Job Request Interface
  */
+export interface IApplyJobAnswer {
+  /** The exact question text from the job post */
+  question: string;
+  /** The applicant's answer */
+  answer: string;
+}
+
 export interface IApplyJobRequest {
   job_post_id: string;
   cover_letter?: string;
@@ -411,6 +418,8 @@ export interface IApplyJobRequest {
   positions_suited_for?: string[];
   notice_period?: string;
   expected_salary?: string;
+  /** Answers to the job post's screening questions. Required questions must be answered. */
+  answers?: IApplyJobAnswer[];
 }
 
 /**
