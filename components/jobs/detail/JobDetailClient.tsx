@@ -39,14 +39,14 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
 
   // Format job type display
   const formatJobType = (type: string) => {
-    return type.replace('_', ' ').split(' ').map(word => 
+    return type?.replace('_', ' ').split(' ').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   };
 
   // Format work mode display
   const formatWorkMode = (mode: string) => {
-    return mode.replace('_', ' ').split(' ').map(word => 
+    return mode?.replace('_', ' ').split(' ').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
     ).join(' ');
   };
@@ -452,6 +452,7 @@ export default function JobDetailClient({ job }: JobDetailClientProps) {
       <ApplyJobDialog
         jobId={job.id}
         jobTitle={job.title}
+        questions={job.questions}
         open={applyDialogOpen}
         onClose={() => setApplyDialogOpen(false)}
       />

@@ -582,6 +582,10 @@ const applyJobSchema = z.object({
   positions_suited_for: z.array(z.string().max(100)).optional(),
   notice_period: z.string().max(100).optional(),
   expected_salary: z.string().max(100).optional(),
+  answers: z.array(z.object({
+    question: z.string(),
+    answer: z.string(),
+  })).optional(),
 });
 
 /**

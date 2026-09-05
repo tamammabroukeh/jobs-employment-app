@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { ReusableSelect, ReusableInput } from '@/components/Reusable-Components';
 import { useDebounce } from '@/hooks/use-debounce';
 import { useTypedTranslations } from '@/hooks/use-translations';
 import { TJobTypes } from '@/apis/services/job-seeker/interface';
 import { useSearchParams } from '@/hooks/useSearchParams';
+import { getCategoriesAction } from '@/apis/services/common/actions';
 
 export interface JobFiltersState {
   search: string;
@@ -28,17 +29,6 @@ const JOB_TYPES = [
   { title: 'Freelance', value: 'freelance' },
 ];
 
-const CATEGORIES = [
-  { title: 'Engineering', value: 'Engineering' },
-  { title: 'Design', value: 'Design' },
-  { title: 'Marketing', value: 'Marketing' },
-  { title: 'Sales', value: 'Sales' },
-  { title: 'Product', value: 'Product' },
-  { title: 'Data', value: 'Data' },
-  { title: 'Customer Service', value: 'Customer Service' },
-  { title: 'HR', value: 'HR' },
-];
-
 const SALARY_RANGES = [
   { title: 'Any Salary', value: '' },
   { title: '$1,000+', value: '1000' },
@@ -53,6 +43,26 @@ export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
   const t = useTypedTranslations('jobs');
     const { getParam, deleteParam } = useSearchParams()
     const searchParam = getParam("search")
+  const [categoryOptions, setCategoryOptions] = useState<{ title: string; value: string }[]>([]);
+
+  // Fetch categories from the API on mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getCategoriesAction();
+        setCategoryOptions(
+          categoriesData.map((category) => ({
+            title: category.name,
+            value: category.name,
+          }))
+        );
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
   const { control, watch, reset } = useForm<JobFiltersState>({
     defaultValues: {
       search: searchParam ?? '',
@@ -157,7 +167,7 @@ export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
           render={({ field }) => (
             <ReusableSelect
               placeholder={t('filters.selectCategory')}
-              selectValues={CATEGORIES}
+              selectValues={categoryOptions}
               value={field.value}
               onValueChange={field.onChange}
               allowClear

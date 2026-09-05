@@ -5,6 +5,8 @@
   "applyDialog": {
     "title": "التقديم على \"{jobTitle}\"",
     "applicationDetails": "تفاصيل التقديم",
+    "screeningQuestions": "أسئلة الفرز",
+    "answerPlaceholder": "اكتب إجابتك هنا...",
     "currentStatus": "حالة العمل الحالية",
     "statusWorking": "أعمل حاليًا",
     "statusNotWorking": "لا أعمل",
@@ -23,7 +25,10 @@
     "cancel": "إلغاء",
     "applying": "جاري الإرسال...",
     "success": "تم إرسال الطلب بنجاح!",
-    "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."
+    "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى.",
+    "validation": {
+      "answerRequired": "هذا السؤال مطلوب"
+    }
   },
   "jobDetails": {
     "title": "تفاصيل الوظيفة",

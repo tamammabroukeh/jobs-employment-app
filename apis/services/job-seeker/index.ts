@@ -283,6 +283,12 @@ export const jobSeekerRepository = {
     }
     if (data.notice_period) formData.append('notice_period', data.notice_period);
     if (data.expected_salary) formData.append('expected_salary', data.expected_salary);
+    if (data.answers) {
+      data.answers.forEach((answer, index) => {
+        formData.append(`answers[${index}][question]`, answer.question);
+        formData.append(`answers[${index}][answer]`, answer.answer);
+      });
+    }
     
     return authFetcher<IApplyJobResponse>('/job-seeker/apply', {
       method: Methods.POST,

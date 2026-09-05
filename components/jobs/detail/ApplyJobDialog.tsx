@@ -13,6 +13,7 @@ import {
 import { Input } from "antd";
 import { useJobDetailTranslations } from "@/hooks/use-translations";
 import { applyForJobAction } from "@/apis/services/job-seeker/actions";
+import type { JobQuestion } from "@/apis/services/jobs/interfaces";
 import { toast } from "sonner";
 
 const { TextArea } = Input;
@@ -22,6 +23,7 @@ interface ApplyJobDialogProps {
   jobTitle: string;
   open: boolean;
   onClose: () => void;
+  questions?: JobQuestion[];
 }
 
 // Zod schema matching API requirements
@@ -36,6 +38,8 @@ const applyJobSchema = z.object({
   positions_suited_for: z.string().optional(), // Will be converted to array
   notice_period: z.string().max(100).optional(),
   expected_salary: z.string().max(100).optional(),
+  // Answers to the job post's screening questions (keyed by index)
+  answers: z.array(z.string()).optional(),
 });
 
 type ApplyJobFormData = z.infer<typeof applyJobSchema>;
@@ -45,6 +49,7 @@ export default function ApplyJobDialog({
   jobTitle,
   open,
   onClose,
+  questions = [],
 }: ApplyJobDialogProps) {
   const t = useJobDetailTranslations();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -57,6 +62,8 @@ export default function ApplyJobDialog({
     formState: { errors },
     reset,
     setValue,
+    setError,
+    clearErrors,
   } = useForm<ApplyJobFormData>({
     resolver: zodResolver(applyJobSchema),
     defaultValues: {
@@ -69,6 +76,7 @@ export default function ApplyJobDialog({
       positions_suited_for: "",
       notice_period: "",
       expected_salary: "",
+      answers: questions.map(() => ""),
     },
   });
 
@@ -98,6 +106,23 @@ export default function ApplyJobDialog({
   };
 
   const onSubmit = async (data: ApplyJobFormData) => {
+    // Validate required screening questions
+    let hasQuestionError = false;
+    questions.forEach((question, index) => {
+      const answer = data.answers?.[index]?.trim();
+      if (question.required && !answer) {
+        setError(`answers.${index}` as const, {
+          type: "manual",
+          message: t("applyDialog.validation.answerRequired"),
+        });
+        hasQuestionError = true;
+      }
+    });
+
+    if (hasQuestionError) {
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -105,6 +130,14 @@ export default function ApplyJobDialog({
       const positions = data.positions_suited_for
         ? data.positions_suited_for.split(',').map(p => p.trim()).filter(p => p)
         : undefined;
+
+      // Build answers array from the job's questions and provided answers
+      const answers = questions
+        .map((question, index) => ({
+          question: question.question,
+          answer: data.answers?.[index]?.trim() ?? "",
+        }))
+        .filter((item) => item.answer);
 
       const result = await applyForJobAction({
         job_post_id: jobId,
@@ -118,6 +151,7 @@ export default function ApplyJobDialog({
         positions_suited_for: positions,
         notice_period: data.notice_period,
         expected_salary: data.expected_salary,
+        answers: answers.length > 0 ? answers : undefined,
       });
 
       if (result?.data?.success) {
@@ -167,6 +201,51 @@ export default function ApplyJobDialog({
               {t("applyDialog.orUploadNew")}
             </Typography>
           </div>
+
+          {/* Screening Questions */}
+          {questions.length > 0 && (
+            <div className="space-y-4">
+              <Typography variant="h4" className="text-foreground">
+                {t("applyDialog.screeningQuestions")}
+              </Typography>
+              {questions.map((question, index) => (
+                <div key={`question-${index}`}>
+                  <label className="block mb-2">
+                    <Typography variant="small" className="text-foreground font-medium">
+                      {question.question}
+                      {question.required && (
+                        <span className="text-red-500 ml-1">*</span>
+                      )}
+                    </Typography>
+                  </label>
+                  <Controller
+                    name={`answers.${index}` as const}
+                    control={control}
+                    render={({ field }) => (
+                      <TextArea
+                        {...field}
+                        value={field.value ?? ""}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          if (errors.answers?.[index]) {
+                            clearErrors(`answers.${index}` as const);
+                          }
+                        }}
+                        rows={3}
+                        placeholder={t("applyDialog.answerPlaceholder")}
+                        status={errors.answers?.[index] ? "error" : undefined}
+                      />
+                    )}
+                  />
+                  {errors.answers?.[index] && (
+                    <Typography variant="p" className="text-red-500 text-sm mt-1">
+                      {errors.answers[index]?.message}
+                    </Typography>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Cover Letter */}
           <div>
