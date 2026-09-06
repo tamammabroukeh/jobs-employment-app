@@ -367,7 +367,7 @@ function ApplicationCard({
                 variant="small"
                 className="text-primary font-semibold"
               >
-                {application.ats_score}% Match
+                {application.ats_score}% {t("manageJobs.applications.match")}
               </Typography>
             </div>
 
@@ -378,8 +378,12 @@ function ApplicationCard({
               )}`}
             >
               <i className={`fa-solid ${getStatusIcon(application.status)}`} />
-              {application.status.charAt(0).toUpperCase() +
-                application.status.slice(1)}
+              {t(
+                `manageJobs.applications.status${
+                  application.status.charAt(0).toUpperCase() +
+                  application.status.slice(1)
+                }` as Parameters<typeof t>[0],
+              )}
             </span>
           </div>
         </div>
@@ -782,7 +786,7 @@ function JobCard({
                   </Typography>
                   {!job?.is_active && (
                     <span className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded">
-                      Inactive
+                      {t("manageJobs.card.inactive")}
                     </span>
                   )}
                 </div>
@@ -830,7 +834,9 @@ function JobCard({
                 <i className="fa-solid fa-users text-sm text-primary" />
                 <Typography variant="small" className="text-muted-foreground">
                   {job?.vacancies}{" "}
-                  {job?.vacancies === 1 ? "position" : "positions"}
+                  {job?.vacancies === 1
+                    ? t("manageJobs.card.position")
+                    : t("manageJobs.card.positions")}
                 </Typography>
               </div>
               <div className="flex items-center gap-2">
@@ -838,8 +844,8 @@ function JobCard({
                 <Typography variant="small" className="text-muted-foreground">
                   {job?.application_count}{" "}
                   {job?.application_count === 1
-                    ? "application"
-                    : "applications"}
+                    ? t("manageJobs.card.application")
+                    : t("manageJobs.card.applications")}
                 </Typography>
               </div>
             </div>
@@ -851,12 +857,14 @@ function JobCard({
                   variant="small"
                   className="text-muted-foreground mb-1"
                 >
-                  Experience Required
+                  {t("manageJobs.card.experienceRequired")}
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
                   {job?.experience_years}{" "}
-                  {job?.experience_years === 1 ? "year" : "years"} •{" "}
-                  {job?.job_level}
+                  {job?.experience_years === 1
+                    ? t("manageJobs.card.year")
+                    : t("manageJobs.card.years")}{" "}
+                  • {job?.job_level}
                 </Typography>
               </div>
               <div>
@@ -864,7 +872,7 @@ function JobCard({
                   variant="small"
                   className="text-muted-foreground mb-1"
                 >
-                  Education
+                  {t("manageJobs.card.education")}
                 </Typography>
                 <Typography
                   variant="p"
@@ -878,7 +886,7 @@ function JobCard({
                   variant="small"
                   className="text-muted-foreground mb-1"
                 >
-                  Languages
+                  {t("manageJobs.card.languages")}
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
                   {job?.languages?.join(", ")}
@@ -889,7 +897,7 @@ function JobCard({
                   variant="small"
                   className="text-muted-foreground mb-1"
                 >
-                  Expires At
+                  {t("manageJobs.card.expiresAt")}
                 </Typography>
                 <Typography variant="p" className="text-foreground text-sm">
                   {new Date(job?.expires_at).toLocaleDateString()}
@@ -902,12 +910,12 @@ function JobCard({
               <div className="flex gap-2 mt-3">
                 {job?.portfolio_required && (
                   <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                    Portfolio Required
+                    {t("manageJobs.card.portfolioRequired")}
                   </span>
                 )}
                 {job?.cover_letter_required && (
                   <span className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">
-                    Cover Letter Required
+                    {t("manageJobs.card.coverLetterRequired")}
                   </span>
                 )}
               </div>

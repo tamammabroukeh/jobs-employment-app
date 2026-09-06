@@ -550,10 +550,10 @@ export default function CompanyPrivateInfoSection({ initialData, onUpdate }: Com
                 <InfoRow label={t('socialMedia.facebook')} value={privateInfo.social_media.facebook} isLink />
               )}
               {privateInfo.social_media?.instagram && (
-                <InfoRow label={t('socialMedia.instagram')} value={privateInfo.social_media.instagram} />
+                <InfoRow label={t('socialMedia.instagram')} value={privateInfo.social_media.instagram} isLink/>
               )}
               {privateInfo.social_media?.telegram && (
-                <InfoRow label={t('socialMedia.telegram')} value={privateInfo.social_media.telegram} />
+                <InfoRow label={t('socialMedia.telegram')} value={privateInfo.social_media.telegram} isLink />
               )}
               {privateInfo.social_media?.behance && (
                 <InfoRow label={t('socialMedia.behance')} value={privateInfo.social_media.behance} isLink />
@@ -569,12 +569,12 @@ export default function CompanyPrivateInfoSection({ initialData, onUpdate }: Com
 function InfoRow({ label, value, isLink = false }: { label: string; value?: string | null; isLink?: boolean }) {
   const t = useEmployerProfileTranslations();
   return (
-    <div>
+    <div className='flex flex-col w-fit'> 
       <Typography variant="small" className="text-muted-foreground mb-1">
         {label}
       </Typography>
       {isLink && value ? (
-        <a href={value} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+        <a href={value}  target="_blank" rel="noopener noreferrer" className="text-primary! hover:underline">
           {value}
         </a>
       ) : (

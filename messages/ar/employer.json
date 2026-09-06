@@ -163,7 +163,20 @@
     },
     "card": {
       "edit": "تعديل",
-      "openJobs": "وظائف مفتوحة"
+      "openJobs": "وظائف مفتوحة",
+      "inactive": "غير نشط",
+      "position": "وظيفة",
+      "positions": "وظائف",
+      "application": "طلب",
+      "applications": "طلبات",
+      "experienceRequired": "الخبرة المطلوبة",
+      "year": "سنة",
+      "years": "سنوات",
+      "education": "التعليم",
+      "languages": "اللغات",
+      "expiresAt": "تنتهي في",
+      "portfolioRequired": "معرض الأعمال مطلوب",
+      "coverLetterRequired": "خطاب التقديم مطلوب"
     },
     "actions": {
       "edit": "تعديل",
@@ -209,6 +222,7 @@
       "lastWork": "آخر عمل",
       "experience": "الخبرة",
       "years": "سنوات",
+      "match": "تطابق",
       "expectedSalary": "الراتب المتوقع",
       "noticePeriod": "فترة الإشعار",
       "appliedAt": "تاريخ التقديم",

@@ -9,12 +9,10 @@ import type { Job } from '@/apis/services/employer';
 export default async function ManageJobsPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
   const session = await getServerSession(authOptions);
-  
-  console.log("session", session);
-  
+
   // Check if user is authenticated and is an employer
   if (!session?.user) {
     redirect('/auth/login?callbackUrl=/manage-jobs');
@@ -24,7 +22,8 @@ export default async function ManageJobsPage({
     redirect('/unauthorized');
   }
 
-  const page = Number(searchParams.page) || 1;
+  const params = await searchParams;
+  const page = Number(params?.page) || 1;
 
   let jobsData: Job[] = [];
   try {
@@ -33,9 +32,7 @@ export default async function ManageJobsPage({
     console.error('Error fetching employer jobs:', error);
     jobsData = [];
   }
-  
-  console.log('jobsData', jobsData);
-  
+
   return (
     <div className="min-h-screen bg-background">
       <Suspense fallback={<div>Loading...</div>}>

@@ -163,7 +163,20 @@
     },
     "card": {
       "edit": "Edit",
-      "openJobs": "open jobs"
+      "openJobs": "open jobs",
+      "inactive": "Inactive",
+      "position": "position",
+      "positions": "positions",
+      "application": "application",
+      "applications": "applications",
+      "experienceRequired": "Experience Required",
+      "year": "year",
+      "years": "years",
+      "education": "Education",
+      "languages": "Languages",
+      "expiresAt": "Expires At",
+      "portfolioRequired": "Portfolio Required",
+      "coverLetterRequired": "Cover Letter Required"
     },
     "actions": {
       "edit": "Edit",
@@ -209,6 +222,7 @@
       "lastWork": "Last Work",
       "experience": "Experience",
       "years": "years",
+      "match": "Match",
       "expectedSalary": "Expected Salary",
       "noticePeriod": "Notice Period",
       "appliedAt": "Applied At",
