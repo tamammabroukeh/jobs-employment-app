@@ -43,7 +43,8 @@ const ReusableSelect = ({
         </label>
       )}
       <Select
-        defaultValue={defaultValue}
+        id="my-custom-reusable-select"
+        defaultValue={defaultValue}  
         value={value}
         placeholder={placeholder}
         onChange={onValueChange}

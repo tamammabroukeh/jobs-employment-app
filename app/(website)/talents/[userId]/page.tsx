@@ -20,6 +20,7 @@ export async function generateMetadata({ params }: TalentDetailPageProps): Promi
       description: result.data.user.profile.ai_summary || `View ${talentName}'s professional profile and experience.`,
     };
   } catch (error) {
+    console.log('error', error)
     return {
       title: 'Talent Profile',
       description: 'View talent professional profile and experience.',

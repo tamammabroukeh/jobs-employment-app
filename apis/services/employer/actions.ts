@@ -78,6 +78,11 @@ export const createJobAction = actionClient
       console.error('[Create Job Action] Error:', error);
 
       if (error instanceof Error) {
+      //   return {
+      //   success: false,
+      //   message: error || "Job created successfully",
+      //   data: [],
+      // };
         throw new Error(error.message || 'Failed to create job');
       }
       throw new Error('Failed to create job. Please try again.');
