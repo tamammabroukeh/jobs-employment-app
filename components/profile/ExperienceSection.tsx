@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 import { ReusableCard, ReusableButton, Flex, ReusableDialog } from '@/components/Reusable-Components';
 import { useProfileTranslations } from "@/hooks/use-translations";
 import { IWorkExperience } from '@/apis/services/job-seeker/interface';
@@ -17,6 +18,7 @@ export default function ExperienceSection({
   experiences,
 }: ExperienceSectionProps) {
   const t = useProfileTranslations();
+  const router = useRouter();
   const [isExperienceDialogOpen, setIsExperienceDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<{ index: number; experience: IWorkExperience } | undefined>();
@@ -30,6 +32,7 @@ export default function ExperienceSection({
 
     if (result.data?.success) {
       toast.success(result.data.message || 'Work experience updated successfully');
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);

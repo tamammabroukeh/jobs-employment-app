@@ -36,7 +36,7 @@ export default function EducationDialog({
       university: '',
       faculty: '',
       major: '',
-      major_name: '',
+      // major_name: '',
       grade: 'good',
       from_date: '',
       awarded_date: '',
@@ -244,7 +244,7 @@ export default function EducationDialog({
               )}
             />
 
-            <Controller
+            {/* <Controller
               name="major_name"
               control={control}
               rules={{ required: 'Major name is required' }}
@@ -258,7 +258,7 @@ export default function EducationDialog({
                   <Input {...field} placeholder={t('education.majorName')} />
                 </Form.Item>
               )}
-            />
+            /> */}
 
             <Controller
               name="grade"

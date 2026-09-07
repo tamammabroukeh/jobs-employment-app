@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   ReusableCard,
   ReusableButton,
@@ -22,6 +23,7 @@ export default function EducationSection({
   educations,
 }: EducationSectionProps) {
   const t = useProfileTranslations();
+  const router = useRouter();
   const [isEducationDialogOpen, setIsEducationDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedEducation, setSelectedEducation] = useState<
@@ -75,7 +77,7 @@ export default function EducationSection({
       }
     }
   };
-
+  console.log('educations', educations)
   const formatDate = (dateString: string) => {
     const [year, month] = dateString.split("-");
     const date = new Date(parseInt(year), parseInt(month) - 1);
@@ -92,6 +94,7 @@ export default function EducationSection({
 
     if (result.data?.success) {
       toast.success(result.data.message || "Education updated successfully");
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);
@@ -127,7 +130,7 @@ export default function EducationSection({
                   <h3 className="text-lg font-semibold">
                     {t(`certificateTypes.${education.certificate_type}`)}
                   </h3>
-                  <p className="text-gray-600">{education.major_name}</p>
+                  <p className="text-gray-600">{education.major}</p>
                   <p className="text-sm text-gray-500 mt-1">
                     {education.university} • {education.faculty}
                   </p>

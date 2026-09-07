@@ -43,10 +43,10 @@ export const jobSeekerRepository = {
   getProfile: (): Promise<IJobSeekerProfileResponse> =>
     authFetcher<IJobSeekerProfileResponse>('/job-seeker/profile', {
       method: Methods.GET,
-      next: { 
-        tags: ['job-seeker-profile'],
-        revalidate: 3600 // Cache for 1 hour, but can be invalidated with revalidateTag
-      } 
+      // Per-user authenticated data: never store in the shared Data Cache
+      // (would risk leaking one user's profile to another). We rely on
+      // router.refresh() from the client to re-render and refetch after updates.
+      cache: 'no-store',
     }),
 
   /**
