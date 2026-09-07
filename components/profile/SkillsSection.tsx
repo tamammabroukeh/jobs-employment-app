@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 import { ReusableCard, ReusableButton, Flex } from '@/components/Reusable-Components';
 import { useProfileTranslations } from "@/hooks/use-translations";
 import { ISkill } from '@/apis/services/job-seeker/interface';
@@ -17,6 +18,7 @@ export default function SkillsSection({
   skills,
 }: SkillsSectionProps) {
   const t = useProfileTranslations();
+  const router = useRouter();
   const [isSkillsDialogOpen, setIsSkillsDialogOpen] = useState(false);
 
   const handleEditSkills = () => {
@@ -31,6 +33,7 @@ export default function SkillsSection({
 
     if (result.data?.success) {
       toast.success(result.data.message || "Skills updated successfully");
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);

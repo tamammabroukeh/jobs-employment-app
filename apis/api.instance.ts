@@ -53,17 +53,40 @@ export default async function apiFetcher<T>(
   console.log('isFormData', isFormData);
   console.log('headers', headers);
   
+  // Determine cache/revalidate settings.
+  // IMPORTANT: `cache: "no-cache"` opts a request OUT of the Next.js Data Cache,
+  // which also disables `next.tags` and makes `revalidateTag` a no-op.
+  // So when the caller provides `next` options (tags/revalidate), we must NOT
+  // force `no-cache` — otherwise the tag is never registered and cannot be revalidated.
+  const hasCallerNextOptions = !!requestInit?.next;
+  const cacheSetting =
+    requestInit?.cache ?? (hasCallerNextOptions ? undefined : "no-cache");
+
+  // `next` revalidate/tags cannot be combined with `cache: "no-store"`/"no-cache"
+  // (Next.js warns and the options conflict). Only apply a `next` object when we
+  // aren't forcing the request out of the cache.
+  const isUncached = cacheSetting === "no-store" || cacheSetting === "no-cache";
+  const nextSetting = requestInit?.next ??
+    (isUncached ? undefined : { revalidate: DEFAULT_REVALIDATION_TIME });
+
+  // Strip the caller's cache/next so our resolved values are the only ones applied
+  // (prevents a leftover `next` from conflicting with a `no-store`/`no-cache` cache).
+  const { cache: _callerCache, next: _callerNext, skipDefaultHeaders: _skip, ...restRequestInit } =
+    requestInit ?? {};
+
+    console.log('_callerCache', _callerCache)
+    console.log('_callerNext', _callerNext)
+    console.log('_skip', _skip)
+
   // Merge default options with provided options
   const init: RequestInit = {
     method: requestInit?.method ?? "GET",
     headers,
     signal: controller.signal,
-    ...requestInit,
-    // Only set default cache/revalidate if not provided
-    cache: requestInit?.cache ?? "no-cache",
-    next: requestInit?.next ?? {
-      revalidate: DEFAULT_REVALIDATION_TIME,
-    },
+    ...restRequestInit,
+    // Only set cache when we actually have a value (avoid conflicting with next.tags)
+    ...(cacheSetting ? { cache: cacheSetting } : {}),
+    ...(nextSetting ? { next: nextSetting } : {}),
   };
   console.log(
     `Fetching: ${url} (attempt ${retryCount + 1}/${MAX_RETRIES + 1})`,

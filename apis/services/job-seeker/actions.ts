@@ -74,7 +74,6 @@ const updateEducationSchema = z.object({
     university: z.string(),
     faculty: z.string(),
     major: z.string(),
-    major_name: z.string(),
     grade: z.string(),
     from_date: z.string(),
     awarded_date: z.string(),

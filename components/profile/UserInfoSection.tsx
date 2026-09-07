@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Avatar } from "antd";
 import { UserOutlined, EditOutlined, CameraOutlined } from "@ant-design/icons";
 import {
@@ -24,6 +25,7 @@ export default function UserInfoSection({
   profile,
 }: UserInfoSectionProps) {
   const t = useProfileTranslations();
+  const router = useRouter();
   const [isPersonalDialogOpen, setIsPersonalDialogOpen] = useState(false);
   const [isCareerDialogOpen, setIsCareerDialogOpen] = useState(false);
   const [isSocialLinksDialogOpen, setIsSocialLinksDialogOpen] = useState(false);
@@ -52,6 +54,7 @@ export default function UserInfoSection({
     
     if (result.data?.success) {
       toast.success(result.data.message || 'Personal information updated successfully');
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);
@@ -68,6 +71,7 @@ export default function UserInfoSection({
     
     if (result.data?.success) {
       toast.success(result.data.message || 'Career information updated successfully');
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);
@@ -84,6 +88,7 @@ export default function UserInfoSection({
     
     if (result.data?.success) {
       toast.success(result.data.message || 'Social links updated successfully');
+      router.refresh();
       return true;
     } else if (result.serverError) {
       toast.error(result.serverError);
@@ -128,6 +133,7 @@ export default function UserInfoSection({
         if (result.data.profile?.image) {
           setProfileImage(result.data.profile.image);
         }
+        router.refresh();
       } else if (result.serverError) {
         toast.error(result.serverError);
         // Revert to original image on error
