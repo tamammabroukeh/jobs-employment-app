@@ -291,43 +291,78 @@ export interface JobSearchResponse {
 }
 
 // Matched Jobs Interfaces
-export interface MatchedJobsFilters {
-  min_score?: number;
-  page?: number;
+
+/**
+ * Embedded company summary returned with a matched job.
+ */
+export interface IMatchedJobCompany {
+  _id: string;
+  slug: string;
+  name: string;
+  logo: string | null;
+  description: string;
+  city: string;
+  country: string;
+  social_media: Record<string, string> | null;
 }
 
+/**
+ * A single AI-matched job returned from `/job-seeker/match-resume-to-jobs`.
+ * Many fields are optional because minimal/legacy job posts may omit them.
+ */
 export interface MatchedJob {
   title: string;
   description: string;
-  requirements: string;
+  requirements?: string;
   company_name: string;
   company_logo?: string | null;
+  communication_method?: TCommunicationMethods;
+  communication_value?: string | null;
   job_type: string;
-  work_mode: string;
-  experience_level: string;
-  experience_required: string;
-  location: string;
+  work_mode?: string;
+  gender?: TGender;
+  age_from?: number | null;
+  age_to?: number | null;
+  education_level?: string;
+  job_level?: string;
+  experience_years?: number;
+  languages?: string[];
+  vacancies?: number;
+  city?: string;
+  address?: string;
+  salary_from?: number | string;
+  salary_to?: number | string;
+  currency?: string;
+  display_salary?: boolean;
+  incentives?: string | null;
+  portfolio_required?: boolean;
+  cover_letter_required?: boolean;
   category?: string;
-  salary_range: string;
-  tags: string[];
-  roles: string[];
-  job_id: string;
+  tags?: string[];
+  roles?: string[];
+  questions?: Array<{ question: string; required: boolean }>;
+  job_id?: string;
   employer_id: string;
+  company_profile_id?: string;
+  company?: IMatchedJobCompany;
   is_active: boolean;
+  has_applied?: boolean;
+  expires_at?: string;
   updated_at: string;
   created_at: string;
   id: string;
-  match_score: number;
+  /** Skills from the resume that matched the job (array of strings). */
+  matched_skills: string[];
+  matched_skills_score: number;
 }
 
-export interface MatchedJobsResponse {
-  data: MatchedJob[];
-  current_page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  next_page: number | null;
-  prev_page: number | null;
+/**
+ * Response from `/job-seeker/match-resume-to-jobs`.
+ * Returns a flat list of AI-matched jobs (not paginated).
+ */
+export interface MatchResumeToJobsResponse {
+  matches_found: number;
+  jobs: MatchedJob[];
 }
 
 // Resume Upload Interfaces

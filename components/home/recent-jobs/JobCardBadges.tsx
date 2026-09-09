@@ -5,12 +5,13 @@ interface JobCardBadgesProps {
   types: string[];
   levels: string[];
   tags: string[];
+  /** Optional: skills from the seeker's resume that matched this job. */
+  matchedSkills?: string[];
+  /** Optional: label rendered above the matched skills. */
+  matchedSkillsLabel?: string;
 }
 
-export default function JobCardBadges({ roles, types, levels, tags }: JobCardBadgesProps) {
-  console.log('roles', roles)
-  console.log('types', roles)
-  console.log('levels', levels)
+export default function JobCardBadges({ roles, types, levels, tags, matchedSkills, matchedSkillsLabel }: JobCardBadgesProps) {
   return (
     <div className="space-y-3">
       {/* Roles */}
@@ -21,6 +22,25 @@ export default function JobCardBadges({ roles, types, levels, tags }: JobCardBad
               {role}
             </ReusableBadge>
           ))}
+        </div>
+      )}
+
+      {/* Matched Skills (from resume) */}
+      {matchedSkills && matchedSkills.length > 0 && (
+        <div className="space-y-1">
+          {matchedSkillsLabel && (
+            <p className="text-xs font-medium text-success">
+              <i className="fa-solid fa-circle-check mr-1" />
+              {matchedSkillsLabel}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-2">
+            {matchedSkills.map((skill, index) => (
+              <ReusableBadge key={index} variant="success">
+                {skill}
+              </ReusableBadge>
+            ))}
+          </div>
         </div>
       )}
 

@@ -13,18 +13,18 @@ interface MatchedJobsFiltersProps {
   onFiltersChange: (filters: MatchedJobsFiltersState) => void;
 }
 
-// Match score filter options
-const MATCH_SCORE_OPTIONS = [
-  { title: 'All Matches', value: '' },
-  { title: 'Score 2+', value: '2' },
-  { title: 'Score 4+', value: '4' },
-  { title: 'Score 6+', value: '6' },
-  { title: 'Score 8+', value: '8' },
-  { title: 'Score 10+', value: '10' },
-];
-
 export default function MatchedJobsFilters({ onFiltersChange }: MatchedJobsFiltersProps) {
   const t = useTypedTranslations('jobs');
+
+  // Match score filter options (labels translated)
+  const MATCH_SCORE_OPTIONS = [
+    { title: t('matchedJobs.scoreAll'), value: '' },
+    { title: t('matchedJobs.scoreAtLeast', { score: 2 }), value: '2' },
+    { title: t('matchedJobs.scoreAtLeast', { score: 4 }), value: '4' },
+    { title: t('matchedJobs.scoreAtLeast', { score: 6 }), value: '6' },
+    { title: t('matchedJobs.scoreAtLeast', { score: 8 }), value: '8' },
+    { title: t('matchedJobs.scoreAtLeast', { score: 10 }), value: '10' },
+  ];
 
   const { control, watch, reset } = useForm<MatchedJobsFiltersState>({
     defaultValues: {
