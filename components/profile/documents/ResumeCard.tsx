@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { UploadOutlined, DeleteOutlined, EditOutlined, FilePdfOutlined } from "@ant-design/icons";
 import { Typography, ReusableButton } from "@/components/Reusable-Components";
 import { useProfileTranslations } from "@/hooks/use-translations";
+import Link from "next/link";
 
 interface ResumeCardProps {
   resumeUrl: string | null;
@@ -26,19 +27,19 @@ export default function ResumeCard({ resumeUrl, isUploading, onFileChange, onDel
               {t("documents.resume.title")}
             </Typography>
             {resumeUrl ? (
-              <>
+              <div className="flex gap-2">
                 <Typography variant="text" className="text-doc-section-text-muted mb-2">
                   {t("documents.resume.uploaded")}
                 </Typography>
-                <a
+                <Link
                   href={resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary hover:underline text-sm"
                 >
                   {t("documents.resume.viewResume")}
-                </a>
-              </>
+                </Link>
+              </ div>
             ) : (
               <Typography variant="text" className="text-doc-section-text-muted">
                 {t("documents.resume.uploadPrompt")}
