@@ -12,7 +12,26 @@
     "age": "Age",
     "more": "more",
     "skills": "skills",
-    "activelySeeking": "Actively Seeking"
+    "activelySeeking": "Actively Seeking",
+    "matchedSkills": "Matched Skills"
+  },
+  "matchPage": {
+    "pageTitle": "Match Candidates - Find the Right Fit",
+    "pageDescription": "Use AI to match job seekers to your job description based on skills and requirements.",
+    "title": "MATCH CANDIDATES TO YOUR JOB",
+    "description": "Paste a job description and let AI find the most relevant candidates, ranked by matched skills.",
+    "jobDescriptionLabel": "Job Description",
+    "jobDescriptionPlaceholder": "e.g. Senior React developer with 5+ years experience, strong TypeScript and Next.js skills...",
+    "limitLabel": "Max candidates",
+    "matchButton": "Match Candidates",
+    "extractedRequirements": "Extracted Requirements",
+    "resultsCount": "{count, plural, =0 {No candidates matched} =1 {1 candidate matched} other {# candidates matched}}",
+    "noResults": "No matching candidates found",
+    "noResultsDescription": "Try refining or expanding your job description to find more candidates.",
+    "errorMessage": "Failed to match candidates. Please try again.",
+    "validation": {
+      "tooShort": "Job description must be at least 10 characters"
+    }
   },
   "profile": {
     "backToCandidates": "Back to Candidates",

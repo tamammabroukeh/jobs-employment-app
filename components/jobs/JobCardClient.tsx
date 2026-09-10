@@ -20,6 +20,14 @@ interface JobCardClientProps {
   experienceLabel: string;
   postedOnLabel: string;
   applyNowLabel: string;
+  /** Optional: skills from the seeker's resume that matched this job. */
+  matchedSkills?: string[];
+  /** Optional: label shown above matched skills (e.g. "Matched Skills"). */
+  matchedSkillsLabel?: string;
+  /** Optional: whether the seeker already applied to this job. */
+  hasApplied?: boolean;
+  /** Optional: label shown on the footer button when already applied. */
+  appliedLabel?: string;
 }
 
 export default function JobCardClient({
@@ -37,7 +45,11 @@ export default function JobCardClient({
   experienceLabel,
   postedOnLabel,
   applyNowLabel,
-  tags
+  tags,
+  matchedSkills,
+  matchedSkillsLabel,
+  hasApplied,
+  appliedLabel,
 }: JobCardClientProps) {
 
   return (
@@ -53,7 +65,14 @@ export default function JobCardClient({
       {/* Job Details */}
       <div className="flex-1 space-y-3 mb-4">
         {/* Badges: Roles, Types, Levels */}
-        <JobCardBadges tags={tags} roles={roles} types={types} levels={levels} />
+        <JobCardBadges
+          tags={tags}
+          roles={roles}
+          types={types}
+          levels={levels}
+          matchedSkills={matchedSkills}
+          matchedSkillsLabel={matchedSkillsLabel}
+        />
 
         {/* Experience, Location, Posted Date */}
         <JobCardDetails
@@ -66,7 +85,12 @@ export default function JobCardClient({
       </div>
 
       {/* Footer: Apply Button */}
-      <JobCardFooter jobId={id} applyNowLabel={applyNowLabel} />
+      <JobCardFooter
+        jobId={id}
+        applyNowLabel={applyNowLabel}
+        hasApplied={hasApplied}
+        appliedLabel={appliedLabel}
+      />
     </div>
   );
 }

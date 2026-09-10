@@ -458,6 +458,59 @@ export interface UpdateApplicationStatusResponse {
   };
 }
 
+// Match Candidates to Job Description Interfaces
+
+/**
+ * A candidate returned from the AI candidate-matching endpoint.
+ * Shape differs from the browse `Candidate`: it uses `name` instead of
+ * `full_name`, omits `date_of_birth`/`location`, and adds AI + match fields.
+ */
+export interface MatchedCandidate {
+  id: string;
+  user_id: string;
+  name: string;
+  email?: string;
+  image: string | null;
+  city: string | null;
+  current_job_title: string | null;
+  current_job_status: string | null;
+  job_level: string | null;
+  job_types: string[];
+  job_roles: string[];
+  work_cities: string[];
+  years_of_experience: number;
+  education_level: string | null;
+  expected_salary: number;
+  salary_range_from: number;
+  salary_range_to: number;
+  is_actively_seeking: boolean;
+  experience_summary: string | null;
+  social_links: CandidateSocialLinks | null;
+  skills: CandidateSkill[];
+  education_history: CandidateEducation[];
+  work_experience: CandidateWorkExperience[] | null;
+  ai_summary: string | null;
+  ai_skills: string[];
+  ats_score: number | null;
+  ai_analyzed_at: string | null;
+  /** Skills from the candidate that matched the job description. */
+  matched_skills: string[];
+  matched_skills_score: number;
+  profile_url: string;
+}
+
+export interface MatchCandidatesRequest {
+  /** Job description or requirements. Max 5000 chars. */
+  job_description: string;
+  /** Max number of candidates to return. Min 1, Max 50. */
+  limit?: number;
+}
+
+export interface MatchCandidatesResponse {
+  extracted_requirements: string[];
+  candidates: MatchedCandidate[];
+}
+
 // Send Offer Interfaces
 export interface SendOfferRequest {
   job_seeker_id: string;

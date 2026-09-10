@@ -8,6 +8,39 @@ import type {
 import { revalidatePath, revalidateTag } from "next/cache";
 import { employerRepository } from "./index";
 
+// Match Candidates to Job Description Action
+const matchCandidatesSchema = z.object({
+  job_description: z
+    .string()
+    .min(10, "Job description must be at least 10 characters")
+    .max(5000, "Job description must be at most 5000 characters"),
+  limit: z.number().int().min(1).max(50).optional(),
+});
+
+export const matchCandidatesAction = actionClient
+  .schema(matchCandidatesSchema)
+  .action(async ({ parsedInput }) => {
+    try {
+      const response = await employerRepository.matchCandidates(parsedInput);
+
+      if (!response) {
+        throw new Error("Failed to match candidates");
+      }
+
+      return {
+        success: true,
+        data: response,
+      };
+    } catch (error) {
+      console.error("[Match Candidates Action] Error:", error);
+
+      if (error instanceof Error) {
+        throw new Error(error.message || "Failed to match candidates");
+      }
+      throw new Error("Failed to match candidates. Please try again.");
+    }
+  });
+
 // Validation schema matching the new API structure
 const createJobSchema = z.object({
   communication_method: z.string().min(1, "Communication method is required"),

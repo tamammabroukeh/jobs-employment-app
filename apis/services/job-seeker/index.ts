@@ -16,8 +16,7 @@ import {
   IUpdateWorkExperienceResponse,
   JobSearchFilters,
   JobSearchResponse,
-  MatchedJobsFilters,
-  MatchedJobsResponse,
+  MatchResumeToJobsResponse,
   IUploadResumeResponse,
   IDeleteResumeResponse,
   IUpdateCoverLetterResponse,
@@ -183,23 +182,14 @@ export const jobSeekerRepository = {
   },
 
   /**
-   * Get matched jobs for authenticated job seeker
-   * Returns paginated list ranked by match score
-   * @param filters - Matched jobs filters
-   * @returns Promise with matched jobs response
+   * Match the authenticated job seeker's uploaded/analyzed CV to available jobs.
+   * Uses the CV on the seeker's profile to find AI-matched job recommendations
+   * ranked by match percentage and ATS compatibility.
+   * Requires an uploaded and analyzed CV on the profile.
+   * @returns Promise with the matched jobs response (flat list, not paginated)
    */
-  getMatchedJobs: (filters?: MatchedJobsFilters): Promise<MatchedJobsResponse> => {
-    const queryParams = new URLSearchParams();
-    
-    if (filters) {
-      if (filters.min_score !== undefined) queryParams.append('min_score', String(filters.min_score));
-      if (filters.page !== undefined) queryParams.append('page', String(filters.page));
-    }
-    
-    const queryString = queryParams.toString();
-    const url = queryString ? `/job-seeker/matched-jobs?${queryString}` : '/job-seeker/matched-jobs';
-    
-    return authFetcher<MatchedJobsResponse>(url, {
+  matchResumeToJobs: (): Promise<MatchResumeToJobsResponse> => {
+    return authFetcher<MatchResumeToJobsResponse>('/job-seeker/match-resume-to-jobs', {
       method: Methods.GET,
       cache: 'no-store',
     });
