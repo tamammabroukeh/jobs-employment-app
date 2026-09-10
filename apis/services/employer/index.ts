@@ -23,6 +23,8 @@ import type {
   SendOfferResponse,
   UploadLogoImageResponse,
   UploadCoverImageResponse,
+  MatchCandidatesRequest,
+  MatchCandidatesResponse,
 } from './interface';
 
 /**
@@ -244,5 +246,18 @@ export const employerRepository = {
     authFetcher<SendOfferResponse>('/employer/offers', {
       method: Methods.POST,
       body: JSON.stringify({ job_seeker_id, job_post_id, message }),
+    }),
+
+  /**
+   * Match candidates to a job description using AI.
+   * Returns candidates ordered by relevance with matched skills scores.
+   * @param data - Job description and optional result limit
+   * @returns Promise with the matched candidates response
+   */
+  matchCandidates: (data: MatchCandidatesRequest): Promise<MatchCandidatesResponse> =>
+    authFetcher<MatchCandidatesResponse>('/employer/match-candidates', {
+      method: Methods.POST,
+      body: JSON.stringify(data),
+      cache: 'no-store',
     }),
 };

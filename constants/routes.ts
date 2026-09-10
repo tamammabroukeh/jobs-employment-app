@@ -60,6 +60,7 @@ const ROUTES = {
     getEditJob: (id: string) => `/forsa/${id}`,
     PROFILE: "/employer-profile",
     CANDIDATES: "/candidates",
+    MATCH_CANDIDATES: "/match-candidates",
   },
   MEETINGS: {
     LIST: "/meetings",
@@ -139,6 +140,13 @@ export const NAVBAR_LINKS = [
   {
     labelKey: "links.candidates",
     href: ROUTES.EMPLOYER.CANDIDATES,
+    showInNavbar: true,
+    authRequired: true,
+    roles: ["employer"], // Only for employers
+  },
+  {
+    labelKey: "links.matchCandidates",
+    href: ROUTES.EMPLOYER.MATCH_CANDIDATES,
     showInNavbar: true,
     authRequired: true,
     roles: ["employer"], // Only for employers

@@ -9,14 +9,20 @@ import ROUTES from '@/constants/routes';
 
 interface CandidateCardProps {
   candidate: Candidate;
+  /** Optional: skills matched against a job description (AI candidate matching). */
+  matchedSkills?: string[];
+  /** Optional: relevance score shown as a badge (AI candidate matching). */
+  matchScore?: number;
 }
 
-export default function CandidateCard({ candidate }: CandidateCardProps) {
+export default function CandidateCard({ candidate, matchedSkills, matchScore }: CandidateCardProps) {
   const t = useCandidatesTranslations();
   
   // Calculate age from date of birth
-  const calculateAge = (dob: string): number => {
+  const calculateAge = (dob?: string): number | null => {
+    if (!dob) return null;
     const birthDate = new Date(dob);
+    if (Number.isNaN(birthDate.getTime())) return null;
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
@@ -37,12 +43,23 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
 
   const age = calculateAge(candidate.date_of_birth);
   const salary = formatSalary(candidate.salary_range_from, candidate.salary_range_to);
+  const displayName = candidate.full_name || candidate.first_name || '';
+  // Build a location string from whatever location fields are present.
+  const locationParts = [candidate.city, candidate.location].filter(Boolean);
+  const locationText = locationParts.join(', ');
 
   return (
     <Link 
       href={`${ROUTES.EMPLOYER.CANDIDATES}/${candidate.user_id}`}
-      className="block auth-card p-6 hover:shadow-lg transition-shadow cursor-pointer"
+      className="relative block auth-card p-6 hover:shadow-lg transition-shadow cursor-pointer"
     >
+      {/* Match Score Badge (AI candidate matching) */}
+      {matchScore !== undefined && (
+        <div className="absolute top-4 end-4 z-10 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-bold shadow-lg flex items-center gap-1">
+          <i className="fa-solid fa-star text-xs" />
+          {matchScore}
+        </div>
+      )}
       <div className="flex gap-6">
         {/* Profile Image */}
         <div className="shrink-0">
@@ -66,23 +83,27 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
         <div className="flex-1 min-w-0">
           {/* Name */}
           <Typography variant="h3" className="text-foreground mb-3">
-            {candidate.full_name}
+            {displayName}
           </Typography>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
             {/* Address */}
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <i className="fa-solid fa-location-dot w-4" />
-              <span className="truncate">{t('card.address')}: {candidate.city}, {candidate.location}</span>
-            </div>
+            {locationText && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <i className="fa-solid fa-location-dot w-4" />
+                <span className="truncate">{t('card.address')}: {locationText}</span>
+              </div>
+            )}
 
             {/* Education Level */}
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <i className="fa-solid fa-graduation-cap w-4" />
-              <span className="truncate">
-                {t('card.educationLevel')}: {candidate.education_level.replace('_', ' ')}
-              </span>
-            </div>
+            {candidate.education_level && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <i className="fa-solid fa-graduation-cap w-4" />
+                <span className="truncate">
+                  {t('card.educationLevel')}: {candidate.education_level.replace('_', ' ')}
+                </span>
+              </div>
+            )}
 
             {/* Salary */}
             <div className="flex items-center gap-2 text-muted-foreground">
@@ -91,10 +112,12 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
             </div>
 
             {/* Age */}
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <i className="fa-solid fa-calendar w-4" />
-              <span>{t('card.age')}: {age}</span>
-            </div>
+            {age !== null && (
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <i className="fa-solid fa-calendar w-4" />
+                <span>{t('card.age')}: {age}</span>
+              </div>
+            )}
           </div>
 
           {/* Job Roles */}
@@ -126,6 +149,23 @@ export default function CandidateCard({ candidate }: CandidateCardProps) {
                   +{candidate.skills.length - 4} {t('card.skills')}
                 </ReusableBadge>
               )}
+            </div>
+          )}
+
+          {/* Matched Skills (AI candidate matching) */}
+          {matchedSkills && matchedSkills.length > 0 && (
+            <div className="mt-3">
+              <p className="text-xs font-medium text-success mb-1">
+                <i className="fa-solid fa-circle-check mr-1" />
+                {t('card.matchedSkills')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {matchedSkills.map((skill, index) => (
+                  <ReusableBadge key={index} variant="success">
+                    {skill}
+                  </ReusableBadge>
+                ))}
+              </div>
             </div>
           )}
 
