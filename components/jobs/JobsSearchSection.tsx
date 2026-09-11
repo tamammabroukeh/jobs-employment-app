@@ -13,11 +13,13 @@ import { useSearchParams } from '@/hooks/useSearchParams';
 export default function JobsSearchSection() {
   const { getParam } = useSearchParams()
   const searchParam = getParam("search")
+  const categoryParam = getParam("category")
+  console.log('categoryParam', categoryParam)
   const [filters, setFilters] = useState<JobFiltersState>({
     search: searchParam ?? '',
     jobType: '',
     location: '',
-    category: '',
+    category: categoryParam ?? '',
     minSalary: undefined,
   });
 

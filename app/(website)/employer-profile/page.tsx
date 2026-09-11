@@ -4,6 +4,12 @@ import { authOptions } from '@/auth';
 import ROUTES from '@/constants/routes';
 import { getCompanyProfileAction } from '@/apis/services/employer/actions';
 import EmployerProfileClient from '@/components/employer/EmployerProfileClient';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Company Profile - Manage Your Company',
+  description: 'Manage your company profile, branding, and public information seen by candidates.',
+};
 
 export default async function EmployerProfilePage() {
   const session = await getServerSession(authOptions);

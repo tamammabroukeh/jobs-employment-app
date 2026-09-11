@@ -5,6 +5,12 @@ import { authOptions } from '@/auth';
 import ApplicationsClient from '@/components/applications/ApplicationsClient';
 import { jobSeekerRepository } from '@/apis/services/job-seeker';
 import type { IJobApplicationsResponse } from '@/apis/services/job-seeker/interface';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Applications - Track Your Job Applications',
+  description: 'View and track the status of all the jobs you have applied to.',
+};
 
 export default async function ApplicationsPage({
   searchParams,

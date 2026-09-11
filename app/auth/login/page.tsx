@@ -2,6 +2,13 @@ import { Flex } from "@/components/Reusable-Components";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import LoginForm from "@/components/auth/LoginForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login - Access Your Account",
+  description: "Sign in to your account to apply for jobs, manage listings, and connect with talent.",
+};
+
 export default function LoginPage() {
   return (
     <div className="min-h-screen auth-bg">
