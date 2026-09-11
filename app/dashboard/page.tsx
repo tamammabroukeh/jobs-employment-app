@@ -6,6 +6,12 @@ import { UserRole } from '@/constants/roles';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import ThemeSwitcher from '@/components/ThemeSwitcher';
 import { getServerSession } from 'next-auth';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard - Your Account Overview',
+  description: 'View your account overview, activity, and settings at a glance.',
+};
 
 export default async function DashboardPage() {
   const session = await getServerSession()

@@ -5,6 +5,12 @@ import { authOptions } from '@/auth';
 import ManageJobsClient from '@/components/employer/ManageJobsClient';
 import { employerRepository } from '@/apis/services/employer';
 import type { Job } from '@/apis/services/employer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Manage Jobs - Your Job Listings',
+  description: 'View, edit, and manage all your posted job listings in one place.',
+};
 
 export default async function ManageJobsPage({
   searchParams,

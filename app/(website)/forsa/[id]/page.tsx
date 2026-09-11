@@ -3,6 +3,12 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import ForsaForm from '@/components/employer/ForsaForm';
 import { employerRepository } from '@/apis/services/employer';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Edit Job - Update Your Job Listing',
+  description: 'Edit and update the details of your existing job posting.',
+};
 
 export default async function EditForsaPage({
   params,

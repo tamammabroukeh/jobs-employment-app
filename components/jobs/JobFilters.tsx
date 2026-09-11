@@ -41,8 +41,9 @@ const SALARY_RANGES = [
 
 export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
   const t = useTypedTranslations('jobs');
-    const { getParam, deleteParam } = useSearchParams()
-    const searchParam = getParam("search")
+  const { getParam, deleteParam } = useSearchParams()
+  const searchParam = getParam("search")
+  const categoryParam = getParam("category")
   const [categoryOptions, setCategoryOptions] = useState<{ title: string; value: string }[]>([]);
 
   // Fetch categories from the API on mount
@@ -68,7 +69,7 @@ export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
       search: searchParam ?? '',
       jobType: '',
       location: '',
-      category: '',
+      category: categoryParam ?? '',
       minSalary: undefined,
     },
   });
@@ -105,6 +106,7 @@ export default function JobFilters({ onFiltersChange }: JobFiltersProps) {
       minSalary: undefined,
     });
     deleteParam("search")
+    deleteParam("category")
   };
 
   return (
