@@ -61,7 +61,7 @@ export default function NotificationsPopover() {
           page,
           per_page: 15,
         });
-
+        console.log('result', result)
         if (result?.data?.data) {
           const newNotifications = result.data.data.data;
           
@@ -153,7 +153,7 @@ export default function NotificationsPopover() {
     // TODO: Navigate to related entity if needed
     // Based on notification.related_entity_type and notification.related_entity_id
   };
-
+  console.log('notifications', notifications)
   // Popover content
   const popoverContent = (
     <div className="w-[400px] max-w-[90vw]">

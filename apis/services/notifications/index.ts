@@ -20,7 +20,7 @@ export const notificationsRepository = {
     const queryString = params ? buildQueryString(params) : '';
     
     return authFetcher<IGetNotificationsResponse>(
-      `/notifications${queryString}`,
+      `/notifications?${queryString}`,
       {
         method: Methods.GET,
         next: {
