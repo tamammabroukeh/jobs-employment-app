@@ -109,7 +109,7 @@ export default function EmployerProfileClient({ initialData }: EmployerProfileCl
               <div key={key}>
                 <div className="flex justify-between mb-2">
                   <Typography variant="p" className="text-foreground capitalize">
-                    {t(`categoryRatings.${key}` as any)}
+                    {t(`categoryRatings.${key}`)}
                   </Typography>
                   <Typography variant="p" className="text-primary font-semibold">
                     {value.toFixed(1)}/5
