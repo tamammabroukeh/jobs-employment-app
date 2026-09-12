@@ -14,6 +14,7 @@ export default function JobCardHeader({
   title,
   displayId,
 }: JobCardHeaderProps) {
+  console.log('companyLogo', companyLogo)
   return (
     <div className="flex items-start gap-4 mb-4">
       <div className="w-16 h-16 relative rounded-lg overflow-hidden bg-background shrink-0">
@@ -23,6 +24,7 @@ export default function JobCardHeader({
             alt={companyName}
             width={64}
             height={64}
+            priority
             className="object-contain"
           />
         )}
