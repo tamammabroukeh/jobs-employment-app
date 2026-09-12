@@ -17,7 +17,16 @@
     "yearsAgo": "{years}y ago"
   },
   "types": {
+    "broadcast": "Announcement",
     "application_status_changed": "Application Status",
+    "direct_offer_received": "Direct Offer Received",
+    "new_application": "New Application",
+    "employer_decision": "Employer Decision",
+    "meeting_invitation": "Meeting Invitation",
+    "meeting_accepted": "Meeting Accepted",
+    "meeting_declined": "Meeting Declined",
+    "meeting_cancelled": "Meeting Cancelled",
+    "meeting_rescheduled": "Meeting Rescheduled",
     "new_job_match": "Job Match",
     "interview_scheduled": "Interview Scheduled",
     "offer_received": "Offer Received",

@@ -17,7 +17,16 @@
     "yearsAgo": "منذ {years} سنة"
   },
   "types": {
+    "broadcast": "إعلان",
     "application_status_changed": "حالة الطلب",
+    "direct_offer_received": "عرض مباشر",
+    "new_application": "طلب جديد",
+    "employer_decision": "قرار صاحب العمل",
+    "meeting_invitation": "دعوة اجتماع",
+    "meeting_accepted": "تم قبول الاجتماع",
+    "meeting_declined": "تم رفض الاجتماع",
+    "meeting_cancelled": "تم إلغاء الاجتماع",
+    "meeting_rescheduled": "تمت إعادة جدولة الاجتماع",
     "new_job_match": "وظيفة مطابقة",
     "interview_scheduled": "مقابلة مجدولة",
     "offer_received": "عرض وظيفي",

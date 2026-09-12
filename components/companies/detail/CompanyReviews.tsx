@@ -247,7 +247,7 @@ export default function CompanyReviews({
                     {t('detail.reviews.subratings')}
                   </Typography>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                    {Object.entries(review.subratings).map(([key, rating]) => (
+                    {Object.entries(review?.subratings)?.map(([key, rating]) => (
                       <div key={key}>
                         <Typography variant="xsmall" className="text-muted-foreground mb-1">
                           {t(`detail.reviews.categories.${key}`)}

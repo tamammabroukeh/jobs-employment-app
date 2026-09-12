@@ -11,7 +11,8 @@ import {
   CalendarOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import { useNotificationsTranslations, useTypedTranslations } from "@/hooks/use-translations";
+import { useTypedTranslations } from "@/hooks/use-translations";
+import { NamespaceKeys } from "@/types/i18n-types";
 
 interface NotificationItemProps {
   notification: INotification;
@@ -52,10 +53,10 @@ export default function NotificationItem({
       ? t("timeAgo.justNow")
       : t(`timeAgo.${timeAgo.type}`, {
           [timeAgo.type.replace("Ago", "")]: timeAgo.value ?? 0,
-        } as any);
+        });
 
   const notificationTypeLabel =
-    t(`types.${notification.type}` as any) || t("types.default");
+    `${t(`types.${notification.type}` as NamespaceKeys<"notifications">)}: `;
 
   return (
     <div
@@ -67,7 +68,7 @@ export default function NotificationItem({
     >
       <Flex classes="gap-3 items-start">
         {/* Icon */}
-        <div className="flex-shrink-0 mt-1">
+        <div className="shrink-0 mt-1">
           {getNotificationIcon(notification.type)}
         </div>
 
@@ -78,7 +79,7 @@ export default function NotificationItem({
             variant="text"
             className="text-xs font-semibold text-primary mb-1"
           >
-            {notificationTypeLabel}
+            {notificationTypeLabel} 
           </Typography>
 
           {/* Message */}
@@ -90,13 +91,13 @@ export default function NotificationItem({
                 : "text-muted-foreground"
             }`}
           >
-            {notification.message}
+            {`${notification.message} `}
           </Typography>
 
           {/* Time */}
           <Typography
             variant="text"
-            className="text-xs text-muted-foreground mt-1"
+            className="text-xs text-blue-500! mt-1"
           >
             {timeText}
           </Typography>
@@ -104,7 +105,7 @@ export default function NotificationItem({
 
         {/* Unread Indicator */}
         {isUnread && (
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <div className="w-2 h-2 bg-blue-500 rounded-full" />
           </div>
         )}
