@@ -5,6 +5,7 @@
   },
   "publicInfo": {
     "title": "Public Company Information",
+    "companyNamePlaceholder": "Company Name",
     "edit": "Edit",
     "companyName": "Company Name",
     "companyNameRequired": "Company name is required",

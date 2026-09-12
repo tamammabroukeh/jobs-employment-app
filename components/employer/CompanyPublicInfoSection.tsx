@@ -10,6 +10,7 @@ import { Input, Checkbox } from 'antd';
 import type { CompanyProfile } from '@/apis/services/employer';
 import { updateCompanyProfileAction } from '@/apis/services/employer/actions';
 import { useEmployerProfileTranslations } from '@/hooks/use-translations';
+import { _Translator } from 'next-intl';
 
 const { TextArea } = Input;
 
@@ -440,7 +441,7 @@ function InfoRow({ label, value }: { label: string; value?: string | null }) {
   );
 }
 
-function formatCompanySize(size: string, t: any): string {
+function formatCompanySize(size: string, t: _Translator<Record<string, any>, "employerProfile">): string {
   const sizeMap: Record<string, string> = {
     'less_than_10': t('companySize.lessThan10'),
     '10_to_50': t('companySize.10to50'),

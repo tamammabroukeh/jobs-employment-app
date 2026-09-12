@@ -5,7 +5,8 @@
   },
   "publicInfo": {
     "title": "معلومات الشركة العامة",
-    "edit": "تعديل",
+    "companyNamePlaceholder": "اسم الشركة",
+    "edit": "تعديل",    
     "companyName": "اسم الشركة",
     "companyNameRequired": "اسم الشركة مطلوب",
     "companyNameMaxLength": "يجب أن لا يتجاوز اسم الشركة 150 حرفاً",
